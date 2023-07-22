@@ -1,10 +1,10 @@
 // app/layout.tsx
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Poppins } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import { dark } from '@clerk/themes'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Poppins({ subsets: ['latin'], weight: ['400'] })
 export const metadata = {
   title: 'DiscoSpot',
   description: '',
