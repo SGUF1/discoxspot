@@ -22,7 +22,7 @@ const LeftBar = () => {
                 <span className='ml-2 hidden sm:block'>Invita amici</span>
             </div>
 
-            <div className='mt-52 sm:mt-60 self-start sm:ml-6'>
+            <div className='mt-[24vh] sm:mt-[28vh] lg:mt-[40vh] '>
                 <UserButton signInUrl='/'/>
             </div>
         </div>
