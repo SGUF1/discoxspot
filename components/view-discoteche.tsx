@@ -15,7 +15,7 @@ const ViewDiscoteche = ({ discoteche, province }: ViewDiscotecheProps) => {
                     <div className='h-32 sm:h-44 flex items-center w-72 sm:w-80 overflow-hidden rounded-xl'>
                         <Image src={item.imageUrl} alt='image' width={400} height={100} className='object-contain hover:scale-125 transition hover:cursor-pointer' />
                     </div>
-                    <div className='flex w-64 sm:w-80 mt-2 justify-between'>
+                    <div className='flex w-72 sm:w-80 mt-2 justify-between'>
                         <div className='flex flex-col gap-1'>
                             <div>{item.name}</div>
                             <div>{item.indirizzo} {item.civico}, {item.cap}, {province?.find(provincia => provincia.id === item.provinciaId)?.name}</div>
