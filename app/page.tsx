@@ -4,6 +4,7 @@ import LeftBar from '@/components/leftbar';
 import getDiscoteche from '@/actions/getDiscoteche';
 import ViewDiscoteche from '@/components/view-discoteche';
 import getProvince from '@/actions/getProvince';
+import Footer from '@/components/footer';
 
 
 const Page = async () => {
@@ -17,6 +18,7 @@ const Page = async () => {
         <LeftBar />
         <ViewDiscoteche discoteche={discoteche} province={province}/>
         </div>
+        <Footer/>
     </div>
   )
 }
