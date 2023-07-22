@@ -13,12 +13,12 @@ const Page = async () => {
   const province = await getProvince()
   return (
     <div className='p-5 text-white lg:p-10 lg:px-20 h-full'>
-        <Header/>
-        <div className='flex space-x-10'>
+      <Header />
+      <div className='flex space-x-5'>
         <LeftBar />
-        <ViewDiscoteche discoteche={discoteche} province={province}/>
-        </div>
-        <Footer/>
+        <ViewDiscoteche discoteche={discoteche} province={province} />
+      </div>
+      <Footer />
     </div>
   )
 }
