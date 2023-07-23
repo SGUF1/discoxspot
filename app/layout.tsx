@@ -3,6 +3,7 @@ import './globals.css'
 import { Poppins } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import { dark } from '@clerk/themes'
+import { ReduxProvider } from '@/store/provider'
 
 const inter = Poppins({ subsets: ['latin'], weight: ['400'] })
 export const metadata = {
@@ -23,7 +24,9 @@ export default function RootLayout({
       }
     }}>
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <ReduxProvider>{children}</ReduxProvider>
+        </body>
       </html>
     </ClerkProvider>
   )

@@ -1,6 +1,8 @@
 import React from 'react'
 import Image from 'next/image'
 import SearchBar from './searchbar'
+import { Discoteca } from '@/type'
+
 const Header = () => {
     return (
         <div className='flex justify-between items-center'>
@@ -10,7 +12,7 @@ const Header = () => {
             <div>
                 <SearchBar/>
             </div>
-            
+
         </div>
     )
 }

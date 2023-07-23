@@ -5,12 +5,16 @@ import getDiscoteche from '@/actions/getDiscoteche';
 import ViewDiscoteche from '@/components/view-discoteche';
 import getProvince from '@/actions/getProvince';
 import Footer from '@/components/footer';
+import {useDispatch} from 'react-redux'
 
 
 const Page = async () => {
 
   const discoteche = await getDiscoteche()
   const province = await getProvince()
+  
+  
+  
   return (
     <div className='p-5 text-white lg:p-10 lg:px-20 h-full'>
       <Header />
