@@ -9,10 +9,11 @@ import { useDispatch } from 'react-redux'
 import { auth, useUser } from '@clerk/nextjs'
 import { redirect } from 'next/navigation';
 import createUser from '@/actions/createUser';
+import getUser from '@/actions/getUser';
+import getUsers from '@/actions/getUsers';
 
 const Page = async () => {
   
-  const discoteche = await getDiscoteche()
   const province = await getProvince()
   
   const userId = auth().userId
@@ -20,18 +21,17 @@ const Page = async () => {
     if (userId) {
       await createUser(userId);
     }
-
-  }catch(errore){
     
+  }catch(errore){
   }
+  const users = await getUsers()
+  const user = users.find((item) => item.id === userId)
   return (
-    <div className='p-5 text-white lg:p-10 lg:px-20 h-full'>
-      <Header />
+    <div className='p-5 text-white lg:p-10 lg:px-20 h-[80vh]'>
       <div className='flex space-x-5'>
         <LeftBar />
-        <ViewDiscoteche discoteche={discoteche} province={province} userId={userId!}/>
+        <ViewDiscoteche  province={province} user={user!}/>
       </div>
-      <Footer />
     </div>
   )
 }

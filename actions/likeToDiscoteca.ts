@@ -3,9 +3,9 @@ const likeToDiscoteca = async (userId: string, discotecaId: string) => {
   const requestOptions = {
     method: "POST",
     headers: {
-      "Content-Type": "application/json", // Specifica che i dati inviati sono in formato JSON
+      "Content-Type": "application/json", 
     },
-    body: JSON.stringify({ userId, discotecaId }), // Converte l'oggetto userId in una stringa JSON da includere nel corpo della richiesta
+    body: JSON.stringify({ userId, discotecaId }),
   };
 
   const res = await fetch(URL, requestOptions);

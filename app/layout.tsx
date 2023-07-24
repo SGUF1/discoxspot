@@ -4,6 +4,10 @@ import { Poppins } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import { dark } from '@clerk/themes'
 import { ReduxProvider } from '@/store/provider'
+import ToastProvider from '@/provider/toast-provider'
+import Header from '@/components/header'
+import Footer from '@/components/footer'
+import ModalProvider from '@/provider/modal-provider'
 
 const inter = Poppins({ subsets: ['latin'], weight: ['400'] })
 export const metadata = {
@@ -25,7 +29,11 @@ export default function RootLayout({
     }}>
       <html lang="en">
         <body className={inter.className}>
+          <ToastProvider/>
+          <ModalProvider/>
+          <Header/>
           <ReduxProvider>{children}</ReduxProvider>
+          <Footer/>
         </body>
       </html>
     </ClerkProvider>
