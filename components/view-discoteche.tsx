@@ -1,16 +1,16 @@
 "use client"
 
-import { Discoteca, Provincia, UserAccounts } from '@/type'
+import { Discoteca, UserAccounts } from '@/type'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { Heart, HeartPulse, Users } from 'lucide-react'
+import { Heart } from 'lucide-react'
 import likeToDiscoteca from '@/actions/likeToDiscoteca'
 import { useRouter } from 'next/navigation'
-import { cn } from '@/lib/utils'
-import getDiscoteca from '@/actions/getDiscoteca'
 import getDiscoteche from '@/actions/getDiscoteche'
 import useLike from '@/hooks/use-like'
-import Loading from '@/app/loading'
+import { useAppSelector } from '@/store/store'
+import { Loader } from './loader'
+
 interface ViewDiscotecheProps {
     preferiti?: boolean | false
     user: UserAccounts
@@ -23,6 +23,7 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const like = useLike()
+    const searchTerm = useAppSelector((state) => state.discoteche.ricerca)
     useEffect(() => {
         async function fetch() {
             try {
@@ -38,12 +39,15 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
                 console.error("Error fetching discoteche:", error);
             }
         }
-
+       
         fetch()
         const interval = setInterval(fetch, 1000);
 
         return () => clearInterval(interval);
     }, [])
+    const filteredDiscoteche = (discoteche.filter(
+        item => item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    ))
     const handleOnHeart = async (item: Discoteca) => {
 
         try {
@@ -65,8 +69,8 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
     }
 
     return (
-        <div className='lg:-mt-10 grid grid-cols-1 overflow-y-scroll  overflow-x-auto h-[70vh] sm:grid-cols-2 lg:grid-cols-3 w-[95%]  2xl:grid-cols-4 gap-8 text-white'>
-            {discoteche.map((item) => (
+        <div className='lg:-mt-10 grid grid-cols-1 overflow-y-scroll w-full  overflow-x-auto h-[70vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white'>
+            {filteredDiscoteche.length === 0 ? <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[70vh]"><Loader/></div> : filteredDiscoteche.map((item) => (
                 <div className='flex flex-col items-center' key={item.id}>
                     <div className='h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl'>
                         <Image src={item.imageUrl} alt='image' width={1000} height={100} className='object-contain lg:hover:scale-125 transition hover:cursor-pointer ' />

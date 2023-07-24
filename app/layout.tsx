@@ -29,11 +29,13 @@ export default function RootLayout({
     }}>
       <html lang="en">
         <body className={inter.className}>
-          <ToastProvider/>
+          <ReduxProvider>
+            <ToastProvider/>
           <ModalProvider/>
           <Header/>
-          <ReduxProvider>{children}</ReduxProvider>
+          {children}
           <Footer/>
+          </ReduxProvider>
         </body>
       </html>
     </ClerkProvider>
