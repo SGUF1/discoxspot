@@ -70,7 +70,7 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
 
     return (
         <div className='lg:-mt-10 grid grid-cols-1 overflow-y-scroll w-full  overflow-x-auto h-[70vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white'>
-            {filteredDiscoteche.length === 0 ? <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[70vh]"><Loader/></div> : filteredDiscoteche.map((item) => (
+            {filteredDiscoteche.length === 0 ? <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[70vh]">Nessuna discoteca trovata</div> : filteredDiscoteche.map((item) => (
                 <div className='flex flex-col items-center' key={item.id}>
                     <div className='h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl'>
                         <Image src={item.imageUrl} alt='image' width={1000} height={100} className='object-contain lg:hover:scale-125 transition hover:cursor-pointer ' />
