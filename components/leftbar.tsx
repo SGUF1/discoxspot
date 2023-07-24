@@ -11,6 +11,7 @@ const LeftBar = () => {
     <div className={cn("lg:-mt-10 w-2/12 border-r h-[max-content] flex flex-col gap-6 justify-center items-center border-red-200 sm:w-44", isOpen ? "w-full" : "w-2/12")}>
       <div className="flex items-center">
         <Home className="h-7 w-7 " onClick={() => router.push("/")} />
+        <span className="ml-2 hidden sm:block">Home</span>
       </div>
       <div className="flex items-center cursor-pointer " onClick={() => router.push("/preferiti")}>
         <Heart className="h-7 w-7" />
