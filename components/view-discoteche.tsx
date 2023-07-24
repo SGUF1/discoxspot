@@ -52,7 +52,6 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
 
         try {
             setIsLoading(true)
-            like.addItem(item)
             await likeToDiscoteca(user.id, item.id)
         } catch (error) {
             console.error("Error while liking discoteca:", error)
