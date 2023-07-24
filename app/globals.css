@@ -4,7 +4,6 @@
 
 html, body, :root{
     height: 100vh;
-    background: black
 }
 body {
   background-image: url("/login.png");

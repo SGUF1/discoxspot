@@ -1,5 +1,11 @@
 import { StringMappingType } from "typescript";
 
+export interface UserAccount {
+  id: string;
+  name: string;
+  discoteche: Discoteca[]
+}
+
 export interface Discoteca {
   id: string;
   name: string;
