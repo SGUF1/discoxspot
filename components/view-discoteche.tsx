@@ -27,15 +27,14 @@ const ViewDiscoteche = ({ discoteche, province, userId }: ViewDiscotecheProps) =
                             <div>{item.name}</div>
                             <div>{item.indirizzo} {item.civico}, {item.cap}, {province?.find(provincia => provincia.id === item.provinciaId)?.name}</div>
                         </div>
-                        <div className='flex items-center' onClick={async () => {
-                            if(loading){
+                        <div className='flex items-center cursor-pointer' onClick={async () => {
+                            if(!loading){
                                 try {
                                     setLoading(true)
                                     await likeToDiscoteca(userId, item.id)
-                                    item.like = item.like + 1
                                 } catch (error) {
                                 }
-                                finally {
+                                finally{
                                     setLoading(false)
                                 }
                             }
