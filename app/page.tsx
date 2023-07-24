@@ -14,7 +14,6 @@ import getUsers from '@/actions/getUsers';
 
 const Page = async () => {
   
-  const province = await getProvince()
   
   const userId = auth().userId
   try{
@@ -24,13 +23,12 @@ const Page = async () => {
     
   }catch(errore){
   }
-  const users = await getUsers()
-  const user = users.find((item) => item.id === userId)
+  const user = await getUser(userId!)
   return (
     <div className='p-5 text-white lg:p-10 lg:px-20 h-[80vh]'>
       <div className='flex space-x-5'>
         <LeftBar />
-        <ViewDiscoteche  province={province} user={user!}/>
+        <ViewDiscoteche  user={user}/>
       </div>
     </div>
   )

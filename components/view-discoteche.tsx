@@ -1,32 +1,41 @@
 "use client"
 
-import { Discoteca, Provincia, UserAccount } from '@/type'
+import { Discoteca, Provincia, UserAccounts } from '@/type'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { Heart, HeartPulse } from 'lucide-react'
+import { Heart, HeartPulse, Users } from 'lucide-react'
 import likeToDiscoteca from '@/actions/likeToDiscoteca'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import getDiscoteca from '@/actions/getDiscoteca'
 import getDiscoteche from '@/actions/getDiscoteche'
 import useLike from '@/hooks/use-like'
+import Loading from '@/app/loading'
 interface ViewDiscotecheProps {
-    province: Provincia[]
-    user: UserAccount
+    preferiti?: boolean | false
+    user: UserAccounts
 }
 
-const ViewDiscoteche = ({ province, user }: ViewDiscotecheProps) => {
+const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
     const [isMounted, setIsMounted] = useState(false);
     const [discoteche, setDiscoteche] = useState<Discoteca[]>([])
+    
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const like = useLike()
     useEffect(() => {
         async function fetch() {
             try {
-                setDiscoteche((await getDiscoteche()))
-            } catch (error) {
+                const allDiscoteche = await getDiscoteche();
 
+                if (preferiti) {
+                    const preferiteIds = user.discoteche.map(item => item.id);
+                    setDiscoteche(allDiscoteche.filter(item => preferiteIds.includes(item.id)));
+                } else {
+                    setDiscoteche(allDiscoteche);
+                }
+            } catch (error) {
+                console.error("Error fetching discoteche:", error);
             }
         }
 
@@ -41,7 +50,6 @@ const ViewDiscoteche = ({ province, user }: ViewDiscotecheProps) => {
             setIsLoading(true)
             like.addItem(item)
             await likeToDiscoteca(user.id, item.id)
-
         } catch (error) {
             console.error("Error while liking discoteca:", error)
         } finally {
@@ -66,11 +74,11 @@ const ViewDiscoteche = ({ province, user }: ViewDiscotecheProps) => {
                     <div className='flex w-[95%] sm:w-[95%]  mt-2 justify-between'>
                         <div className='flex flex-col gap-1'>
                             <div>{item.name}</div>
-                            <div>{item.indirizzo} {item.civico}, {item.cap}, {province?.find(provincia => provincia.id === item.provinciaId)?.name}</div>
+                            <div>{item.indirizzo} {item.civico}, {item.cap}, {item.provincia.name}</div>
                         </div>
-                        <div className='flex items-center cursor-pointer outline-none' onClick={() => handleOnHeart(item)}>
-                            <Heart size={22} className='hover:scale-110 transition' fill={`${like.items.find((disco) => disco.id === item.id) ? "red" : "black"}`} color={`${like.items.find((disco) => disco.id === item.id) ? "red" : "white"}`} />
-                            <span className='ml-1'>{item.like}</span>
+                        <div className='flex items-center cursor-pointer outline-none' onClick={() => handleOnHeart(item)} >
+                            <Heart size={22} className='hover:scale-110 transition' fill={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "transparent"}`} color={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "white"}`} />
+                            {!preferiti && <span className='ml-1'>{item.like}</span>}
                         </div>
                     </div>
                 </div>

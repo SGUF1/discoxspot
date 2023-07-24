@@ -23,12 +23,12 @@ export interface Discoteca {
   eventi: Evento[];
   sale: Sala[];
   like: number
-  userAccount: UserAccount[]
+  userAccounts: UserAccounts[]
 }
 
-export interface UserAccount{
+export interface UserAccounts{
   id: string;
-  discotechePreferite: Discoteca[]
+  discoteche: Discoteca[]
 }
 export interface Provincia {
   id: string;
