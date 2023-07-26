@@ -25,7 +25,7 @@ const Page = async () => {
   }
   const user = await getUser(userId!)
   return (
-    <div className='p-5 text-white lg:p-10 lg:px-20 h-[80vh]'>
+    <div className='p-5 text-white lg:p-10 lg:px-20 h-[80vh] '>
       <div className='flex space-x-5'>
         <LeftBar />
         <ViewDiscoteche  user={user}/>

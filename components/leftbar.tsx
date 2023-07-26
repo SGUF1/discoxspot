@@ -11,7 +11,7 @@ const LeftBar = () => {
   const pathname = usePathname()
   const router = useRouter()
   return (
-    <div className={cn("lg:-mt-10 w-2/12 border-r h-[max-content] flex flex-col gap-6 justify-center items-center border-red-200 sm:w-44", isOpen ? "w-full" : "w-2/12")}>
+    <div className={cn("lg:-mt-10  border-r h-[max-content] flex flex-col gap-6 justify-center sm:items-center border-red-200 sm:w-44", isOpen ? "w-full" : "w-[50px]")}>
       <div className={cn("flex items-center cursor-pointer ", pathname === "/" && "text-red-200")} onClick={() => {router.push("/"); }}>
         <Home className="h-7 w-7 " />
         <span className="ml-2 hidden sm:block">Home</span>
