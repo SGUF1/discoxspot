@@ -57,10 +57,13 @@ const EventoPage = ({ params }: { params: { eventoId: string } }) => {
                 </div>
                 <div className='flex flex-col gap-1'>
                     <span className='text-xl'>Discoteca:</span>
-                    <span className='text-sm'>{evento?.discoteca.name}</span>
+                    <div className='flex flex-row justify-between'>
+                        <span className='text-sm'>{evento?.discoteca.name}</span>
+                        <span className='text-sm'>{evento?.discoteca.indirizzo} {evento?.discoteca.civico}, {evento?.discoteca.city}</span>
+                    </div>
                 </div>
             </div>
-            <div className='w-[95%] m-2 mx-auto bg-black rounded-full p-5 text-center'>Prenota Tavolo</div>
+            <div className='w-[95%] m-2 mx-auto bg-black rounded-full p-5 text-center border border-white'>Prenota Tavolo</div>
         </div>
     )
 }

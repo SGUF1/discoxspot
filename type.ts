@@ -18,6 +18,7 @@ export interface Discoteca {
   priority: number;
   maximumOrderDate: number;
   civico: number;
+  city: string;
   provincia: Provincia;
   informazioni: Informazione[];
   eventi: Evento[];
