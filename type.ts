@@ -71,7 +71,7 @@ export interface Evento {
   eventoSala: Boolean;
   salaId?: string;
   sala?: Sala;
-  description: string;
+  informazioni: Informazione[];
   oraInizio: string;
   oraFine: string;
 }
