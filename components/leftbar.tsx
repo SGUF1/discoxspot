@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react";
-import { Heart, Home, Menu, Users2 } from "lucide-react";
+import { Heart, Home, Menu, PartyPopper, Users2 } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 import { useRouter, usePathname } from 'next/navigation'
 
@@ -11,7 +11,7 @@ const LeftBar = () => {
   const pathname = usePathname()
   const router = useRouter()
   return (
-    <div className={cn("lg:-mt-10  border-r h-[max-content] flex flex-col gap-6 justify-center sm:items-center border-red-200 sm:w-44", isOpen ? "w-full" : "w-[50px]")}>
+    <div className={cn("lg:-mt-10 lg:-ml-14  border-r h-[max-content] flex flex-col gap-6 justify-center sm:items-center border-red-200 sm:w-48 lg:w-44", isOpen ? "w-full" : "w-[50px]")}>
       <div className={cn("flex items-center cursor-pointer ", pathname === "/" && "text-red-200")} onClick={() => {router.push("/"); }}>
         <Home className="h-7 w-7 " />
         <span className="ml-2 hidden sm:block">Home</span>
@@ -20,9 +20,9 @@ const LeftBar = () => {
         <Heart className="h-7 w-7" />
         <span className="ml-2 hidden sm:block">Preferiti</span>
       </div>
-      <div className="flex items-center">
-        <Users2 className="h-7 w-7" />
-        <span className="ml-2 hidden sm:block">Invita amici</span>
+      <div className={cn("flex items-center cursor-pointer ", pathname === "/eventi" && "text-red-200")} onClick={() => { router.push("/eventi"); }}>
+        <PartyPopper className="h-7 w-7" />
+        <span className="ml-2 hidden sm:block" >Eventi</span>
       </div>
       <div className="flex items-center">
         <Users2 className="h-7 w-7" />

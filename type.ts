@@ -63,8 +63,8 @@ export interface Evento {
   imageUrl: string;
   discotecaId: string;
   discoteca: Discoteca;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   prioriti: string;
   tipologiaEventoId: string;
   tipologiaEvento: TipologiaEvento;
