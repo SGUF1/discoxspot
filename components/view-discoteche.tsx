@@ -60,9 +60,6 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
         }
     }
 
-    const preventDefault = (event: any) => {
-        event.preventDefault();
-    };
     useEffect(() => {
         setIsMounted(true);
     }, []);
@@ -76,10 +73,7 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
             {filteredDiscoteche.length === 0 ? <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[70vh]">Nessuna discoteca trovata</div> : filteredDiscoteche.map((item) => (
                 <div className='flex flex-col items-center' key={item.id}>
                     <div className='h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl' 
-                        onDragStart={preventDefault}
-                        onContextMenu={preventDefault}
-                        // @ts-ignore
-                        style={{ userDrag: 'none', userSelect: 'none' }}>
+  >
                         <Image src={item.imageUrl} alt='image' width={1000} height={100} className='object-contain lg:hover:scale-125 transition hover:cursor-pointer ' />
                     </div>
                     <div className='flex w-[95%] sm:w-[95%]  mt-2 justify-between'>

@@ -50,9 +50,6 @@ const ViewEventi = ({ user }: ViewEventiProps) => {
         const dateObject = new Date(dateString.startDate);
         return dateObject > currentDate;
     });
-    const preventDefault = (event: any) => {
-        event.preventDefault();
-    };
     useEffect(() => {
         setIsMounted(true);
     }, []);
@@ -67,10 +64,7 @@ const ViewEventi = ({ user }: ViewEventiProps) => {
         <div className='lg:-mt-10 grid grid-cols-1 overflow-y-scroll w-full  overflow-x-auto h-[70vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white'>
             {futureDates.length === 0 ? <div className='flex justify-center sm:justify-start  items-center sm:items-start'>NESSUN EVENTO</div> :futureDates.map((item) => (
                 <div className='flex flex-col items-center' key={item.id} onClick={() => router.push(`/eventi/${item.id}`)}>
-                    <div className='h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl' onDragStart={preventDefault}
-                        onContextMenu={preventDefault}
-                        // @ts-ignore
-                        style={{ userDrag: 'none', userSelect: 'none' }}>
+                    <div className='h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl'>
                         <Image src={item.imageUrl} alt='image' width={1000} height={100} className='object-contain lg:hover:scale-125 transition hover:cursor-pointer ' />
                     </div>
                     <div className='flex w-[95%] sm:w-[95%] flex-col mt-2 justify-between'>
