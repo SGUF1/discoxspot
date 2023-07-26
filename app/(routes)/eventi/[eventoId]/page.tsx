@@ -19,7 +19,6 @@ const EventoPage = ({ params }: { params: { eventoId: string } }) => {
         const dateObject = new Date(data);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
-        // Ottieni la data nel formato desiderato
         // @ts-ignore
         const dataFormattata = dateObject.toLocaleDateString(undefined, options);
 
@@ -53,7 +52,7 @@ const EventoPage = ({ params }: { params: { eventoId: string } }) => {
                 <div className='flex flex-col gap-1'>
                     <span className='text-xl'>Descrizione:</span>
                     <div className='text-sm flex flex-col gap-1'>{evento?.informazioni.map((item) => (
-                        <span>{item.descrizione}</span>
+                        <span key={item.id}>{item.descrizione}</span>
                     ))}</div>
                 </div>
                 <div className='flex flex-col gap-1'>
