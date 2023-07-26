@@ -25,7 +25,9 @@ const EventoPage = ({ params }: { params: { eventoId: string } }) => {
 
         return dataFormattata
     }
-
+    const preventDefault = (event: any) => {
+        event.preventDefault();
+    };
     useEffect(() => {
         setIsMounted(true);
     }, []);
@@ -39,7 +41,11 @@ const EventoPage = ({ params }: { params: { eventoId: string } }) => {
                 <span className='text-center'>{evento?.nome}</span>
                 <span className='sm:ml-2 text-center'>{formatDate(evento?.startDate!)}</span>
             </div>
-            <div className='w-full h-52 overflow-hidden sm:h-96 flex justify-center items-center '>
+            <div className='w-full h-52 overflow-hidden sm:h-96 flex justify-center items-center '
+                onDragStart={preventDefault}
+                onContextMenu={preventDefault}
+                // @ts-ignore
+                style={{ userDrag: 'none', userSelect: 'none' }}>
                 <Image src={evento?.imageUrl!} alt='image' width={1000} height={300} className='object-fill lg:rounded-2xl' />
             </div>
             <div className='p-5 flex flex-col gap-y-3'>
