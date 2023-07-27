@@ -82,8 +82,8 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
                         style={{ userDrag: 'none', userSelect: 'none' }}>
                         <Image src={item.imageUrl} alt='image' width={1000} height={100} className='object-contain lg:hover:scale-125 transition hover:cursor-pointer ' onClick={() => router.push(`/${item.id}`)} />
                     </div>
-                    <div className='flex w-[95%] sm:w-[95%]  mt-2 justify-between' onClick={() => router.push(`/${item.id}`)}>
-                        <div className='flex flex-col gap-1' >
+                    <div className='flex w-[95%] sm:w-[95%]  mt-2 justify-between' >
+                        <div className='flex flex-col gap-1' onClick={() => router.push(`/${item.id}`)}>
                             <div>{item.name}</div>
                             <div>{item.indirizzo} {item.civico}, {item.cap}, {item.provincia.name}</div>
                         </div>
