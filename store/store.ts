@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import discotecheSlice from "./features/search-discoteca";
+import openTavolo from "./features/panel-tavolo-open";
 import { useSelector, TypedUseSelectorHook } from "react-redux";
 
 
 export const store = configureStore({
   reducer: {
     discoteche: discotecheSlice,
+    open: openTavolo
   },
 });
 

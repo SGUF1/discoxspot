@@ -3,8 +3,13 @@
 @tailwind utilities;
 
 body {
-  background-image: url("/login.png");
+  background-image: url("/sfondo.jpg");
   background-size: cover;
   /* background: #34 3a40; */
   height: 100%;
+  
+}
+::-webkit-scrollbar {
+  height: 2px;
+  width: 2px;
 }

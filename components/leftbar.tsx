@@ -26,7 +26,7 @@ const LeftBar = () => {
       </div>
       <div className="flex items-center">
         <Users2 className="h-7 w-7" />
-        <span className="ml-2 hidden sm:block">Invita amici</span>
+        <span className="ml-2 hidden sm:block">Crea tavolo</span>
       </div>
       <div className="flex items-center">
         <Users2 className="h-7 w-7" />  

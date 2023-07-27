@@ -31,7 +31,7 @@ const EventoPage = ({ params }: { params: { eventoId: string } }) => {
         setIsMounted(true);
     }, []);
 
-    if (!isMounted) {
+    if (!isMounted || !evento?.discoteca.visibile) {
         return null;
     }
     return (
@@ -40,26 +40,26 @@ const EventoPage = ({ params }: { params: { eventoId: string } }) => {
                 <span className='text-center'>{evento?.nome}</span>
                 <span className='sm:ml-2 text-center'>{formatDate(evento?.startDate!)}</span>
             </div>
-            <div className='w-full h-52 overflow-hidden sm:h-96 flex justify-center items-center '
+            <div className='w-full h-52 overflow-hidden sm:h-96 flex justify-center items-center lg:rounded-lg'
                 onDragStart={preventDefault}
                 onContextMenu={preventDefault}
                 // @ts-ignore
                 style={{ userDrag: 'none', userSelect: 'none' }}>
-                <Image src={evento?.imageUrl!} alt='image' width={1000} height={300} className='object-fill lg:rounded-2xl' />
+                <Image src={evento?.imageUrl!} alt='image' width={1000} height={300} className='object-fill  '/>
             </div>
             <div className='p-5 flex flex-col gap-y-3'>
 
                 <div className='flex flex-col gap-1'>
                     <span className='text-xl'>Descrizione:</span>
-                    <div className='text-sm flex flex-col gap-1'>{evento?.informazioni.map((item) => (
+                    <div className='text-lg flex flex-col gap-1'>{evento?.informazioni.map((item) => (
                         <span key={item.id}>{item.descrizione}</span>
                     ))}</div>
                 </div>
                 <div className='flex flex-col gap-1'>
                     <span className='text-xl'>Discoteca:</span>
                     <div className='flex flex-row justify-between'>
-                        <span className='text-sm'>{evento?.discoteca.name}</span>
-                        <span className='text-sm'>{evento?.discoteca.indirizzo} {evento?.discoteca.civico}, {evento?.discoteca.city}</span>
+                        <span className='text-lg'>{evento?.discoteca.name}</span>
+                        <span className='text-lg'>{evento?.discoteca.indirizzo} {evento?.discoteca.civico}, {evento?.discoteca.city}</span>
                     </div>
                 </div>
             </div>

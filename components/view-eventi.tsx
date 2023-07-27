@@ -6,11 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import useLike from '@/hooks/use-like'
 import getEventi from '@/actions/getEventi'
-interface ViewEventiProps {
-    user: UserAccounts
-}
-
-const ViewEventi = ({ user }: ViewEventiProps) => {
+const ViewEventi = () => {
     const [isMounted, setIsMounted] = useState(false);
     const [eventi, setEventi] = useState<Evento[]>([])
 

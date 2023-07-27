@@ -21,7 +21,7 @@ const UserPage = async () => {
     <div className='p-5 text-white lg:p-10 lg:px-20 h-[80vh]'>
       <div className='flex space-x-5'>
         <LeftBar/>
-        <ViewEventi user={user!}/>
+        <ViewEventi/>
       </div>
     </div>
   )
