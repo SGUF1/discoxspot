@@ -23,6 +23,7 @@ export interface Discoteca {
   informazioni: Informazione[];
   eventi: Evento[];
   sale: Sala[];
+  date: Data[]
   like: number
   userAccounts: UserAccounts[]
 }
@@ -86,16 +87,31 @@ export interface TipologiaEvento{
 export interface Sala{
     id: string;
     nome: string
-    descrizione: string;
     imageUrl: string;
     discotecaId: string;
     discoteca: Discoteca
     tavoli: Tavolo[]
     eventi: Evento[]
+    date: Data[]
     statoId: string
     stato: Stato
     pianoId: string;
     piano: Piano
+    informazioni: Informazione[]
+}
+
+export interface Data{
+  id: string;
+  salaId?: string;
+  giorni?: string[],
+  dateRange?: {from: string, to: string},
+  discotecaId: string;
+  type?: string
+  data?: string
+  sala?: Sala,
+  discoteca: Discoteca,
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Posto{

@@ -28,8 +28,8 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
             setEventi((await getEventi()))
         }
         fetch()
+        dispatch(openTavoloPlease(false))
     }, [])
-
     const formatDate = (data: string) => {
         const dateObject = new Date(data);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -48,8 +48,15 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
         setIsMounted(true);
     }, []);
 
-    if (!isMounted || !discoteca?.visibile) {
+    if (!isMounted) {
         return null;
+    }
+    if(!discoteca?.visibile){
+        return(
+            <div className='flex justify-center items-center text-2xl p-52 text-white'>
+                DISCOTECA NON DISPONIBILE
+            </div>
+        )
     }
     return (
         <>
@@ -111,7 +118,7 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
                     <span className='text-xl ransition' >Prenota Tavolo</span>
                 </div>
             </div>
-            <PanelTavolo discoteca={discoteca}/>
+            <PanelTavolo discoteca={discoteca!}/>
         </>
     )
 }
