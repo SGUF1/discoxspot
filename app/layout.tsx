@@ -8,7 +8,7 @@ import ToastProvider from '@/provider/toast-provider'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import ModalProvider from '@/provider/modal-provider'
-
+import { Analytics } from '@vercel/analytics/react';
 const inter = Poppins({ subsets: ['latin'], weight: ['400'] })
 export const metadata = {
   title: 'DiscoSpot',
@@ -36,6 +36,9 @@ export default function RootLayout({
           {children}
           <Footer/>
           </ReduxProvider>
+
+  <Analytics/>
+
         </body>
       </html>
     </ClerkProvider>
