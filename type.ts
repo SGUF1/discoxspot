@@ -19,6 +19,7 @@ export interface Discoteca {
   maximumOrderDate: number;
   civico: number;
   city: string;
+  piani: Piano[]
   provincia: Provincia;
   informazioni: Informazione[];
   eventi: Evento[];
@@ -129,6 +130,7 @@ export interface Stato{
     posti: Posto[]
     sale: Sala[]
     order: Order[]
+    colore: string
 }
 
 export interface Posizione{
@@ -145,7 +147,7 @@ export interface Tavolo{
     posti: Posto[]
     salaId: string;
     sala: Sala
-    prezzoPosto: string;
+    numeroMinimo: number | 0,
     descrizione: string;
     prezzo: string;
     imageUrl: string;

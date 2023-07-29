@@ -13,19 +13,26 @@ import { useDispatch } from 'react-redux'
 import { AppDispatch, useAppSelector } from '@/store/store'
 import { cn } from '@/lib/utils'
 import { openTavoloPlease } from '@/store/features/panel-tavolo-open'
+import { Loader } from '@/components/loader'
 
 const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
     const [discoteca, setDiscoteca] = useState<Discoteca>()
     const [eventi, setEventi] = useState<Evento[]>([])
     const [isMounted, setIsMounted] = useState(false)
     const dispatch = useDispatch<AppDispatch>()
-
+    const [loading, setLoading] = useState(false)
     const open = useAppSelector((state) => state.open.open)
     const router = useRouter()
     useEffect(() => {
         async function fetch() {
-            setDiscoteca((await getDiscoteca(params.discotecaId)))
-            setEventi((await getEventi()))
+            try {
+                setLoading(true)
+                setDiscoteca((await getDiscoteca(params.discotecaId)))
+                setEventi((await getEventi()))
+            } catch (error) { }
+            finally {
+                setLoading(false)
+            }
         }
         fetch()
         dispatch(openTavoloPlease(false))
@@ -51,9 +58,9 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
     if (!isMounted) {
         return null;
     }
-    if(!discoteca?.visibile){
-        return(
-            <div className='flex justify-center items-center text-2xl p-52 text-white'>
+    if (!discoteca?.visibile) {
+        return (
+            loading ? <div className='h-full flex justify-center items-center'><Loader /></div> : <div className='flex justify-center items-center text-2xl p-52 text-white'>
                 DISCOTECA NON DISPONIBILE
             </div>
         )
@@ -118,7 +125,7 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
                     <span className='text-xl ransition' >Prenota Tavolo</span>
                 </div>
             </div>
-            <PanelTavolo discoteca={discoteca!}/>
+            <PanelTavolo discoteca={discoteca!} />
         </>
     )
 }
