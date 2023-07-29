@@ -26,6 +26,7 @@ export interface Discoteca {
   sale: Sala[];
   date: Data[]
   like: number
+  menu: Menu[];
   userAccounts: UserAccounts[]
 }
 
@@ -170,6 +171,8 @@ export interface Prodotto{
     nome: string;
     portataId: string;
     portata: Portata;
+    limite: number;
+    imageUrl: string;
     descrizione: string;
     prezzo: number;
     orderItems: OrderItem[]
@@ -180,6 +183,9 @@ export interface Portata{
     nome: string;
     menuId: string;
     menu: Menu
+    selezioneSingola: boolean;
+    numeroBibiteDiverse?: number;
+    numeroBibiteTotale?: number;
     prodotti: Prodotto[]
     numeroPortata: number;
     lastPortata: boolean

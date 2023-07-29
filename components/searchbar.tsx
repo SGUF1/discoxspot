@@ -16,7 +16,7 @@ const SearchBar = () => {
     return (
         <>
             <div className={cn('items-center hidden', pathname === "/" && "flex",)}>
-                <input type='text' placeholder='search' className='bg-gray-300 p-2 rounded-full text-black w-72 h-9 text-sm' value={searchTerm} onChange={(e: any) => { setSearchTerm(e.target.value); }} />
+                <input type='text' placeholder='search' className='bg-gray-300 p-2 rounded-full text-black w-52 h-9 text-sm' value={searchTerm} onChange={(e: any) => { setSearchTerm(e.target.value); }} />
                 <SearchIcon className='h-5 w-5 absolute ml-64 text-black ' />
             </div>
             {pathname === "/preferiti" && <div className='text-white text-xl'>Preferiti</div>}
