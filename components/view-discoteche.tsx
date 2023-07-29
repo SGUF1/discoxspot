@@ -74,9 +74,7 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
     useEffect(() => {
         setIsMounted(true);
     }, []);
-    if(isLoading){
-        return <div className='justify-center items-center flex w-full'><Loader/></div>
-    }
+
     if (!isMounted) {
         return null;
     }
