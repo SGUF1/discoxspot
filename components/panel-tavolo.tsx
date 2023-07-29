@@ -188,11 +188,23 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
   };
 
   const setAbilitate = (date: Date) => {
+    const today = new Date();
     const disabledDays = items.map(item => item.numero);
     const isDateActive = discoteca?.date?.some((data) => data.type === "aperto" && data.giorni?.some((giorno) => items.find((item) => item.id === giorno)?.numero === disabledDays[date.getDay()]));
-    const isDateInRangeArray = dateRangeArray.some((dates) => dates.find((data) => data === format(date, 'yyyy-MM-dd')));
-    return isDateActive && !isDateInRangeArray;
+
+    // Converte l'array dateRangeArray in un singolo array di date
+    const allDatesInRange = dateRangeArray.flatMap(dates => dates);
+
+    // Verifica se la data è attiva (aperta) e se non è presente nell'array delle date disabilitate
+    const isDateEnabled = isDateActive && !allDatesInRange.includes(format(date, 'yyyy-MM-dd'));
+
+    // Verifica se la data è maggiore o uguale a oggi, considerando anche l'ora corrente
+    const isDateFromToday = date.getTime() >= today.getTime();
+
+    // Restituisce true solo se la data è attiva e maggiore o uguale a oggi
+    return isDateEnabled && isDateFromToday;
   };
+
 
   const getDatesBetweenDates = (startDate: any, endDate: any) => {
     const dates = eachDayOfInterval({ start: new Date(startDate), end: new Date(endDate) });
