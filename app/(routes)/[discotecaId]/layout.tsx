@@ -1,4 +1,4 @@
-export default function EventoLayout({
+export default function DiscotecaLayout({
     children,
 }: { children: React.ReactNode }) {
     return (

@@ -85,11 +85,6 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     return getDatesBetweenDates(startDate, endDate);
   });
 
-  console.log(selectedDate)
-  console.log(selectedPiano)
-  console.log(selectedSala)
-  console.log(discoteca.piani)
- 
   return (
     <div className={cn("absolute w-full h-full p-5 space-y-5 text-white transition top-[-100%]", open ? "top-0" : "top-[-300%]")} style={{ backgroundImage: "url(/sfondo.jpg)" }}>
       <div className='text-3xl font-bold flex justify-between items-center' >

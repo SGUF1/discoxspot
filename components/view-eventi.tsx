@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import useLike from '@/hooks/use-like'
 import getEventi from '@/actions/getEventi'
+import { Loader } from './loader'
 const ViewEventi = () => {
     const [isMounted, setIsMounted] = useState(false);
     const [eventi, setEventi] = useState<Evento[]>([])
@@ -13,14 +14,22 @@ const ViewEventi = () => {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const like = useLike()
+    var cont = 0
+
     useEffect(() => {
         async function fetch() {
             try {
+                if (cont === 0)
+                    setIsLoading(true)
+
                 const allEventi = await getEventi();
 
                 setEventi(allEventi);
             } catch (error) {
                 console.error("Error fetching eventi:", error);
+            } finally {
+                setIsLoading(false)
+                cont++
             }
         }
 
@@ -49,10 +58,15 @@ const ViewEventi = () => {
     const preventDefault = (event: any) => {
         event.preventDefault();
     };
+
+
     useEffect(() => {
         setIsMounted(true);
     }, []);
 
+    if (isLoading) {
+        return <div className='justify-center items-center flex w-full'><Loader /></div>
+    }
     if (!isMounted) {
         return null;
     }
@@ -61,7 +75,7 @@ const ViewEventi = () => {
 
     return (
         <div className='lg:-mt-10 grid grid-cols-1 overflow-y-scroll w-full  overflow-x-auto h-[70vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white'>
-            {futureDates.length === 0 ? <div className='flex justify-center sm:justify-start  items-center sm:items-start'>NESSUN EVENTO</div> :futureDates.map((item) => (
+            {futureDates.length === 0 ? <div className='flex justify-center sm:justify-start  items-center sm:items-start'>NESSUN EVENTO</div> : futureDates.map((item) => (
                 <div className='flex flex-col items-center' key={item.id} onClick={() => router.push(`/eventi/${item.id}`)}>
                     <div className='h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl' onDragStart={preventDefault}
                         onContextMenu={preventDefault}

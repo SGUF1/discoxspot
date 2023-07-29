@@ -24,9 +24,13 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
     const router = useRouter()
     const like = useLike()
     const searchTerm = useAppSelector((state) => state.discoteche.ricerca)
+    var cont = 0
     useEffect(() => {
         async function fetch() {
             try {
+                if(cont === 0){
+                    setIsLoading(true)
+                }
                 const allDiscoteche = await getDiscoteche();
 
                 if (preferiti) {
@@ -37,6 +41,10 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
                 }
             } catch (error) {
                 console.error("Error fetching discoteche:", error);
+            }
+            finally{
+                setIsLoading(false)
+                cont++
             }
         }
        
@@ -66,7 +74,9 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
     useEffect(() => {
         setIsMounted(true);
     }, []);
-
+    if(isLoading){
+        return <div className='justify-center items-center flex w-full'><Loader/></div>
+    }
     if (!isMounted) {
         return null;
     }

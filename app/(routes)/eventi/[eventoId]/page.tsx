@@ -4,13 +4,24 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import getEvento from '@/actions/getEvento'
 import Image from 'next/image'
+import { Loader } from '@/components/loader'
 
 const EventoPage = ({ params }: { params: { eventoId: string } }) => {
     const [evento, setEvento] = useState<Evento>()
     const [isMounted, setIsMounted] = useState(false)
+    const router = useRouter()
+    const [loading, setLoading] = useState(false)
+
     useEffect(() => {
         async function fetch() {
+            try{
+                setLoading(true)
             setEvento((await getEvento(params.eventoId)))
+            }catch(error){
+
+            }finally{
+                setLoading(false)
+            }
         }
         fetch()
     }, [setEvento])
@@ -33,6 +44,18 @@ const EventoPage = ({ params }: { params: { eventoId: string } }) => {
 
     if (!isMounted || !evento?.discoteca.visibile) {
         return null;
+    }
+    if (loading) {
+        return (
+             <div className='h-full flex w-full justify-center items-center'><Loader /></div> 
+        )
+    }
+    if(!evento){
+        return (
+            <div className='flex justify-center items-center text-2xl p-52 text-white'>
+                EVENTO NON DISPONIBILE
+            </div>
+        )
     }
     return (
         <div className="text-white flex flex-col gap-y-5">
@@ -63,7 +86,9 @@ const EventoPage = ({ params }: { params: { eventoId: string } }) => {
                     </div>
                 </div>
             </div>
-            <div className='w-[95%] m-2 mx-auto bg-black rounded-full p-5 text-center border border-white'>Prenota Tavolo</div>
+            <div className='w-[50%] m-2 mx-auto flex items-center justify-center transition cursor-pointer bg-black rounded-full py-5 text-center border border-white group' onClick={() => router.push(`/${evento?.discotecaId}`)}>
+                <span className='text-xl ransition' >Vai alla discoteca</span>
+            </div>
         </div>
     )
 }
