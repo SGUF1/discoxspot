@@ -3,7 +3,7 @@
 import { Discoteca, UserAccounts } from '@/type'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { Heart } from 'lucide-react'
+import { Heart, MapPin } from 'lucide-react'
 import likeToDiscoteca from '@/actions/likeToDiscoteca'
 import { useRouter } from 'next/navigation'
 import getDiscoteche from '@/actions/getDiscoteche'
@@ -93,7 +93,7 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
                     <div className='flex w-[95%] sm:w-[95%]  mt-2 justify-between' >
                         <div className='flex flex-col gap-1' onClick={() => router.push(`/${item.id}`)}>
                             <div>{item.name}</div>
-                            <div>{item.indirizzo} {item.civico}, {item.cap}, {item.provincia.name}</div>
+                            <div className='flex '><MapPin size={20} /><span className='ml-1'>{item.indirizzo} {item.civico}, {item.cap}, {item.provincia.name}</span></div>
                         </div>
                         <div className='flex items-center cursor-pointer outline-none' onClick={() => handleOnHeart(item)} >
                             <Heart size={22} className='hover:scale-110 transition' fill={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "transparent"}`} color={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "white"}`} />
