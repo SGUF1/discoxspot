@@ -76,62 +76,64 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     }
 
     const existingPortata = selectedBibita.find((item) => item.portata.id === prodotto.portataId);
-    const totaleBibite = selectedBibita.find((sele) => sele.portata.id === prodotto.portataId)?.portata.numeroBibiteTotale ?? 0
-    const totaleBibitePres = totaleBibitePresenti(prodotto.portataId)
-  if(totaleBibitePres < totaleBibite){
-    if (existingPortata) {
-      const existingProdotto = existingPortata.prodottiConQuantita.find((item) => item.prodotto.id === prodotto.id);
-      if (existingProdotto) {
-        aumentaQuantitaProdotto(existingPortata.portata, prodotto);
+    const totaleBibite = selectedBibita.find((sele) => sele.portata.id === prodotto.portataId)?.portata.numeroBibiteTotale ?? 1;
+    const totaleBibitePres = totaleBibitePresenti(prodotto.portataId) === undefined ? 1 : totaleBibitePresenti(prodotto.portataId);
+
+    if (totaleBibitePres! < totaleBibite) { // Controlla se hai già raggiunto la quantità massima della portata
+      if (existingPortata) {
+        const existingProdotto = existingPortata.prodottiConQuantita.find((item) => item.prodotto.id === prodotto.id);
+        if (existingProdotto) {
+          aumentaQuantitaProdotto(existingPortata.portata, prodotto);
+        } else {
+          const numeroBibiteDiverse = existingPortata.portata.numeroBibiteDiverse ?? 0;
+          const numeroProdottiConQuantita = existingPortata.prodottiConQuantita.length;
+          if (numeroBibiteDiverse > numeroProdottiConQuantita) {
+            setSelectedBibita((prev) => [
+              ...prev.map((item) =>
+                item.portata.id === prodotto.portataId
+                  ? {
+                    ...item,
+                    prodottiConQuantita: [
+                      ...item.prodottiConQuantita,
+                      {
+                        prodotto,
+                        quantita,
+                      },
+                    ],
+                  }
+                  : item
+              ),
+            ]);
+          }
+        }
       } else {
-        const numeroBibiteDiverse = existingPortata.portata.numeroBibiteDiverse ?? 0;
-        const numeroProdottiConQuantita = existingPortata.prodottiConQuantita.length;
-        if (numeroBibiteDiverse > numeroProdottiConQuantita) {
+        const portata = discoteca.menu
+          .map((menu) => menu.portate.find((portata) => portata.id === prodotto.portataId))
+          .find((portata) => portata !== undefined);
+
+        if (portata) {
           setSelectedBibita((prev) => [
-            ...prev.map((item) =>
-              item.portata.id === prodotto.portataId
-                ? {
-                  ...item,
-                  prodottiConQuantita: [
-                    ...item.prodottiConQuantita,
-                    {
-                      prodotto,
-                      quantita,
-                    },
-                  ],
-                }
-                : item
-            ),
+            ...prev,
+            {
+              portata,
+              prodottiConQuantita: [
+                {
+                  prodotto,
+                  quantita,
+                },
+              ],
+            },
           ]);
         }
       }
     } else {
-      const portata = discoteca.menu
-        .map((menu) => menu.portate.find((portata) => portata.id === prodotto.portataId))
-        .find((portata) => portata !== undefined);
-
-      if (portata) {
-        setSelectedBibita((prev) => [
-          ...prev,
-          {
-            portata,
-            prodottiConQuantita: [
-              {
-                prodotto,
-                quantita,
-              },
-            ],
-          },
-        ]);
-      }
+      console.log("Hai raggiunto la quantità massima della portata. Non puoi aggiungere ulteriori prodotti.");
     }
-  }
-    
   };
   const aumentaQuantitaProdotto = (portata: Portata, prodotto: Prodotto) => {
-    const totaleBibite = selectedBibita.find((sele) => sele.portata.id === portata.id)?.portata.numeroBibiteTotale ?? 0
-    const totaleBibitePres = totaleBibitePresenti(portata.id)
-    if(totaleBibite > totaleBibitePres){
+    const totaleBibite = selectedBibita.find((sele) => sele.portata.id === portata.id)?.portata.numeroBibiteTotale ?? 1
+    const totaleBibitePres = totaleBibitePresenti(portata.id) === undefined ? 1 : totaleBibitePresenti(portata.id)
+    if (totaleBibite > totaleBibitePres!) {
       if (selectedBibita.find((sele) => sele.portata.id === portata.id)?.prodottiConQuantita.find((prod) => prodotto.id === prod.prodotto.id)?.quantita! < prodotto.limite)
         setSelectedBibita((prev) => [
           ...prev.map((item) =>
@@ -153,16 +155,18 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     }
   };
 
+
   const totaleBibitePresenti = (portataId: string) => {
-    const totale = selectedBibita.reduce((acc, sele) => {
+    const totaleBibite = selectedBibita.reduce((acc, sele) => {
       if (sele.portata.id === portataId) {
         return acc + sele.prodottiConQuantita.reduce((accProdotti, prodotto) => accProdotti + prodotto.quantita, 0);
       }
       return acc;
     }, 0);
 
-    return totale;
+    return totaleBibite;
   };
+
   const diminuisciQuantitaProdotto = (portata: Portata, prodotto: Prodotto) => {
     setSelectedBibita((prev) =>
       prev.map((item) =>
@@ -369,14 +373,14 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                                   <Minus size={19} />
                                 </div>}
 
-                                <div className={cn('mx-1 text-xl text-center p-2 w-[150px]  rounded-2xl  cursor-pointer  transition-colors outline-none ', selectedBibita.find((item) => item.portata.id === portata.id)?.prodottiConQuantita?.find((prod) => prod?.prodotto.id === prodotto.id) ? 'bg-green-500 transition' : "bg-red-500 transition")}
+                                <button className={cn('mx-1 text-xl text-center p-2 w-[150px]  rounded-2xl  cursor-pointer  transition-colors outline-none ', selectedBibita.find((item) => item.portata.id === portata.id)?.prodottiConQuantita?.find((prod) => prod?.prodotto.id === prodotto.id) ? 'bg-green-500 transition' : "bg-red-500 transition")}
                                   onClick={() => {
                                     aggiungiProdotto(prodotto, selectedBibita.find((sele) => sele.portata.id === portata.id)?.prodottiConQuantita?.find((prod) => prod?.prodotto.id === prodotto.id)?.quantita!)
                                   }} >
 
                                   {selectedBibita.find((item) => item.portata.id === portata.id)?.prodottiConQuantita?.find((prod) => prod?.prodotto.id === prodotto.id) ? "Selezionato" : "Seleziona"}
 
-                                </div>
+                                </button>
 
                                 {selectedBibita.find((item) => item.portata.id === portata.id)?.prodottiConQuantita?.find((prod) => prod?.prodotto.id === prodotto.id) && <div className=' flex items-center justify-center p-2 rounded-full bg-green-500 cursor-pointer'
                                   onClick={() => aumentaQuantitaProdotto(portata, prodotto)}>
