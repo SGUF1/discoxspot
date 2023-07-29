@@ -95,10 +95,10 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
                             <div>{item.name}</div>
                             <div className='flex '><MapPin size={20} /><span className='ml-1'>{item.indirizzo} {item.civico}, {item.cap}, {item.provincia.name}</span></div>
                         </div>
-                        <div className='flex items-center cursor-pointer outline-none' onClick={() => handleOnHeart(item)} >
+                        <button className='flex items-center cursor-pointer outline-none' onClick={() => handleOnHeart(item)} disabled={isLoading}>
                             <Heart size={22} className='hover:scale-110 transition' fill={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "transparent"}`} color={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "white"}`} />
                             {!preferiti && <span className='ml-1'>{item.like}</span>}
-                        </div>
+                        </button>
                     </div>
                 </div>
             ))}
