@@ -12,7 +12,7 @@ const Header = () => {
         <div className='flex justify-between items-center p-2 lg:p-5 lg:px-20 w-full '>
             <div>
                 {/* <Image src={"https://res.cloudinary.com/dg2hpjtdh/image/upload/v1688768031/htzdr7jksuvpdn3uy3vc.jpg"} onClick={() => router.push("/")} alt='logo' width={50} height={50} /> */}
-                <Image src={"/ds_logo.svg"} alt='image' width={140} height={90} className='w-[150px] lg:w-[200px]'/>
+                <Image src={"/ds_logo.svg"} alt='image' width={140} height={90} className='w-[150px] lg:w-[200px]' onClick={() => router.push("/")}/>
             </div>
             <div>
                 <SearchBar/>

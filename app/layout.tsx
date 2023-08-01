@@ -30,14 +30,14 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <ReduxProvider>
-            <ToastProvider/>
-          <ModalProvider/>
-          <Header/>
-          {children}
-          <Footer/>
+            <ToastProvider />
+            <ModalProvider />
+            <Header />
+            {children}
+            <Footer />
           </ReduxProvider>
 
-  <Analytics/>
+          <Analytics />
 
         </body>
       </html>

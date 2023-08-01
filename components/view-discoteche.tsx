@@ -13,13 +13,14 @@ import { Loader } from './loader'
 
 interface ViewDiscotecheProps {
     preferiti?: boolean | false
-    user: UserAccounts
+    user: UserAccounts,
+    classifica?: boolean | false
 }
 
-const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
+const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) => {
     const [isMounted, setIsMounted] = useState(false);
     const [discoteche, setDiscoteche] = useState<Discoteca[]>([])
-    
+
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const like = useLike()
@@ -28,7 +29,7 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
     useEffect(() => {
         async function fetch() {
             try {
-                if(cont === 0){
+                if (cont === 0) {
                     setIsLoading(true)
                 }
                 const allDiscoteche = await getDiscoteche();
@@ -39,19 +40,25 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
                 } else {
                     setDiscoteche(allDiscoteche);
                 }
+
+                if (classifica) {
+                    allDiscoteche.sort((a, b) => b.like - a.like)
+                }
             } catch (error) {
                 console.error("Error fetching discoteche:", error);
             }
-            finally{
+            finally {
                 setIsLoading(false)
                 cont++
             }
         }
-       
-        fetch()
-        const interval = setInterval(fetch, 1000);
 
-        return () => clearInterval(interval);
+        fetch()
+        if (!classifica) {
+            const interval = setInterval(fetch, 1000);
+
+            return () => clearInterval(interval);
+        }
     }, [])
     const filteredDiscoteche = (discoteche.filter(
         item => item.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -83,7 +90,7 @@ const ViewDiscoteche = ({ user, preferiti }: ViewDiscotecheProps) => {
         <div className='lg:-mt-10 grid grid-cols-1 overflow-y-scroll w-full  overflow-x-auto h-[70vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white'>
             {filteredDiscoteche.length === 0 ? <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[70vh]">Nessuna discoteca trovata</div> : filteredDiscoteche.map((item) => (
                 <div className='flex flex-col items-center' key={item.id} >
-                    <div className='h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl' 
+                    <div className='h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl'
                         onDragStart={preventDefault}
                         onContextMenu={preventDefault}
                         // @ts-ignore

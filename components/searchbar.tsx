@@ -21,6 +21,7 @@ const SearchBar = () => {
             </div>
             {pathname === "/preferiti" && <div className='text-white text-xl'>Preferiti</div>}
             {pathname === "/eventi" && <div className='text-white text-xl'>Eventi</div>}
+            {pathname === "/like-rank" && <div className='text-white text-xl'>Classifica Discoteche</div>}
         </>
     )
 }

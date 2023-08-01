@@ -103,7 +103,7 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
                                         style={{ userDrag: 'none', userSelect: 'none' }}>
                                         <Image src={item.imageUrl} alt='image' width={3000} height={100} className='object-contain lg:hover:scale-125 transition cursor-pointer ' />
                                     </div>
-                                    <div className='flex w-[200px] sm:w-[95%] flex-col mt-2 justify-between'>
+                                    <div className='flex w-[200px] sm:w-[95%] lg:w-[500px] flex-col mt-2 justify-between'>
                                         <div className='text-center text-xl font-bold'>{item.nome}</div>
                                         <div className='flex justify-between'>
                                             <span className='text-blue-400'>{item.tipologiaEvento?.name}</span>

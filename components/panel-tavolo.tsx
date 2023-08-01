@@ -1,15 +1,20 @@
 import { cn } from '@/lib/utils'
 import { openTavoloPlease } from '@/store/features/panel-tavolo-open'
 import { AppDispatch, useAppSelector } from '@/store/store'
-import { Data, Discoteca, Piano, Portata, Prodotto, Sala, Tavolo } from '@/type'
+import { CalendarioTavolo, Data, Discoteca, Piano, Portata, Prodotto, Sala, Tavolo } from '@/type'
 import { Minus, Plus, Salad, X } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { eachDayOfInterval, format } from 'date-fns'
+import { eachDayOfInterval, format, parseISO } from 'date-fns'
 import Image from 'next/image'
-
+import axios from 'axios'
+import { useRouter, useSearchParams } from 'next/navigation'
+import toast from 'react-hot-toast'
+import getDate from '@/actions/getDate'
+import getHourse from '@/actions/getHourse'
+import { useUser } from '@clerk/nextjs'
 interface PanelTavoloProps {
   discoteca: Discoteca
 }
@@ -51,6 +56,22 @@ const items = [
   },
 ]
 const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
+  const searchParams = useSearchParams();
+  const router = useRouter()
+  const { user } = useUser();
+  const userId = user?.id
+  useEffect(() => {
+    if (searchParams.get("success")) {
+      toast.success("Pagamento completato")
+    }
+    if (searchParams.get("canceled")) {
+      toast.error("Qualcosa è andato storto")
+    }
+    if (searchParams.get("prenotato")) {
+      toast.error("Un altro utente ha prenotato il tavolo prima di te, ci dispiace")
+    }
+
+  }, [searchParams])
 
   interface ProdottoConQuantity {
     prodotto: Prodotto,
@@ -70,6 +91,20 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
   const [minimoPersone, setMinimoPersone] = useState(0)
   const [massimoPersone, setMassimoPersone] = useState(0)
   const [selectedBibita, setSelectedBibita] = useState<PortataConProdotti[]>([])
+  const [calendarioTavoli, setCalendarioTavoli] = useState<Data[]>()
+  useEffect(() => {
+    async function fetch() {
+      setCalendarioTavoli((await getDate(discoteca?.id!)))
+    }
+    fetch()
+    const interval = setInterval(fetch, 1000);
+
+    return () => clearInterval(interval);
+  }, [])
+
+  const date = new Date(selectedDate!)
+  const formattedSelectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() + getHourse, 0).toISOString()
+
   const aggiungiProdotto = (prodotto: Prodotto, quantita: number) => {
     if (isNaN(quantita)) {
       quantita = 1;
@@ -127,7 +162,6 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
         }
       }
     } else {
-      console.log("Hai raggiunto la quantità massima della portata. Non puoi aggiungere ulteriori prodotti.");
     }
   };
   const aumentaQuantitaProdotto = (portata: Portata, prodotto: Prodotto) => {
@@ -187,6 +221,15 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     );
   };
 
+  const calcolaTotaleBibite = () => {
+    let totale = 0;
+    const prezziProdotti = selectedBibita.map((sele) =>
+      sele.prodottiConQuantita.map((prod) => prod.quantita !== 0 ? prod.prodotto.prezzo * prod.quantita : 0)
+    );
+    totale = prezziProdotti.reduce((acc, curr) => acc + curr.reduce((sum, price) => sum + price, 0), 0);
+    return totale
+  }
+
   const setAbilitate = (date: Date) => {
     const today = new Date();
     const disabledDays = items.map(item => item.numero);
@@ -199,7 +242,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     const isDateEnabled = isDateActive && !allDatesInRange.includes(format(date, 'yyyy-MM-dd'));
 
     // Verifica se la data è maggiore o uguale a oggi, considerando anche l'ora corrente
-    const isDateFromToday = date.getTime() >= today.getTime();
+    const isDateFromToday = date.getTime() >= today.getTime() - 86400000;
 
     // Restituisce true solo se la data è attiva e maggiore o uguale a oggi
     return isDateEnabled && isDateFromToday;
@@ -221,7 +264,20 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     const endDate = param?.to ?? null
     return getDatesBetweenDates(startDate, endDate);
   });
-  console.log(selectedNumeroPersone)
+  const prodottiConQuantitaArray: ProdottoConQuantity[] = selectedBibita.flatMap((portataConProdotti) => portataConProdotti.prodottiConQuantita);
+  const onCheckout = async () => {
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/discoteche/${discoteca.id}/impost/checkout`, {
+      tavolo: selectedTavolo,
+      prodotti: prodottiConQuantitaArray,
+      data: selectedDate,
+      numeroPersone: selectedNumeroPersone,
+      userAccountId: userId,
+    })
+
+    window.location = response.data.url;
+  }
+
+
   return (
     <div className={cn("absolute w-full h-full p-5 space-y-5 text-white transition top-[-100%]", open ? "top-0" : "top-[-300%]")} style={{ backgroundImage: "url(/sfondo.jpg)" }}>
       <div className='text-3xl font-bold flex justify-between items-center' >
@@ -236,7 +292,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
           <DatePicker
             selected={selectedDate} // value prop (current value of the date)
             // @ts-ignore
-            onChange={(date) => setSelectedDate(date)} // onChange handler (function to update the date)
+            onChange={(date) => { setSelectedDate(date); setSelectedTavolo(undefined) }} // onChange handler (function to update the date)
             filterDate={setAbilitate}
             minDate={new Date('2023-07-01')}
             dateFormat="dd-MM-yyyy"
@@ -266,37 +322,39 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
           <div className='text-xl'>Seleziona la sala:</div>
           <div className='w-full flex overflow-x-scroll h-[auto] gap-x-4 lg:gap-x-10'>
             {discoteca?.sale.map((sala) =>
-              sala.pianoId === selectedPiano.id ?
-                <div key={sala.id} className='w-[350px]'>
-                  <div className='w-[350px] rounded-2xl overflow-hidden aspect-video h-[200px] flex justify-center items-center rounded-b-none'
-                    onDragStart={preventDefault}
-                    onContextMenu={preventDefault}
-                    // @ts-ignore
-                    style={{ userDrag: 'none', userSelect: 'none' }}>
-                    <Image src={sala.imageUrl} alt='image' width={600} height={200} className=' lg:hover:scale-125 transition' priority />
-                  </div>
-                  <div className='w-[full] flex flex-col space-y-2 border-t-0 border p-4 rounded-b-2xl '>
-                    <div className='text-2xl font-bold flex justify-between items-center '>
-                      <div className='flex-1 '>{sala.nome}</div>
-                      <div className='w-5 h-5 rounded-full border ' style={{ background: `${sala.stato?.colore}` }} />
-                    </div>
-                    <div>
-                      <div className='text-xl font-bold'>Descrizione:</div>
-                      <div className='text-[16px] h-[100px] overflow-y-scroll'>
-                        {sala.informazioni.map((item) => (<div key={item.id}>
-                          {item.descrizione}
-                        </div>))}
-                      </div>
-                      <div className={cn('mx-1 text-xl text-center p-2 rounded-2xl mt-3 cursor-pointer transition-colors outline-none ', sala.id === selectedSala?.id ? 'bg-green-500 transition' : "bg-red-500 transition")}
-                        onClick={() => {
-                          setSelectedSala(sala)
-                          setNumeroPersone(0)
-                        }} >{selectedSala?.id === sala.id ? "Selezionato" : "Seleziona"}</div>
-                    </div>
-                  </div>
-
+              sala.pianoId === selectedPiano.id &&
+              <div key={sala.id} className='w-[350px]'>
+                <div className='w-[350px] rounded-2xl overflow-hidden aspect-video h-[200px] flex justify-center items-center rounded-b-none'
+                  onDragStart={preventDefault}
+                  onContextMenu={preventDefault}
+                  // @ts-ignore
+                  style={{ userDrag: 'none', userSelect: 'none' }}>
+                  <Image src={sala.imageUrl} alt='image' width={600} height={200} className=' lg:hover:scale-125 transition' priority />
                 </div>
-                : <></>
+                <div className='w-[full] flex flex-col space-y-2 border-t-0 border p-4 rounded-b-2xl '>
+                  <div className='text-2xl font-bold flex justify-between items-center '>
+                    <div className='flex-1 '>{sala.nome}</div>
+                    <div className='w-5 h-5 rounded-full border ' style={{ background: `${sala.stato?.colore}` }} />
+                  </div>
+                  <div>
+                    <div className='text-xl font-bold'>Descrizione:</div>
+                    <div className='text-[16px] h-[100px] overflow-y-scroll'>
+                      {sala.informazioni.map((item) => (<div key={item.id}>
+                        {item.descrizione}
+                      </div>))}
+                    </div>
+                    <div className={cn('mx-1 text-xl text-center p-2 rounded-2xl mt-3 cursor-pointer transition-colors outline-none ', sala.id === selectedSala?.id ? 'bg-green-500 transition' : "bg-red-500 transition")}
+                      onClick={() => {
+                        router.push(`${discoteca.id}/#tavoli`)
+                        setSelectedSala(sala)
+                        setNumeroPersone(0)
+                        setSelectedTavolo(undefined)
+                      }} >{selectedSala?.id === sala.id ? "Selezionato" : "Seleziona"}</div>
+                  </div>
+                </div>
+
+              </div>
+
             )}
           </div>
         </div>
@@ -318,7 +376,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                   <div className='text-xl font-bold flex items-center justify-between relative'>
                     <div>{tavolo.prezzo}€</div>
                     <div className=' w-full absolute text-center '>{tavolo.numeroTavolo}</div>
-                    <div className='w-5 h-5 rounded-full border ' style={{ background: `${tavolo.stato?.colore}` }} />
+                    <div className='w-5 h-5 rounded-full border ' style={{ background: `${calendarioTavoli?.find((date) => new Date(new Date(date?.data!).getTime()).toISOString() === formattedSelectedDate && date.tavoloId === tavolo.id)!?.stato?.colore ?? tavolo.stato.colore}` }} />
                   </div>
                   <div>
                     <div>Descrizione:</div>
@@ -330,7 +388,10 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                   </div>
                   <div className={cn('mx-1 text-xl text-center p-2 rounded-2xl mt-3 cursor-pointer transition-colors outline-none ', tavolo.id === selectedTavolo?.id ? 'bg-green-500 transition' : "bg-red-500 transition")}
                     onClick={() => {
-                      setSelectedTavolo(selectedSala.tavoli.find((tavol) => tavol.id === tavolo.id));
+                      if (!calendarioTavoli?.find((date) => new Date(new Date(date?.data!).getTime()).toISOString() === formattedSelectedDate && date.tavoloId === tavolo.id)) {
+                        setSelectedTavolo(selectedSala.tavoli.find((tavol) => tavol.id === tavolo.id));
+                        router.push(`/${discoteca.id}/#persone`)
+                      }
                       setNumeroPersone(0)
                     }} >{selectedTavolo?.id === tavolo.id ? "Selezionato" : "Seleziona"}
                   </div>
@@ -405,9 +466,28 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                       </div>
                     </div>
                   )}
+
                 </div>
               </div>
             )}
+            <div className='mt-5 mx-auto flex flex-col'>
+              <div className='text-xl'>Costi</div>
+              <div className='text-lg flex lg:w-[300px] justify-between'>
+                <div>Prezzo tavolo</div>
+                <div>{selectedTavolo?.prezzo}€</div>
+              </div>
+              <div className='text-lg flex lg:w-[300px] justify-between'>
+                <div>Prezzo bibite/alcolici</div>
+                <div>{calcolaTotaleBibite()}€</div>
+              </div>
+              <div className='mt-3 border-t lg:w-[300px] flex justify-between'>
+                <div className='font-bold'>Totale:</div>
+                <div className='font-bold'>{(Number(selectedTavolo?.prezzo!) + calcolaTotaleBibite())}€</div>
+              </div>
+            </div>
+          </div>
+          <div className='lg:w-[300px] p-2 text-center border rounded-full mt-5 uppercase font-bold bg-black cursor-pointer' onClick={onCheckout}>
+            Paga ora
           </div>
         </div>
       }
