@@ -8,7 +8,9 @@ const ViewOrders = ({ orders }: ViewOrdersProps) => {
     return (
         <div className='grid grid-cols-4'>
             {orders.map((item) => (
-                <div key={item.id}></div>
+                <div key={item.id}>
+                    {item.tavolo.numeroTavolo}
+                </div>
             ))}
         </div>
     )

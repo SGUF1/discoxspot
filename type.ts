@@ -220,6 +220,8 @@ export interface Order {
   phone: string;
   orderDate: Date;
   expiredDate: Date;
+  tavoloId: string;
+  tavolo: Tavolo;
   statoId: string
   stato: Stato
 }
