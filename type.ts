@@ -223,6 +223,7 @@ export interface Order {
   tavoloId: string;
   tavolo: Tavolo;
   statoId: string
+  codice: string;
   stato: Stato
 }
 

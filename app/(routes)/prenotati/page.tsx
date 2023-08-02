@@ -5,25 +5,44 @@ import { useUser } from '@clerk/nextjs'
 import getOrders from '@/actions/getOrders'
 import { Order } from '@/type'
 import LeftBar from '@/components/leftbar'
+import { Loader } from '@/components/loader'
 
 
 const Prenotati = () => {
   const { user } = useUser()
-  const userId = user!.id;
+  const userId = user?.id;
   const [orders, setOrders] = useState<Order[]>()
+  const [isMounted, setIsMounted] = useState(false);
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
+
     async function fetch() {
-      setOrders((await getOrders(userId)))
+      try{
+        setLoading(true)
+        setOrders((await getOrders(userId!)))
+      }catch(error: any){
+        console.log("Errore nel trovare gli ordini")
+      }finally{
+        setLoading(false)
+      }
     }
 
     fetch()
   })
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+
+  if (!isMounted) {
+    return null;
+  }
+
 
   return (
-    <div className='text-white'>
-      <LeftBar />
-      <div className='text-2xl'>Visualizza le tue prenotazioni:</div>
-      <div>
+    <div className='p-5 text-white lg:p-10 lg:px-20 h-[80vh] '>
+      <div className='flex space-x-5'>
+        <LeftBar />
         <ViewOrders orders={orders!} />
       </div>
     </div>

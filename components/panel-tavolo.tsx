@@ -269,7 +269,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/discoteche/${discoteca.id}/impost/checkout`, {
       tavolo: selectedTavolo,
       prodotti: prodottiConQuantitaArray,
-      data: selectedDate,
+      data: formattedSelectedDate,
       numeroPersone: selectedNumeroPersone,
       userAccountId: userId,
     })
