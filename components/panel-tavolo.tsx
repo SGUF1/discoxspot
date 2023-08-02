@@ -345,7 +345,6 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                     </div>
                     <div className={cn('mx-1 text-xl text-center p-2 rounded-2xl mt-3 cursor-pointer transition-colors outline-none ', sala.id === selectedSala?.id ? 'bg-green-500 transition' : "bg-red-500 transition")}
                       onClick={() => {
-                        router.push(`${discoteca.id}/#tavoli`)
                         setSelectedSala(sala)
                         setNumeroPersone(0)
                         setSelectedTavolo(undefined)
@@ -390,7 +389,6 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                     onClick={() => {
                       if (!calendarioTavoli?.find((date) => new Date(new Date(date?.data!).getTime()).toISOString() === formattedSelectedDate && date.tavoloId === tavolo.id)) {
                         setSelectedTavolo(selectedSala.tavoli.find((tavol) => tavol.id === tavolo.id));
-                        router.push(`/${discoteca.id}/#persone`)
                       }
                       setNumeroPersone(0)
                     }} >{selectedTavolo?.id === tavolo.id ? "Selezionato" : "Seleziona"}

@@ -14,8 +14,8 @@ const Prenotati = () => {
   const [orders, setOrders] = useState<Order[]>()
   const [isMounted, setIsMounted] = useState(false);
   const [loading, setLoading] = useState(false)
-  useEffect(() => {
 
+  useEffect(() => {
     async function fetch() {
       try{
         setLoading(true)
@@ -28,7 +28,8 @@ const Prenotati = () => {
     }
 
     fetch()
-  })
+  }, [])
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -43,7 +44,7 @@ const Prenotati = () => {
     <div className='p-5 text-white lg:p-10 lg:px-20 h-[80vh] '>
       <div className='flex space-x-5'>
         <LeftBar />
-        <ViewOrders orders={orders!} />
+        <ViewOrders orders={orders!} user={userId!} />
       </div>
     </div>
   )

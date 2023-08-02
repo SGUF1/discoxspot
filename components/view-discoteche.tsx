@@ -87,8 +87,8 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
     }
 
     return (
-        <div className='lg:-mt-10 grid grid-cols-1 overflow-y-scroll w-full  overflow-x-auto h-[70vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white'>
-            {filteredDiscoteche.length === 0 ? <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[70vh]">Nessuna discoteca trovata</div> : filteredDiscoteche.map((item) => (
+        <div className='lg:-mt-10 grid grid-cols-1 mt-4 overflow-y-scroll w-full  overflow-x-auto h-[70vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white'>
+            {filteredDiscoteche.length === 0 ? <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[80vh]">Nessuna discoteca trovata</div> : filteredDiscoteche.map((item) => (
                 <div className='flex flex-col items-center' key={item.id} >
                     <div className='h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl'
                         onDragStart={preventDefault}
@@ -100,7 +100,7 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
                     <div className='flex w-[95%] sm:w-[95%]  mt-2 justify-between' >
                         <div className='flex flex-col gap-1' onClick={() => router.push(`/${item.id}`)}>
                             <div>{item.name}</div>
-                            <div className='flex '><MapPin size={20} /><span className='ml-1'>{item.indirizzo} {item.civico}, {item.cap}, {item.provincia.name}</span></div>
+                            <div className='flex '><MapPin size={20} /><span className='ml-1'>{item.indirizzo} {item.civico}, {item.city}, {item.provincia.name}</span></div>
                         </div>
                         <button className='flex items-center cursor-pointer outline-none' onClick={() => handleOnHeart(item)} disabled={isLoading}>
                             <Heart size={22} className='hover:scale-110 transition' fill={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "transparent"}`} color={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "white"}`} />

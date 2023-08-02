@@ -67,7 +67,7 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
     }
     return (
         <>
-            <div className={cn("text-white  flex-col gap-y-5", open ? "hidden" : "flex")}>
+            <div className={cn("text-white flex-col gap-y-5", open ? "hidden" : "flex")}>
                 <div className='text-2xl text-center flex justify-center sm:block '>
                     <span className='text-center'>{discoteca?.name}</span>
                 </div>
@@ -97,11 +97,11 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
                         <div className=' flex flex-row overflow-x-scroll space-x-20 w-[350px] sm:w-[50vh] lg:w-[100vh] '>
                             {discoteca?.eventi.map((item) => (
                                 <div className='flex flex-col items-center w-[4000px]' key={item.id} onClick={() => router.push(`/eventi/${item.id}`)}>
-                                    <div className='h-32 sm:h-48 flex items-center w-[200px] lg:w-[500px] justify-center overflow-hidden rounded-xl' onDragStart={preventDefault}
+                                    <div className='h-32 sm:h-48 flex items-center w-[200px] sm:w-[95%] lg:w-[500px] justify-center overflow-hidden rounded-xl' onDragStart={preventDefault}
                                         onContextMenu={preventDefault}
                                         // @ts-ignore
                                         style={{ userDrag: 'none', userSelect: 'none' }}>
-                                        <Image src={item.imageUrl} alt='image' width={3000} height={100} className='object-contain lg:hover:scale-125 transition cursor-pointer ' />
+                                        <Image src={item.imageUrl} alt='image' width={1000} height={100} className='object-contain lg:hover:scale-125 transition cursor-pointer ' />
                                     </div>
                                     <div className='flex w-[200px] sm:w-[95%] lg:w-[500px] flex-col mt-2 justify-between'>
                                         <div className='text-center text-xl font-bold'>{item.nome}</div>

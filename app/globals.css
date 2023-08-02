@@ -6,7 +6,9 @@ body {
   background-image: url("/sfondo.jpg");
   background-size: cover;
   /* background: #34 3a40; */
-  height: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
   
 }
 ::-webkit-scrollbar {
