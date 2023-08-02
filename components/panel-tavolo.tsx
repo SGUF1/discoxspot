@@ -300,7 +300,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
           />
         </div>
       </div>
-      {<div className='flex '>
+      {selectedDate && <div className='flex '>
         <div className='text-xl'>
           <span>
             Selezione piano:
@@ -322,7 +322,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
           </select>
         </div>
       </div>}
-      {selectedPiano &&
+      {selectedPiano && selectedDate &&
         <div className='flex flex-col gap-4 mt-2'>
           <div className='text-xl'>Seleziona la sala:</div>
           <div className='w-full flex overflow-x-scroll h-[auto] gap-x-4 lg:gap-x-10'>
@@ -363,7 +363,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
           </div>
         </div>
       }
-      {selectedSala &&
+      {selectedSala && selectedDate &&
         <div className='flex flex-col gap-4 mt-2'>
           <div className='text-xl'>Seleziona il tavolo:</div>
           <div className='w-full flex overflow-x-scroll h-[auto] gap-x-4 lg:gap-x-10'>
@@ -404,14 +404,17 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
           </div>
         </div>
       }
-      {selectedTavolo &&
+      {selectedTavolo && selectedDate &&
         <div className='flex sm:space-x-2 flex-col'>
           <div className='flex  items-center'>
             <div className='text-xl'>Inserisci numero persone:</div>
-            <input value={selectedNumeroPersone} onChange={(e) => setNumeroPersone(Number(e.target.value))} type='number' className='rounded-2xl px-2 p-1 w-[100px] ml-2 sm:w-[150px] lg:w-[200px] text-center items-center text-black' />
+            <input
+              value={selectedNumeroPersone === 0 ? "" : selectedNumeroPersone} onChange={(e) => setNumeroPersone(Number(e.target.value))} type='number'
+              inputMode='numeric'
+              className='rounded-2xl px-2 p-1 w-[100px] ml-2 sm:w-[150px] lg:w-[200px] text-center items-center text-black' />
           </div>
           {selectedNumeroPersone < selectedTavolo?.numeroMinimo! && <span className='text-red-500 text-lg'>Il numero minimo di persone deve essere maggiore/uguale al minimo </span>}
-          {selectedNumeroPersone > selectedTavolo?.posti.length! && <span className='text-red-500 text-lg'>Il numero minimo di persone deve essere minore/uguale al massimo </span>}
+          {selectedNumeroPersone > selectedTavolo?.posti.length! && <span className='text-red-500 text-lg'>Il numero massimo di persone deve essere minore/uguale al massimo </span>}
         </div>}
       {((selectedTavolo?.numeroMinimo! <= selectedNumeroPersone) && (selectedNumeroPersone <= selectedTavolo?.posti.length!)) &&
         <div>
