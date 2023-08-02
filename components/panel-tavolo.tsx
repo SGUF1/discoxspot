@@ -300,23 +300,28 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
           />
         </div>
       </div>
-      {selectedDate &&
-        <div className='flex '>
-          <div className='text-xl'>
-            <span>
-              Selezione piano:
-            </span>
-            <select className='ml-3 text-black rounded-2xl p-1 px-2 text-center text-lg' value={selectedPiano?.id} defaultValue={""} onChange={(e) => {
+      {<div className='flex '>
+        <div className='text-xl'>
+          <span>
+            Selezione piano:
+          </span>
+          <select
+            className='ml-3 text-black rounded-2xl p-1 px-2 text-center text-lg'
+            value={selectedPiano?.id}
+            onChange={(e) => {
               setSelectedPiano(discoteca.piani.find((item) => item.id === e.target.value));
               setSelectedSala(undefined)
               setSelectedTavolo(undefined)
               setNumeroPersone(0)
-            }}>
-              {discoteca.piani.map(element =>
-                <option key={element.id} value={element.id} className="text-lg">{element.nome}</option>)}
-            </select>
-          </div>
-        </div>}
+            }}
+          >
+            {selectedPiano ? null : <option value="">Seleziona un piano</option>}
+            {discoteca.piani.map(element =>
+              <option key={element.id} value={element.id} className="text-lg">{element.nome}</option>
+            )}
+          </select>
+        </div>
+      </div>}
       {selectedPiano &&
         <div className='flex flex-col gap-4 mt-2'>
           <div className='text-xl'>Seleziona la sala:</div>
