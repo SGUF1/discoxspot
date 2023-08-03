@@ -28,7 +28,7 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
             if (searchParams.get("codice")) {
                 const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/prenotazione/checkout`, {
                     userAccountId: user,
-                    codiceTavolo: Number(searchParams.get("codice"))
+                    codiceTavolo: searchParams.get("codice")
                 })
 
                 window.location = response.data.url;
