@@ -11,6 +11,7 @@ import { useParams, useSearchParams } from 'next/navigation'
 import getOrders from '@/actions/getOrders'
 import { Loader } from './loader'
 import useUserIdSet from '@/hooks/use-userId'
+import { useUser } from '@clerk/nextjs'
 
 
 const ViewOrders = () => {
@@ -18,7 +19,9 @@ const ViewOrders = () => {
     const [orders, setOrders] = useState<Order[]>()
     const [isMounted, setIsMounted] = useState(false);
     var cont = 0
-    const {userId} = useUserIdSet()
+    const {user} = useUser()
+
+    const userId = user?.id
     useEffect(() => {
         async function fetch() {
             try {
