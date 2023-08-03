@@ -8,12 +8,39 @@ import React, { useEffect, useState } from 'react'
 import QrCodeGenerator from './qr/qrcodegenerator'
 import axios from 'axios'
 import { useParams, useSearchParams } from 'next/navigation'
+import getOrders from '@/actions/getOrders'
+import { Loader } from './loader'
+import useUserIdSet from '@/hooks/use-userId'
 
-interface ViewOrdersProps {
-    orders: Order[]
-    user: string;
-}
-const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
+
+const ViewOrders = () => {
+    const [loading, setLoading] = useState(false)
+    const [orders, setOrders] = useState<Order[]>()
+    const [isMounted, setIsMounted] = useState(false);
+    var cont = 0
+    const {userId} = useUserIdSet()
+    useEffect(() => {
+        async function fetch() {
+            try {
+                if (cont === 0)
+                    setLoading(true)
+
+                const allOrders = await getOrders(userId!);
+
+                setOrders(allOrders);
+            } catch (error) {
+                console.error("Error fetching eventi:", error);
+            } finally {
+                setLoading(false)
+                cont++
+            }
+        }
+
+        fetch()
+        const interval = setInterval(fetch, 1000);
+
+        return () => clearInterval(interval);
+    }, [])
     const [isOpen, setIsOpen] = useState(false)
     const [codice, setCodice] = useState("")
     const [inputCodice, setInputCodice] = useState("")
@@ -27,17 +54,16 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
         async function fun() {
             if (searchParams.get("codice")) {
                 const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/prenotazione/checkout`, {
-                    userAccountId: user,
+                    userAccountId: userId,
                     codiceTavolo: searchParams.get("codice")
                 })
 
                 window.location = response.data.url;
             }
         }
-
         fun()
     })
-    
+
     const changeOpen = () => {
         setIsOpen(!isOpen)
     }
@@ -46,7 +72,7 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
     }
     const onCheckout = async () => {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/prenotazione/checkout`, {
-            userAccountId: user,
+            userAccountId: userId,
             codiceTavolo: inputCodice
         })
 
@@ -69,6 +95,18 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
             console.error('Errore nella condivisione:', error);
         }
     };
+
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (loading) {
+        return <div className='justify-center items-center flex w-full'><Loader /></div>
+    }
+    if (!isMounted) {
+        return null;
+    }
     return (
         <>
             <div className='lg:-mt-10 grid grid-cols-1 overflow-y-scroll w-full  overflow-x-auto h-[80vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white' >
@@ -97,7 +135,7 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
                                     setCodice(item.codice)
                                 }}>{item.codice}</span>
                                 <span className='flex justify-end cursor-pointer' onClick={() => shareContent(item.codice)}>
-                                    <Share2 className='h-5 w-5'/>
+                                    <Share2 className='h-5 w-5' />
                                 </span>
                             </div>
                         </div>

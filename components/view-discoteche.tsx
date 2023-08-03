@@ -10,6 +10,7 @@ import getDiscoteche from '@/actions/getDiscoteche'
 import useLike from '@/hooks/use-like'
 import { useAppSelector } from '@/store/store'
 import { Loader } from './loader'
+import useUserIdSet from '@/hooks/use-userId'
 
 interface ViewDiscotecheProps {
     preferiti?: boolean | false
@@ -20,7 +21,7 @@ interface ViewDiscotecheProps {
 const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) => {
     const [isMounted, setIsMounted] = useState(false);
     const [discoteche, setDiscoteche] = useState<Discoteca[]>([])
-
+    const { addItem } = useUserIdSet()
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const like = useLike()

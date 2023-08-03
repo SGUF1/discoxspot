@@ -11,9 +11,9 @@ import { redirect } from 'next/navigation';
 import createUser from '@/actions/createUser';
 import getUser from '@/actions/getUser';
 import getUsers from '@/actions/getUsers';
+import useUserIdSet from '@/hooks/use-userId';
 
 const Page = async () => {
-  
   
   const userId = auth().userId
   try{
@@ -23,6 +23,8 @@ const Page = async () => {
     
   }catch(errore){
   }
+
+  
   const user = await getUser(userId!)
   return (
     <div className='p-5 text-white lg:p-10 lg:px-20 h-[80vh] '>

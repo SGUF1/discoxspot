@@ -262,8 +262,10 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
   const dateRangeArray = dateArray.map((param) => {
     const startDate = param?.from ?? null;
     const endDate = param?.to ?? null
-    return getDatesBetweenDates(startDate, endDate);
+
+     return getDatesBetweenDates(startDate, endDate);
   });
+
   const prodottiConQuantitaArray: ProdottoConQuantity[] = selectedBibita.flatMap((portataConProdotti) => portataConProdotti.prodottiConQuantita);
   const onCheckout = async () => {
     const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/discoteche/${discoteca.id}/impost/checkout`, {

@@ -27,7 +27,7 @@ const ViewEventi = () => {
 
                 setEventi(allEventi);
             } catch (error) {
-                console.error("Error fetching eventi:", error);
+                console.error("Error fetchindg eventi:", error);
             } finally {
                 setIsLoading(false)
                 cont++
