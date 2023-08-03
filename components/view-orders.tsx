@@ -2,7 +2,7 @@
 
 import { Order } from '@/type'
 import { format } from 'date-fns'
-import { MapPin, PlusCircle, X } from 'lucide-react'
+import { MapPin, PlusCircle, Share, Share2, X } from 'lucide-react'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import QrCodeGenerator from './qr/qrcodegenerator'
@@ -37,6 +37,11 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
         window.location = response.data.url;
     }
     console.log(inputCodice)
+    const shareOnWhatsApp = (stringa: string) => {
+        const text = encodeURIComponent(stringa);
+        const url = `https://api.whatsapp.com/send?text=${text}`;
+        window.open(url, '_blank');
+    };
     return (
         <>
             <div className='lg:-mt-10 grid grid-cols-1 overflow-y-scroll w-full  overflow-x-auto h-[80vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white' >
@@ -64,6 +69,9 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
                                     changeOpen();
                                     setCodice(item.codice)
                                 }}>{item.codice}</span>
+                                <span className='flex justify-end' onClick={() => shareOnWhatsApp(item.codice)}>
+                                    <Share2 className='h-5 w-5'/>
+                                </span>
                             </div>
                         </div>
                     </div>
