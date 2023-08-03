@@ -42,6 +42,17 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
         const url = `https://api.whatsapp.com/send?text=${text}`;
         window.open(url, '_blank');
     };
+    const shareContent = async () => {
+        try {
+            await navigator.share({
+                title: 'DiscoXSpot',
+                text: 'Unisciti al nostro tavolo ',
+                url: 'URL_DEL_CONTENUTO',
+            });
+        } catch (error) {
+            console.error('Errore nella condivisione:', error);
+        }
+    };
     return (
         <>
             <div className='lg:-mt-10 grid grid-cols-1 overflow-y-scroll w-full  overflow-x-auto h-[80vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white' >
@@ -76,7 +87,7 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
                         </div>
                     </div>
                 ))}
-                <div className='fixed top-[88vh] right-10 lg:right-20 ' onClick={changeAddCodice}><PlusCircle className='h-10 w-10' /></div>
+                <div className='fixed top-[82vh] right-3 lg:right-20 ' onClick={changeAddCodice}><PlusCircle className='h-7 w-7  sm:h-10 sm:w-10' /></div>
             </div>
             <div className={`bg-black absolute top-0 flex-col space-y-20 text-white left-[-20px] z-20 justify-center items-center text-xl font-bold h-full w-full ${isOpen ? 'flex' : 'hidden'}`}
                 onClick={() => {
