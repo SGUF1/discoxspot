@@ -42,11 +42,11 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
         const url = `https://api.whatsapp.com/send?text=${text}`;
         window.open(url, '_blank');
     };
-    const shareContent = async () => {
+    const shareContent = async (codice: string) => {
         try {
             await navigator.share({
                 title: 'DiscoXSpot',
-                text: 'Unisciti al nostro tavolo ',
+                text: `Unisciti al nostro tavolo con il codice ${codice}`,
                 url: 'https://discospot.vercel.app/prenotati',
             });
         } catch (error) {
@@ -76,11 +76,11 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
                             </div>
                             <div className='flex flex-col gap-1'>
                                 <span>{format(new Date(item.orderDate), "MMMM do, yyyy")}</span>
-                                <span className="text-right text-xl font-bold" onClick={() => {
+                                <span className="text-right text-xl font-bold cursor-pointer" onClick={() => {
                                     changeOpen();
                                     setCodice(item.codice)
                                 }}>{item.codice}</span>
-                                <span className='flex justify-end' onClick={() => shareOnWhatsApp(item.codice)}>
+                                <span className='flex justify-end cursor-pointer' onClick={() => shareContent(item.codice)}>
                                     <Share2 className='h-5 w-5'/>
                                 </span>
                             </div>
@@ -100,7 +100,7 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
             <div className={` absolute flex-col left-[50%] p-5 bg-black rounded-xl space-y-10 w-[30vh] sm:w-[60vh] border translate-x-[-50%]  justify-center top-[40%] ${addCodice ? 'flex' : 'hidden'}`}>
                 <div className='flex justify-between text-2xl '>
                     <div>Inserisci il codice:</div>
-                    <div onClick={shareContent} ><X className='h-7 w-7 cursor-pointer' /></div>
+                    <div onClick={changeAddCodice} ><X className='h-7 w-7 cursor-pointer' /></div>
                 </div>
                 <div className=''>
                     <input className='w-full p-3 rounded-xl text-lg text-black font-bold text-center' value={inputCodice} onChange={(e) => setInputCodice(e.target.value)} />
