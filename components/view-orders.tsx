@@ -47,7 +47,7 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
             await navigator.share({
                 title: 'DiscoXSpot',
                 text: 'Unisciti al nostro tavolo ',
-                url: 'URL_DEL_CONTENUTO',
+                url: 'https://discospot.vercel.app/prenotati',
             });
         } catch (error) {
             console.error('Errore nella condivisione:', error);
@@ -100,7 +100,7 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
             <div className={` absolute flex-col left-[50%] p-5 bg-black rounded-xl space-y-10 w-[30vh] sm:w-[60vh] border translate-x-[-50%]  justify-center top-[40%] ${addCodice ? 'flex' : 'hidden'}`}>
                 <div className='flex justify-between text-2xl '>
                     <div>Inserisci il codice:</div>
-                    <div onClick={changeAddCodice} ><X className='h-7 w-7 cursor-pointer' /></div>
+                    <div onClick={shareContent} ><X className='h-7 w-7 cursor-pointer' /></div>
                 </div>
                 <div className=''>
                     <input className='w-full p-3 rounded-xl text-lg text-black font-bold text-center' value={inputCodice} onChange={(e) => setInputCodice(e.target.value)} />

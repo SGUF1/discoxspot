@@ -14,10 +14,10 @@ import { AppDispatch, useAppSelector } from '@/store/store'
 import { cn } from '@/lib/utils'
 import { openTavoloPlease } from '@/store/features/panel-tavolo-open'
 import { Loader } from '@/components/loader'
+import getHourse from '@/actions/getHourse'
 
 const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
     const [discoteca, setDiscoteca] = useState<Discoteca>()
-    const [eventi, setEventi] = useState<Evento[]>([])
     const [isMounted, setIsMounted] = useState(false)
     const dispatch = useDispatch<AppDispatch>()
     const [loading, setLoading] = useState(false)
@@ -28,7 +28,7 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
             try {
                 setLoading(true)
                 setDiscoteca((await getDiscoteca(params.discotecaId)))
-                setEventi((await getEventi()))
+             
             } catch (error) { }
             finally {
                 setLoading(false)
@@ -54,7 +54,12 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
     useEffect(() => {
         setIsMounted(true);
     }, []);
+    const currentDate = new Date();
 
+    const futureDates = discoteca?.eventi.filter((dateString) => {
+        const dateObject = new Date(dateString.startDate);
+        return dateObject >= new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), currentDate.getHours() + getHourse, 0);
+    });
     if (!isMounted) {
         return null;
     }
@@ -95,7 +100,7 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
                     <div className='flex flex-col gap-1 '>
                         <span className='text-xl'>Eventi futuri</span>
                         <div className=' flex flex-row overflow-x-scroll space-x-20 w-[350px] sm:w-[50vh] lg:w-[100vh] '>
-                            {discoteca?.eventi.map((item) => (
+                            {futureDates?.map((item) => (
                                 <div className='flex flex-col items-center w-[4000px]' key={item.id} onClick={() => router.push(`/eventi/${item.id}`)}>
                                     <div className='h-32 sm:h-48 flex items-center w-[200px] sm:w-[95%] lg:w-[500px] justify-center overflow-hidden rounded-xl' onDragStart={preventDefault}
                                         onContextMenu={preventDefault}

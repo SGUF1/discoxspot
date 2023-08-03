@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import useLike from '@/hooks/use-like'
 import getEventi from '@/actions/getEventi'
 import { Loader } from './loader'
+import getHourse from '@/actions/getHourse'
 const ViewEventi = () => {
     const [isMounted, setIsMounted] = useState(false);
     const [eventi, setEventi] = useState<Evento[]>([])
@@ -53,7 +54,7 @@ const ViewEventi = () => {
 
     const futureDates = eventi.filter((dateString) => {
         const dateObject = new Date(dateString.startDate);
-        return dateObject > currentDate;
+        return dateObject >= new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), currentDate.getHours() + getHourse, 0);
     });
     const preventDefault = (event: any) => {
         event.preventDefault();
