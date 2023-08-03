@@ -4,9 +4,10 @@ import { Order } from '@/type'
 import { format } from 'date-fns'
 import { MapPin, PlusCircle, Share, Share2, X } from 'lucide-react'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import QrCodeGenerator from './qr/qrcodegenerator'
 import axios from 'axios'
+import { useParams, useSearchParams } from 'next/navigation'
 
 interface ViewOrdersProps {
     orders: Order[]
@@ -21,7 +22,22 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
     const preventDefault = (event: any) => {
         event.preventDefault();
     };
+    const searchParams = useSearchParams()
+    useEffect(() => {
+        async function fun() {
+            if (searchParams.get("codice")) {
+                const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/prenotazione/checkout`, {
+                    userAccountId: user,
+                    codiceTavolo: Number(searchParams.get("codice"))
+                })
 
+                window.location = response.data.url;
+            }
+        }
+
+        fun()
+    })
+    
     const changeOpen = () => {
         setIsOpen(!isOpen)
     }
@@ -46,8 +62,8 @@ const ViewOrders = ({ orders, user }: ViewOrdersProps) => {
         try {
             await navigator.share({
                 title: 'DiscoXSpot',
-                text: `Unisciti al nostro tavolo con il codice ${codice}`,
-                url: 'https://discospot.vercel.app/prenotati',
+                text: `Unisciti al nostro mitico tavolo`,
+                url: `https://discospot.vercel.app/prenotati?codice=${codice}`,
             });
         } catch (error) {
             console.error('Errore nella condivisione:', error);
