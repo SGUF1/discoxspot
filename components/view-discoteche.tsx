@@ -56,7 +56,7 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
                 cont++
             }
         }
-        if(classifica){
+        if (classifica) {
             fetch()
         }
         if (!classifica) {
@@ -64,7 +64,7 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
 
             return () => clearInterval(interval);
         }
-    }, [])
+    }, [cont, setDiscoteche, classifica, preferiti, user])
     const filteredDiscoteche = (discoteche.filter(
         item => item.name.toLowerCase().includes(searchTerm.toLowerCase())
     ))
@@ -107,8 +107,9 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
                             <div>{item.name}</div>
                             <div className='flex '><MapPin size={20} /><span className='ml-1'>{item.indirizzo} {item.civico}, {item.city}, {item.provincia.name}</span></div>
                         </div>
-                        <button className='flex items-center cursor-pointer outline-none' onClick={() => handleOnHeart(item)} disabled={isLoading}>
-                            <Heart size={22} className='hover:scale-110 transition' fill={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "transparent"}`} color={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "white"}`} />
+                        <button className={`flex items-center ${!classifica ? "cursor-pointer": "cursor-default"} outline-none`} onClick={() => !classifica && handleOnHeart(item)} disabled={isLoading}>
+                            <Heart size={22} className={`${!classifica && 'hover:scale-110'} transition`} fill={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "transparent"}`}
+                                color={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "white"}`} />
                             {!preferiti && <span className='ml-1'>{item.like}</span>}
                         </button>
                     </div>
