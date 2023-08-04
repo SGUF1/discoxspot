@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react";
-import { Calendar, Heart, Home, Menu, PartyPopper, Trophy, Users2 } from "lucide-react";
+import { Calendar, Heart, Home, List, Menu, PartyPopper, Ticket, TicketIcon, Trophy, Users2 } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 import { useRouter, usePathname } from 'next/navigation'
 
@@ -16,10 +16,6 @@ const LeftBar = () => {
         <Home className="h-7 w-7 " />
         <span className="ml-2 hidden sm:block">Home</span>
       </div>
-      <div className={cn("flex items-center cursor-pointer ", pathname === "/preferiti" && "text-red-200")} onClick={() => { router.push("/preferiti"); }}>
-        <Heart className="h-7 w-7" />
-        <span className="ml-2 hidden sm:block">Preferiti</span>
-      </div>
       <div className={cn("flex items-center cursor-pointer ", pathname === "/eventi" && "text-red-200")} onClick={() => { router.push("/eventi"); }}>
         <PartyPopper className="h-7 w-7" />
         <span className="ml-2 hidden sm:block" >Eventi</span>
@@ -28,15 +24,22 @@ const LeftBar = () => {
         <Trophy className="h-7 w-7" />
         <span className="ml-2 hidden sm:block">Classifica</span>
       </div>
+      <div className={cn("flex items-center cursor-pointer ", pathname === "/liste" && "text-red-200")} onClick={() => { router.push("/liste"); }}>
+        <List className="h-7 w-7" />
+        <span className="ml-2 hidden sm:block">Liste</span>
+      </div>
+      <div className={cn("flex items-center cursor-pointer ", pathname === "/bigliettis" && "text-red-200")} onClick={() => { router.push("/biglietti"); }}>
+        <Ticket className="h-7 w-7" />
+        <span className="ml-2 hidden sm:block">Biglietti</span>
+      </div>
       <div className={cn("flex items-center cursor-pointer ", pathname === "/prenotati" && "text-red-200")} onClick={() => { router.push("/prenotati"); }}>
         <Calendar className="h-7 w-7" />
         <span className="ml-2 hidden sm:block">Tavoli</span>
       </div>
-      <div className="flex items-center">
-        <Users2 className="h-7 w-7" />
-        <span className="ml-2 hidden sm:block">Invita amici</span>
+      <div className={cn("flex items-center cursor-pointer ", pathname === "/preferiti" && "text-red-200")} onClick={() => { router.push("/preferiti"); }}>
+        <Heart className="h-7 w-7" />
+        <span className="ml-2 hidden sm:block">Preferiti</span>
       </div>
-
       <div className="mt-[37vh]  sm:mt-[200%] ">
         <UserButton signInUrl="/" />
       </div>

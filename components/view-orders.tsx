@@ -18,37 +18,32 @@ const ViewOrders = () => {
     const [loading, setLoading] = useState(false)
     const [orders, setOrders] = useState<Order[]>()
     const [isMounted, setIsMounted] = useState(false);
-    var cont = 0
-    const {user} = useUser()
+    const { user } = useUser()
 
     const userId = user?.id
     useEffect(() => {
-        async function fetch() {
+        async function fetchData() {
             try {
-                if (cont === 0)
-                    setLoading(true)
+                setLoading(true);
 
                 const allOrders = await getOrders(userId!);
 
                 setOrders(allOrders);
             } catch (error) {
-                console.error("Error fetching eventi:", error);
+                console.error("Error fetching orders:", error);
             } finally {
-                setLoading(false)
-                cont++
+                setLoading(false);
             }
         }
+        if (userId) {
+            fetchData();
+        }
 
-        fetch()
-        const interval = setInterval(fetch, 1000);
-
-        return () => clearInterval(interval);
-    }, [])
+    }, [userId]);
     const [isOpen, setIsOpen] = useState(false)
     const [codice, setCodice] = useState("")
     const [inputCodice, setInputCodice] = useState("")
     const [addCodice, setAddCodice] = useState(false)
-    const [responseMessage, setResponseMessage] = useState()
     const preventDefault = (event: any) => {
         event.preventDefault();
     };
@@ -81,12 +76,7 @@ const ViewOrders = () => {
 
         window.location = response.data.url;
     }
-    console.log(inputCodice)
-    const shareOnWhatsApp = (stringa: string) => {
-        const text = encodeURIComponent(stringa);
-        const url = `https://api.whatsapp.com/send?text=${text}`;
-        window.open(url, '_blank');
-    };
+
     const shareContent = async (codice: string) => {
         try {
             await navigator.share({
@@ -144,7 +134,7 @@ const ViewOrders = () => {
                         </div>
                     </div>
                 ))}
-                <div className='fixed top-[82vh] right-3 lg:right-20 ' onClick={changeAddCodice}><PlusCircle className='h-7 w-7  sm:h-10 sm:w-10' /></div>
+                <div className='fixed top-[82vh] right-3 lg:right-20 cursor-pointer' onClick={changeAddCodice}><PlusCircle className='h-7 w-7  sm:h-10 sm:w-10' /></div>
             </div>
             <div className={`bg-black absolute top-0 flex-col space-y-20 text-white left-[-20px] z-20 justify-center items-center text-xl font-bold h-full w-full ${isOpen ? 'flex' : 'hidden'}`}
                 onClick={() => {
@@ -164,7 +154,6 @@ const ViewOrders = () => {
                 </div>
                 <div className='flex items-center justify-center flex-col gap-3'>
                     <button className='w-full text-white text-lg border p-2 rounded-xl' onClick={onCheckout}>CONTROLLA E PAGA</button>
-                    <div className='text-lg'>{responseMessage}</div>
                 </div>
             </div>
         </>

@@ -126,7 +126,7 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
 
                 </div>
 
-                <div className='w-[50%] m-2 mx-auto flex items-center justify-center transition cursor-pointer bg-black rounded-full py-5 text-center border border-white group' onClick={() => dispatch(openTavoloPlease(!open))}>
+                <div className='w-[50%] m-2 mx-auto flex items-center justify-center transition cursor-pointer bg-black rounded-full py-3 text-center border border-white group' onClick={() => dispatch(openTavoloPlease(!open))}>
                     <span className='text-xl ransition' >Prenota Tavolo</span>
                 </div>
             </div>

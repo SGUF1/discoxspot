@@ -27,6 +27,7 @@ export interface Discoteca {
   date: Data[]
   like: number
   menu: Menu[];
+  liste: Lista[]
   userAccounts: UserAccounts[]
 }
 
@@ -38,8 +39,40 @@ export interface CalendarioTavolo {
 
 export interface UserAccounts {
   id: string;
-  discoteche: Discoteca[]
+  discoteche: Discoteca[],
+  orders: Order[]
+  liste: Lista[]
 }
+
+export interface Lista{
+  id: string,
+  nome: string,
+  discotecaId: string,
+  discoteca: Discoteca,
+  prezzoBiglietto: number,
+  quantity?: number,
+  priority: number,
+  bigliettiRimanenti: number,
+  imageUrl: string,
+  bigliettiInfiniti: boolean,
+  informazioni: Informazione[]
+  dataLimite: string,
+  orderBiglietti: OrderBiglietto[]
+}
+
+export interface OrderBiglietto{
+  id: string,
+  accountId: string,
+  account: UserAccount,
+  date: string,
+  phone: string,
+  prezzo: number,
+  codice?: string,
+  listaId: string,
+  lista: Lista
+} 
+
+
 export interface Provincia {
   id: string;
   name: string;
