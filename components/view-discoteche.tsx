@@ -11,6 +11,9 @@ import useLike from '@/hooks/use-like'
 import { useAppSelector } from '@/store/store'
 import { Loader } from './loader'
 import useUserIdSet from '@/hooks/use-userId'
+import getLikeDiscoteche from '@/actions/getLikedDiscoteche'
+import { useUser } from '@clerk/nextjs'
+import getClassificaDiscoteche from '@/actions/getClassificaDiscoteche'
 
 interface ViewDiscotecheProps {
     preferiti?: boolean | false
@@ -33,18 +36,18 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
                 if (cont === 0) {
                     setIsLoading(true)
                 }
-                const allDiscoteche = await getDiscoteche();
-
                 if (preferiti) {
-                    const preferiteIds = user.discoteche.map(item => item.id);
-                    setDiscoteche(allDiscoteche.filter(item => preferiteIds.includes(item.id)));
+                    const allDiscoteche = await getLikeDiscoteche(user.id);
+                    setDiscoteche(allDiscoteche);
+                } else if (classifica) {
+                    const allDiscoteche = await getClassificaDiscoteche(user.id);
+                    setDiscoteche(allDiscoteche);
                 } else {
+                    const allDiscoteche = await getDiscoteche();
                     setDiscoteche(allDiscoteche);
                 }
 
-                if (classifica) {
-                    allDiscoteche.sort((a, b) => b.like - a.like)
-                }
+
             } catch (error) {
                 console.error("Error fetching discoteche:", error);
             }
@@ -53,8 +56,9 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
                 cont++
             }
         }
-
-        fetch()
+        if(classifica){
+            fetch()
+        }
         if (!classifica) {
             const interval = setInterval(fetch, 1000);
 
