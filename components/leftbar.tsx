@@ -28,7 +28,7 @@ const LeftBar = () => {
         <List className="h-7 w-7" />
         <span className="ml-2 hidden sm:block">Liste</span>
       </div>
-      <div className={cn("flex items-center cursor-pointer ", pathname === "/bigliettis" && "text-red-200")} onClick={() => { router.push("/biglietti"); }}>
+      <div className={cn("flex items-center cursor-pointer ", pathname === "/biglietti" && "text-red-200")} onClick={() => { router.push("/biglietti"); }}>
         <Ticket className="h-7 w-7" />
         <span className="ml-2 hidden sm:block">Biglietti</span>
       </div>

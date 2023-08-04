@@ -35,7 +35,6 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
             try {
                 setLoading(true)
                 setLista((await getLista(params.listaId)))
-
             } catch (error) { }
             finally {
                 setLoading(false)
@@ -43,7 +42,7 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
         }
         fetch()
         dispatch(openTavoloPlease(false))
-    }, [setLista, setLoading])
+    }, [setLista, setLoading, params.listaId])
     const formatDate = (data: string) => {
         const dateObject = new Date(data);
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -62,6 +61,9 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
         setIsMounted(true);
     }, []);
 
+    if (new Date(lista?.dataLimite!) < new Date()) {
+        return null;
+    }
     const onCheckout = async () => {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/liste/${params.listaId}/checkout`, {
             userAccountId: userId,
