@@ -281,7 +281,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
 
 
   return (
-    <div className={cn("absolute w-full h-full p-5 space-y-5 text-white transition ", open ? "top-0" : "top-[-500%]")} style={{ backgroundImage: "url(/sfondo.jpg)" }}>
+    <div className={cn("absolute w-full h-max p-5 space-y-5 text-white transition bg-black", open ? "top-0" : "top-[-500%]")} >
       <div className='text-3xl font-bold flex justify-between items-center' >
         <span>Prenotazione Tavolo</span>
         <span className='cursor-pointer' onClick={() => dispatch(openTavoloPlease(!open))}><X size={30} /></span>
