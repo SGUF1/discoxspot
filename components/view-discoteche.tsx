@@ -83,10 +83,13 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
     const preventDefault = (event: any) => {
         event.preventDefault();
     };
+    
     useEffect(() => {
         setIsMounted(true);
     }, []);
-
+    if (isLoading) {
+        return <div className='justify-center items-center flex w-full'><Loader /></div>
+    }
     if (!isMounted) {
         return null;
     }
