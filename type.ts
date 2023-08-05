@@ -62,8 +62,8 @@ export interface Lista{
 
 export interface OrderBiglietto{
   id: string,
-  accountId: string,
-  account: UserAccount,
+  userAccountId: string,
+  userAccount: UserAccount,
   date: string,
   phone: string,
   prezzo: number,

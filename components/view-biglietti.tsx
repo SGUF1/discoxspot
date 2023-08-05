@@ -43,20 +43,6 @@ const ViewBiglietti = () => {
     const preventDefault = (event: any) => {
         event.preventDefault();
     };
-    const searchParams = useSearchParams()
-    useEffect(() => {
-        async function fun() {
-            if (searchParams.get("codice")) {
-                const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/prenotazione/checkout`, {
-                    userAccountId: userId,
-                    codiceTavolo: searchParams.get("codice")
-                })
-
-                window.location = response.data.url;
-            }
-        }
-        fun()
-    })
 
     const shareContent = async (codice: string) => {
         try {
