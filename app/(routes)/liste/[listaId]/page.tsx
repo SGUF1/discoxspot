@@ -99,7 +99,7 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
 
                     <div className='flex flex-col gap-1'>
                         <span className='text-xl font-bold'>Descrizione:</span>
-                        <div className='text-lg flex flex-col gap-1'>{lista?.informazioni.map((item) => (
+                        <div className='text-lg flex flex-col gap-2'>{lista?.informazioni.map((item) => (
                             <span key={item.id}>{item.descrizione}</span>
                         ))}</div>
                     </div>

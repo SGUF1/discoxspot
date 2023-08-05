@@ -331,12 +331,12 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
             {discoteca?.sale.map((sala) =>
               sala.pianoId === selectedPiano.id &&
               <div key={sala.id} className='w-[350px]'>
-                <div className='w-[350px] rounded-2xl overflow-hidden aspect-video h-[200px] flex justify-center items-center rounded-b-none'
+                  <div className='w-[350px] rounded-2xl overflow-hidden aspect-video object-contain h-[200px] flex justify-center items-center rounded-b-none'
                   onDragStart={preventDefault}
                   onContextMenu={preventDefault}
                   // @ts-ignore
                   style={{ userDrag: 'none', userSelect: 'none' }}>
-                  <Image src={sala.imageUrl} alt='image' width={600} height={200} className=' lg:hover:scale-125 transition' priority />
+                  <Image src={sala.imageUrl} alt='image' width={350} height={250} className=' lg:hover:scale-125 transition object-contain' priority />
                 </div>
                 <div className='w-[full] flex flex-col space-y-2 border-t-0 border p-4 rounded-b-2xl '>
                   <div className='text-2xl font-bold flex justify-between items-center '>
@@ -376,7 +376,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                   onContextMenu={preventDefault}
                   // @ts-ignore
                   style={{ userDrag: 'none', userSelect: 'none' }}>
-                  <Image src={tavolo.imageUrl} alt='image' width={600} height={200} className=' lg:hover:scale-125 transition' priority />
+                  <Image src={tavolo.imageUrl} alt='image' width={350} height={250} className=' lg:hover:scale-125 transition object-cover' priority />
                 </div>
                 <div className='w-[full] flex flex-col space-y-2 border-t-0 border p-4 rounded-b-2xl  '>
                   <div className='text-xl font-bold flex items-center justify-between relative'>
@@ -431,12 +431,15 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                       <div className='flex flex-row overflow-x-scroll gap-x-4 lg:gap-x-10'>
                         {portata.prodotti.map((prodotto) =>
                           <div key={prodotto.id} className='w-[350px]'>
-                            <div className='w-[350px] rounded-2xl overflow-hidden aspect-video h-[200px] flex justify-center items-center rounded-b-none'
-                              onDragStart={preventDefault}
-                              onContextMenu={preventDefault}
-                              // @ts-ignore
-                              style={{ userDrag: 'none', userSelect: 'none' }}>
-                              <Image src={prodotto.imageUrl} alt='image' width={600} height={200} className=' lg:hover:scale-125 transition' priority />
+                            <div className='w-[350px] h-[200px] relative overflow-hidden rounded-2xl aspect-w-16 aspect-h-9 flex justify-center items-center rounded-b-none'>
+                              <Image
+                                src={prodotto.imageUrl}
+                                alt='image'
+                                layout='fill' // Utilizza il layout fill per riempire completamente il contenitore
+                                objectFit='contain' // Usa object-fit con il valore 'contain' per adattare l'immagine mantenendo l'aspetto
+                                className='lg:hover:scale-125 transition'
+                                priority
+                              />
                             </div>
                             <div className='w-[full] flex flex-col space-y-2 border-t-0 border p-4 rounded-b-2xl  '>
                               <div className='text-xl font-bold flex items-center justify-between relative'>

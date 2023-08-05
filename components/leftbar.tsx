@@ -40,7 +40,7 @@ const LeftBar = () => {
         <Heart className="h-7 w-7" />
         <span className="ml-2 hidden sm:block">Preferiti</span>
       </div>
-      <div className="mt-[37vh]   lg:mt-[200%]">
+      <div className="mt-[37vh]   lg:mt-[170%]">
         <UserButton signInUrl="/" />
       </div>
     </div >
