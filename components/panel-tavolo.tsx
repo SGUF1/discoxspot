@@ -100,7 +100,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     const interval = setInterval(fetch, 1000);
 
     return () => clearInterval(interval);
-  }, [])
+  }, [setCalendarioTavoli, getDate, discoteca])
 
   const date = new Date(selectedDate!)
   const formattedSelectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() + getHourse, 0).toISOString()
