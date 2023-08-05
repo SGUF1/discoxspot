@@ -29,11 +29,11 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
     const router = useRouter()
     const like = useLike()
     const searchTerm = useAppSelector((state) => state.discoteche.ricerca)
-    var cont = 0
+    const [first, setFirst] = useState(true)
     useEffect(() => {
         async function fetch() {
             try {
-                if (cont === 0) {
+                if (first) {
                     setIsLoading(true)
                 }
                 if (preferiti) {
@@ -53,18 +53,16 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
             }
             finally {
                 setIsLoading(false)
-                cont++
+                setFirst(false)
             }
         }
-        if (classifica) {
             fetch()
-        }
         if (!classifica) {
             const interval = setInterval(fetch, 1000);
 
             return () => clearInterval(interval);
         }
-    }, [cont, setDiscoteche, classifica, preferiti, user])
+    }, [first, setDiscoteche, classifica, preferiti, user])
     const filteredDiscoteche = (discoteche.filter(
         item => item.name.toLowerCase().includes(searchTerm.toLowerCase())
     ))
@@ -83,11 +81,11 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
     const preventDefault = (event: any) => {
         event.preventDefault();
     };
-    
+
     useEffect(() => {
         setIsMounted(true);
     }, []);
-    if (isLoading) {
+    if (isLoading && first) {
         return <div className='justify-center items-center flex w-full'><Loader /></div>
     }
     if (!isMounted) {
@@ -98,7 +96,7 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
         <div className='lg:-mt-10 grid grid-cols-1 -mt-4  overflow-y-scroll w-full  overflow-x-auto h-[70vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white'>
             {filteredDiscoteche.length === 0 ? <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[80vh]">Nessuna discoteca trovata</div> : filteredDiscoteche.map((item) => (
                 <div className='flex flex-col items-center' key={item.id} >
-                    <div className='h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl'
+                    <div className='h-44 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl'
                         onDragStart={preventDefault}
                         onContextMenu={preventDefault}
                         // @ts-ignore
@@ -110,7 +108,7 @@ const ViewDiscoteche = ({ user, preferiti, classifica }: ViewDiscotecheProps) =>
                             <div>{item.name}</div>
                             <div className='flex '><MapPin size={20} /><span className='ml-1'>{item.indirizzo} {item.civico}, {item.city}, {item.provincia.name}</span></div>
                         </div>
-                        <button className={`flex items-center ${!classifica ? "cursor-pointer": "cursor-default"} outline-none`} onClick={() => !classifica && handleOnHeart(item)} disabled={isLoading}>
+                        <button className={`flex items-center ${!classifica ? "cursor-pointer" : "cursor-default"} outline-none`} onClick={() => !classifica && handleOnHeart(item)} disabled={isLoading}>
                             <Heart size={22} className={`${!classifica && 'hover:scale-110'} transition`} fill={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "transparent"}`}
                                 color={`${item.userAccounts.find((userA) => userA.id === user.id) ? "red" : "white"}`} />
                             {!preferiti && <span className='ml-1'>{item.like}</span>}
