@@ -69,7 +69,12 @@ const ViewBiglietti = () => {
             console.error('Errore nella condivisione:', error);
         }
     };
+    const [isOpen, setIsOpen] = useState(false)
+    const [codice, setCodice] = useState("")
 
+    const changeOpen = () => {
+        setIsOpen(!isOpen)
+    }
 
     useEffect(() => {
         setIsMounted(true);
@@ -83,7 +88,7 @@ const ViewBiglietti = () => {
     }
     return (
         <>
-            <div className='lg:-mt-10 grid grid-cols-1 overflow-y-scroll w-full  overflow-x-auto h-[80vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white' >
+            <div className='lg:-mt-10 grid grid-cols-1  -mt-4 overflow-y-scroll w-full  overflow-x-auto h-[80vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white' >
                 {orders?.length === 0 ? <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[80vh] flex-col">
                     <div>Nessun biglietto trovato</div>
                 </div> : orders?.map((item) => (
@@ -102,7 +107,7 @@ const ViewBiglietti = () => {
                             </div>
                             <div className='flex flex-col gap-1'>
                                 <span>{format(new Date(item.lista.dataLimite), "MMMM do, yyyy")}</span>
-                                <span className="text-right text-xl font-bold cursor-pointer" onClick={() => { }}>{item.codice}</span>
+                                <span className="text-right text-xl font-bold cursor-pointer" onClick={() => { changeOpen(); setCodice(item.codice!) }}>{item.codice}</span>
                                 <span className='flex justify-end cursor-pointer' onClick={() => shareContent(item.listaId)}>
                                     <Share2 className='h-5 w-5' />
                                 </span>
@@ -110,6 +115,14 @@ const ViewBiglietti = () => {
                         </div>
                     </div>
                 ))}
+            </div>
+            <div className={`bg-black absolute top-0 flex-col space-y-20 text-white left-[-20px] z-20 justify-center items-center text-xl font-bold h-full w-full ${isOpen ? 'flex' : 'hidden'}`}
+                onClick={() => {
+                    changeOpen();
+                    setCodice("");
+                }}>
+                <div>Clicca da qualsiasi parte per uscire</div>
+                {codice !== "" && <QrCodeGenerator data={codice} />}
             </div>
         </>
     )

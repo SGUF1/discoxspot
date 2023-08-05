@@ -3,13 +3,21 @@
 @tailwind utilities;
 
 body {
-  background-image: url("/sfondo.jpg");
+  background-image: url("/background.png");
+  background-position: center;
+  background-repeat: no-repeat;
   background-size: cover;
-  /* background: #34 3a40; */
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  
+}
+
+/* Utilizzo di una media query per schermi di larghezza massima di 600px */
+@media (max-width: 600px) {
+  body {
+    /* Adatta l'immagine di sfondo in verticale quando lo schermo è piccolo */
+    background-size: 200% 140%;
+  }
 }
 ::-webkit-scrollbar {
   height: 2px;

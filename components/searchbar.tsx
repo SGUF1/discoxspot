@@ -23,6 +23,8 @@ const SearchBar = () => {
             {pathname === "/eventi" && <div className='text-white text-xl'>Eventi</div>}
             {pathname === "/like-rank" && <div className='text-white text-xl'>Classifica Discoteche</div>}
             {pathname === "/prenotati" && <div className='text-white text-xl'>Tavoli</div>}
+            {pathname === "/liste" && <div className='text-white text-xl'>Liste</div>}
+            {pathname === "/biglietti" && <div className='text-white text-xl'>Biglietti</div>}
         </>
     )
 }

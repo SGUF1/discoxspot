@@ -58,7 +58,7 @@ const ViewListe = () => {
     }
 
     return (
-        <div className='lg:-mt-10 grid grid-cols-1 mt-4  overflow-y-scroll w-full  overflow-x-auto h-[70vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white'>
+        <div className='lg:-mt-10 grid grid-cols-1 m-mt-4  overflow-y-scroll w-full  overflow-x-auto h-[70vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white'>
             {liste.length === 0 ? <div className='flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[80vh] flex-col'>NESSUNA LISTA TROVATA</div> : liste.map((item) => (
                 <div className='flex flex-col items-center' key={item.id} onClick={() => router.push(`/liste/${item.id}`)}>
                     <div className='h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl' onDragStart={preventDefault}
