@@ -69,6 +69,7 @@ export interface OrderBiglietto{
   prezzo: number,
   codice?: string,
   listaId: string,
+  confermato: boolean
   lista: Lista
 } 
 
