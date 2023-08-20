@@ -259,6 +259,9 @@ export interface Order {
   statoId: string
   codice: string;
   stato: Stato
+  createdAt: string;
+  numeroPersone: number;
+  numeroPersonePagato: number;
 }
 
 export interface OrderItem {

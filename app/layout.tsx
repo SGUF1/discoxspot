@@ -21,12 +21,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider appearance={{
-      baseTheme: dark,
-      layout: {
-        logoPlacement: 'inside'
-      }
-    }}>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+        layout: {
+          logoPlacement: "inside",
+        },
+        variables: {
+          colorPrimary: "#8A0315",
+        },
+      }}
+    >
       <html lang="en">
         <body className={inter.className}>
           <ReduxProvider>
@@ -38,9 +43,8 @@ export default function RootLayout({
           </ReduxProvider>
 
           <Analytics />
-
         </body>
       </html>
     </ClerkProvider>
-  )
+  );
 }
