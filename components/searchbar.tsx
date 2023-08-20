@@ -19,6 +19,7 @@ const SearchBar = () => {
                 <input type='text' placeholder='search' className='bg-gray-300 p-2 rounded-full text-black w-52 h-9 text-sm' value={searchTerm} onChange={(e: any) => { setSearchTerm(e.target.value); }} />
                 <SearchIcon className='h-5 w-5 absolute ml-44 text-black ' />
             </div>
+            {}
             {pathname === "/preferiti" && <div className='text-white text-xl'>Preferiti</div>}
             {pathname === "/eventi" && <div className='text-white text-xl'>Eventi</div>}
             {pathname === "/like-rank" && <div className='text-white text-xl'>Classifica Discoteche</div>}
