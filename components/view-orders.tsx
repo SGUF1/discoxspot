@@ -87,7 +87,7 @@ const ViewOrders = () => {
     try {
       await navigator.share({
         title: "DiscoXSpot",
-        text: `Unisciti al nostro mitico tavolo`,
+        text: `Unisciti anche tu al nostro tavolo e divertiti con me in discoteca\n`,
         url: `https://discospot.vercel.app/prenotati?codice=${codice}`,
       });
     } catch (error) {

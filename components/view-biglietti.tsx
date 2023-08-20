@@ -46,7 +46,7 @@ const ViewBiglietti = () => {
     try {
       await navigator.share({
         title: "DiscoXSpot",
-        text: `Unisciti al nostro mitico tavolo`,
+        text: `Compra anche tu il biglietto e divertiti con me!\n`,
         url: `https://discospot.vercel.app/liste/${codice}`,
       });
     } catch (error) {
