@@ -125,7 +125,6 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     date.getHours() + getHourse,
     0
   ).toISOString();
-  console.log(calendarioTavoli);
   const aggiungiProdotto = (prodotto: Prodotto, quantita: number) => {
     if (isNaN(quantita)) {
       quantita = 1;
