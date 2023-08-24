@@ -5,6 +5,7 @@ import {
   CalendarioTavolo,
   Data,
   Discoteca,
+  Order,
   Piano,
   Portata,
   Prodotto,
@@ -24,6 +25,8 @@ import toast from "react-hot-toast";
 import getDate from "@/actions/getDate";
 import getHourse from "@/actions/getHourse";
 import { useUser } from "@clerk/nextjs";
+import getOrders from "@/actions/getOrders";
+import getDiscotecaOrder from "@/actions/getDiscotecaOrders";
 interface PanelTavoloProps {
   discoteca: Discoteca;
 }
@@ -103,10 +106,10 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
   const [selectedBibita, setSelectedBibita] = useState<PortataConProdotti[]>(
     []
   );
-  const [calendarioTavoli, setCalendarioTavoli] = useState<Data[]>();
+  const [calendarioTavoli, setCalendarioTavoli] = useState<Order[]>();
   useEffect(() => {
     async function fetch() {
-      setCalendarioTavoli(await getDate(discoteca?.id!));
+      setCalendarioTavoli(await getDiscotecaOrder(discoteca.id!));
     }
     fetch();
     const interval = setInterval(fetch, 1000);
@@ -122,10 +125,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     date.getHours() + getHourse,
     0
   ).toISOString();
-  console.log(selectedTavolo)
-
-  console.log(formattedSelectedDate)
-  console.log(calendarioTavoli)
+  console.log(calendarioTavoli);
   const aggiungiProdotto = (prodotto: Prodotto, quantita: number) => {
     if (isNaN(quantita)) {
       quantita = 1;
@@ -376,7 +376,8 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
           <DatePicker
             selected={selectedDate} // value prop (current value of the date)
             // @ts-ignore
-            onChange={(date) => { setSelectedDate(date);setSelectedTavolo(undefined);
+            onChange={(date) => { setSelectedDate(date);
+              setSelectedTavolo(undefined);
             }} // onChange handler (function to update the date)
             filterDate={setAbilitate}
             minDate={new Date("2023-07-01")}
@@ -514,10 +515,12 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                             calendarioTavoli?.find(
                               (date) =>
                                 new Date(
-                                  new Date(date?.data!).getTime()
+                                  new Date(date?.orderDate!).getTime()
                                 ).toISOString() === formattedSelectedDate &&
                                 date.tavoloId === tavolo.id
-                            )!?.stato?.colore ?? tavolo.stato.colore
+                            )!?.stato?.colore
+                              ? "yellow"
+                              : tavolo.stato.colore
                           }`,
                         }}
                       />
@@ -550,7 +553,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                           !calendarioTavoli?.find(
                             (date) =>
                               new Date(
-                                new Date(date?.data!).getTime()
+                                new Date(date?.orderDate!).getTime()
                               ).toISOString() === formattedSelectedDate &&
                               date.tavoloId === tavolo.id
                           )
