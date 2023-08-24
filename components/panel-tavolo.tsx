@@ -122,7 +122,10 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     date.getHours() + getHourse,
     0
   ).toISOString();
+  console.log(selectedTavolo)
 
+  console.log(formattedSelectedDate)
+  console.log(calendarioTavoli)
   const aggiungiProdotto = (prodotto: Prodotto, quantita: number) => {
     if (isNaN(quantita)) {
       quantita = 1;
@@ -373,8 +376,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
           <DatePicker
             selected={selectedDate} // value prop (current value of the date)
             // @ts-ignore
-            onChange={(date) => {setSelectedDate(date);
-              setSelectedTavolo(undefined);
+            onChange={(date) => { setSelectedDate(date);setSelectedTavolo(undefined);
             }} // onChange handler (function to update the date)
             filterDate={setAbilitate}
             minDate={new Date("2023-07-01")}
