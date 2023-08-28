@@ -76,7 +76,7 @@ const ViewBiglietti = () => {
   }
   return (
     <>
-      <div className="lg:-mt-10 grid grid-cols-1  -mt-4 overflow-y-scroll w-full  overflow-x-auto h-[80vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white">
+      <div className="lg:-mt-10 grid grid-cols-1  -mt-4 overflow-y-scroll w-full  overflow-x-auto h-[75vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white">
         {orders?.length === 0 ? (
           <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[80vh] flex-col">
             <div>Nessun biglietto trovato</div>

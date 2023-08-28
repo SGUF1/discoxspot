@@ -28,7 +28,17 @@ const ViewOrders = () => {
         const allOrders = await getOrders(userId!);
 
         setOrders(
-          allOrders.filter((item) => new Date(item.orderDate) > new Date())
+          allOrders.filter(
+            (item) =>
+              new Date(item.orderDate) >
+              new Date(
+                new Date().getFullYear(),
+                new Date().getMonth(),
+                new Date().getDate(),
+                new Date().getHours() - 30,
+                0
+              )
+          )
         );
       } catch (error) {
         console.error("Error fetching orders: ", error);
@@ -40,6 +50,7 @@ const ViewOrders = () => {
       fetchData();
     }
   }, [userId]);
+
   const [isOpen, setIsOpen] = useState(false);
   const [codice, setCodice] = useState("");
   const [inputCodice, setInputCodice] = useState("");
@@ -111,7 +122,7 @@ const ViewOrders = () => {
   }
   return (
     <>
-      <div className="lg:-mt-10 grid grid-cols-1 overflow-y-scroll w-full  -mt-4  overflow-x-auto h-[80vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white">
+      <div className="lg:-mt-10 grid grid-cols-1 overflow-y-scroll w-full  -mt-4  overflow-x-auto h-[75vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white">
         {orders?.length === 0 ? (
           <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[80vh] flex-col">
             <div>Nessun ordine trovato</div>
@@ -191,7 +202,7 @@ const ViewOrders = () => {
           setCodice("");
         }}
       >
-        <div>Clicca da qualsiasi parte per uscire</div>
+        <div>Clicca da qualsiasi parte per uscire </div>
         {codice !== "" && <QrCodeGenerator data={codice} />}
       </div>
       <div

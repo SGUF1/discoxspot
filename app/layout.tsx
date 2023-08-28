@@ -11,7 +11,7 @@ import ModalProvider from '@/provider/modal-provider'
 import { Analytics } from '@vercel/analytics/react';
 const inter = Poppins({ subsets: ['latin'], weight: ['400'] })
 export const metadata = {
-  title: 'DiscoSpot',
+  title: 'discoXspot',
   description: '',
 }
 

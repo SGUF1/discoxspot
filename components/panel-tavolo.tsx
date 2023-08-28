@@ -347,6 +347,8 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
         data: formattedSelectedDate,
         numeroPersone: selectedNumeroPersone,
         userAccountId: userId,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
       }
     );
 

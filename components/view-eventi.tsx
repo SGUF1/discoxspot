@@ -73,30 +73,51 @@ const ViewEventi = () => {
     }
 
     return (
-        <div className='lg:-mt-10 grid grid-cols-1 -mt-4  overflow-y-scroll w-full  overflow-x-auto h-[70vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white'>
-            {futureDates.length === 0 ? <div className='flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[80vh]'>Nessun evento trovato</div> : futureDates.map((item) => (
-                <div className='flex flex-col items-center' key={item.id} onClick={() => router.push(`/eventi/${item.id}`)}>
-                    <div className='h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl' onDragStart={preventDefault}
-                        onContextMenu={preventDefault}
-                        // @ts-ignore
-                        style={{ userDrag: 'none', userSelect: 'none' }}>
-                        <Image src={item.imageUrl} alt='image' width={1000} height={100} className='object-contain lg:hover:scale-125 transition hover:cursor-pointer ' />
-                    </div>
-                    <div className='flex w-[95%] sm:w-[95%] flex-col mt-2 justify-between'>
-                        <div className='text-center'>{item.nome}</div>
-                        <div className='flex justify-between'>
-                            <span>{item.discoteca.name}</span>
-                            <span className='text-blue-400'>{item.tipologiaEvento.name}</span>
-                        </div>
-                        <div className='flex justify-between'>
-                            <span>{item.sala?.nome}</span>
-                            <span>{formatDate(item.startDate)}</span>
-                        </div>
-                    </div>
+      <div className="lg:-mt-10 grid grid-cols-1 -mt-4  overflow-y-scroll w-full  overflow-x-auto h-[75vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white">
+        {futureDates.length === 0 ? (
+          <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[80vh]">
+            Nessun evento trovato
+          </div>
+        ) : (
+          futureDates.map((item) => (
+            <div
+              className="flex flex-col items-center"
+              key={item.id}
+              onClick={() => router.push(`/eventi/${item.id}`)}
+            >
+              <div
+                className="h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl"
+                onDragStart={preventDefault}
+                onContextMenu={preventDefault}
+                // @ts-ignore
+                style={{ userDrag: "none", userSelect: "none" }}
+              >
+                <Image
+                  src={item.imageUrl}
+                  alt="image"
+                  width={1000}
+                  height={100}
+                  className="object-contain lg:hover:scale-125 transition hover:cursor-pointer "
+                />
+              </div>
+              <div className="flex w-[95%] sm:w-[95%] flex-col mt-2 justify-between">
+                <div className="text-center">{item.nome}</div>
+                <div className="flex justify-between">
+                  <span>{item.discoteca.name}</span>
+                  <span className="text-blue-400">
+                    {item.tipologiaEvento.name}
+                  </span>
                 </div>
-            ))}
-        </div >
-    )
+                <div className="flex justify-between">
+                  <span>{item.sala?.nome}</span>
+                  <span>{formatDate(item.startDate)}</span>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    );
 }
 
 export default ViewEventi
