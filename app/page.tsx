@@ -17,9 +17,8 @@ const Page = async () => {
   const userId = auth().userId;
 
   try {
-    if (auth().user) {
-      await createUser(auth().user!.id, auth().user?.firstName!, auth().user?.lastName!);
-      console.log("cisao")
+    if (userId) {
+      await createUser(userId );
     }
   } catch (errore) {}
 
