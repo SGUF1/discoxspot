@@ -60,9 +60,6 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
     setIsMounted(true);
   }, []);
 
-  if (new Date(lista?.dataLimite!) < new Date()) {
-    return null;
-  }
   const onCheckout = async () => {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/liste/${params.listaId}/checkout`,
@@ -70,17 +67,27 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
         userAccountId: userId,
         listaId: params.listaId,
         firstName: user?.firstName,
-        lastName: user?.lastName        
+        lastName: user?.lastName,
       }
     );
 
     window.location = response.data.url;
   };
-  
+
   if (!isMounted) {
     return null;
   }
-  if (new Date(lista?.dataLimite!) < new Date()) {
+
+  if (
+    new Date(lista?.dataLimite!) <
+    new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      new Date().getDate() - 1,
+      0,
+      0
+    )
+  ) {
     return loading ? (
       <div className="h-full flex justify-center items-center">
         <Loader />
