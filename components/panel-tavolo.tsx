@@ -312,7 +312,14 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     // Restituisce true solo se la data è attiva e maggiore o uguale a oggi
     return isDateEnabled && isDateFromToday;
   };
-
+function scrollToBottom() {
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth", // Usa l'animazione di scorrimento fluido
+      });
+    }, 150);
+}
   const getDatesBetweenDates = (startDate: any, endDate: any) => {
     const dates = eachDayOfInterval({
       start: new Date(startDate),
@@ -464,6 +471,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                             setSelectedSala(sala);
                             setNumeroPersone(0);
                             setSelectedTavolo(undefined);
+                            scrollToBottom()
                           }}
                         >
                           {selectedSala?.id === sala.id
@@ -477,7 +485,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
             )}
           </div>
            {!selectedSala ? discoteca?.sale.filter((sala) => sala.piano.id === selectedPiano.id).length > 1 && 
-            <div className="text-gray-600 text-center">Scorrere a destra per vedere altre sale</div> : <div className="text-gray-600 text-center">Scorrere in basso per vedere i tavoli</div>
+            <div className="text-gray-600 text-center">Scorrere a destra per vedere altre sale</div> : <div className="text-gray-600 text-center"></div>
             }
 
         </div>
@@ -570,6 +578,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                             );
                           }
                           setNumeroPersone(0);
+                          scrollToBottom()
                         }}
                       >
                         {selectedTavolo?.id === tavolo.id
@@ -581,7 +590,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                 </>
               ))}
           </div>
-            <div className="text-gray-600 text-center">{!selectedTavolo ? "Scorrere a destra per vedere altri tavoli" : "Scorrere in basso per mettere il numero di persone"  }</div>
+            <div className="text-gray-600 text-center">{!selectedTavolo ? "Scorrere a destra per vedere altri tavoli" : ""  }</div>
         </div>
       )}
       {selectedTavolo && selectedDate && (
@@ -608,6 +617,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
           )}
         </div>
       )}
+            <div className="text-gray-600 text-center">{selectedNumeroPersone   ?"Scorrere in basso per scegliere le portate" :  ""  }</div>
 
       {selectedTavolo?.numeroMinimo! <= selectedNumeroPersone &&
         selectedNumeroPersone <= selectedTavolo?.posti.length! && (
