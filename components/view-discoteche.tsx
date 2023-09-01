@@ -106,7 +106,7 @@ const ViewDiscoteche = ({
         filteredDiscoteche.map((item) => (
           <div className="flex flex-col items-center" key={item.id}>
             <div
-              className="h-44 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl"
+              className="h-44 sm:h-48 flex cursor-pointer  relative justify-center items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl"
               onDragStart={preventDefault}
               onContextMenu={preventDefault}
               // @ts-ignore
@@ -115,9 +115,10 @@ const ViewDiscoteche = ({
               <Image
                 src={item.imageUrl}
                 alt="image"
-                width={1000}
-                height={100}
-                className="object-contain lg:hover:scale-125 transition hover:cursor-pointer "
+                layout="fill" // Utilizza il layout fill per riempire completamente il contenitore
+                objectFit="content" // Usa object-fit con il valore 'contain' per adattare l'immagine mantenendo l'aspetto
+                className="lg:hover:scale-125 transition "
+                priority
                 onClick={() => router.push(`/${item.id}`)}
               />
             </div>

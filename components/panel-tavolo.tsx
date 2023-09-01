@@ -299,7 +299,6 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
             disabledDays[date.getDay()]
         )
     );
-
     // Converte l'array dateRangeArray in un singolo array di date
     const allDatesInRange = dateRangeArray.flatMap((dates) => dates);
 
@@ -377,7 +376,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
           <DatePicker
             selected={selectedDate} // value prop (current value of the date)
             // @ts-ignore
-            onChange={(date) => { setSelectedDate(date);
+            onChange={(date) => {setSelectedDate(date);
               setSelectedTavolo(undefined);
             }} // onChange handler (function to update the date)
             filterDate={setAbilitate}
@@ -477,6 +476,10 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                 )
             )}
           </div>
+           {discoteca?.sale.filter((sala) => sala.piano.id === selectedPiano.id).length > 1 && 
+            <div className="text-gray-600 text-center">Scorrere a destra per vedere altre sale</div>
+            }
+
         </div>
       )}
       {selectedSala && selectedDate && (
@@ -486,96 +489,99 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
             {discoteca?.sale
               .find((sala) => sala.id === selectedSala.id)
               ?.tavoli.map((tavolo) => (
-                <div key={tavolo.id} className="w-[350px]">
-                  <div
-                    className="w-[350px] rounded-2xl overflow-hidden aspect-video h-[200px] flex justify-center items-center rounded-b-none"
-                    onDragStart={preventDefault}
-                    onContextMenu={preventDefault}
-                    // @ts-ignore
-                    style={{ userDrag: "none", userSelect: "none" }}
-                  >
-                    <Image
-                      src={tavolo.imageUrl}
-                      alt="image"
-                      width={350}
-                      height={250}
-                      className=" lg:hover:scale-125 transition object-cover"
-                      priority
-                    />
-                  </div>
-                  <div className="w-[full] flex flex-col space-y-2 border-t-0 border p-4 rounded-b-2xl  ">
-                    <div className="text-xl font-bold flex items-center justify-between relative">
-                      <div>{tavolo.prezzo}€</div>
-                      <div className=" w-full absolute text-center ">
-                        {tavolo.numeroTavolo}
+                <>
+                  <div key={tavolo.id} className="w-[350px]">
+                    <div
+                      className="w-[350px] rounded-2xl overflow-hidden aspect-video h-[200px] flex justify-center items-center rounded-b-none"
+                      onDragStart={preventDefault}
+                      onContextMenu={preventDefault}
+                      // @ts-ignore
+                      style={{ userDrag: "none", userSelect: "none" }}
+                    >
+                      <Image
+                        src={tavolo.imageUrl}
+                        alt="image"
+                        width={350}
+                        height={250}
+                        className=" lg:hover:scale-125 transition object-cover"
+                        priority
+                      />
+                    </div>
+                    <div className="w-[full] flex flex-col space-y-2 border-t-0 border p-4 rounded-b-2xl  ">
+                      <div className="text-xl font-bold flex items-center justify-between relative">
+                        <div>{tavolo.prezzo}€</div>
+                        <div className=" w-full absolute text-center ">
+                          {tavolo.numeroTavolo}
+                        </div>
+                        <div
+                          className="w-5 h-5 rounded-full border "
+                          style={{
+                            background: `${
+                              calendarioTavoli?.find(
+                                (date) =>
+                                  new Date(
+                                    new Date(date?.orderDate!).getTime()
+                                  ).toISOString() === formattedSelectedDate &&
+                                  date.tavoloId === tavolo.id
+                              )!?.stato?.colore
+                                ? "yellow"
+                                : tavolo.stato.colore
+                            }`,
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <div>Descrizione:</div>
+                        <div className="h-[100px] overflow-y-scroll">
+                          {tavolo.descrizione}
+                        </div>
+                      </div>
+                      <div>
+                        <div>
+                          <span>Limite minimo: </span>{" "}
+                          <span>{tavolo.numeroMinimo}</span>
+                        </div>
+                        <div>
+                          <span>Limite massimo: </span>{" "}
+                          <span>{tavolo.posti.length}</span>
+                        </div>
                       </div>
                       <div
-                        className="w-5 h-5 rounded-full border "
-                        style={{
-                          background: `${
-                            calendarioTavoli?.find(
+                        className={cn(
+                          "mx-1 text-xl text-center p-2 rounded-2xl mt-3 cursor-pointer transition-colors outline-none ",
+                          tavolo.id === selectedTavolo?.id
+                            ? "bg-green-500 transition"
+                            : "bg-red-500 transition"
+                        )}
+                        onClick={() => {
+                          if (
+                            !calendarioTavoli?.find(
                               (date) =>
                                 new Date(
                                   new Date(date?.orderDate!).getTime()
                                 ).toISOString() === formattedSelectedDate &&
                                 date.tavoloId === tavolo.id
-                            )!?.stato?.colore
-                              ? "yellow"
-                              : tavolo.stato.colore
-                          }`,
-                        }}
-                      />
-                    </div>
-                    <div>
-                      <div>Descrizione:</div>
-                      <div className="h-[100px] overflow-y-scroll">
-                        {tavolo.descrizione}
-                      </div>
-                    </div>
-                    <div>
-                      <div>
-                        <span>Limite minimo: </span>{" "}
-                        <span>{tavolo.numeroMinimo}</span>
-                      </div>
-                      <div>
-                        <span>Limite massimo: </span>{" "}
-                        <span>{tavolo.posti.length}</span>
-                      </div>
-                    </div>
-                    <div
-                      className={cn(
-                        "mx-1 text-xl text-center p-2 rounded-2xl mt-3 cursor-pointer transition-colors outline-none ",
-                        tavolo.id === selectedTavolo?.id
-                          ? "bg-green-500 transition"
-                          : "bg-red-500 transition"
-                      )}
-                      onClick={() => {
-                        if (
-                          !calendarioTavoli?.find(
-                            (date) =>
-                              new Date(
-                                new Date(date?.orderDate!).getTime()
-                              ).toISOString() === formattedSelectedDate &&
-                              date.tavoloId === tavolo.id
-                          )
-                        ) {
-                          setSelectedTavolo(
-                            selectedSala.tavoli.find(
-                              (tavol) => tavol.id === tavolo.id
                             )
-                          );
-                        }
-                        setNumeroPersone(0);
-                      }}
-                    >
-                      {selectedTavolo?.id === tavolo.id
-                        ? "Selezionato"
-                        : "Seleziona"}
+                          ) {
+                            setSelectedTavolo(
+                              selectedSala.tavoli.find(
+                                (tavol) => tavol.id === tavolo.id
+                              )
+                            );
+                          }
+                          setNumeroPersone(0);
+                        }}
+                      >
+                        {selectedTavolo?.id === tavolo.id
+                          ? "Selezionato"
+                          : "Seleziona"}
+                      </div>
                     </div>
                   </div>
-                </div>
+                </>
               ))}
           </div>
+            <div className="text-gray-600 text-center">{!selectedTavolo ? "Scorrere a destra per vedere altri tavoli" : "Scorrere in basso per mettere il numero di persone"  }</div>
         </div>
       )}
       {selectedTavolo && selectedDate && (
