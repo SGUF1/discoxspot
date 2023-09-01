@@ -12,13 +12,14 @@ import createUser from "@/actions/createUser";
 import getUser from "@/actions/getUser";
 import getUsers from "@/actions/getUsers";
 import useUserIdSet from "@/hooks/use-userId";
+import BoxDomande from "@/components/boxdomande";
 
 const Page = async () => {
   const userId = auth().userId;
 
   try {
     if (userId) {
-      await createUser(userId );
+      await createUser(userId);
     }
   } catch (errore) {}
 
@@ -27,6 +28,7 @@ const Page = async () => {
     <div className="p-5 text-white lg:p-10 lg:px-20 h-[80vh] ">
       <div className="flex space-x-5">
         <LeftBar />
+        {user.eta <= 16 ? <BoxDomande userId={user.id} /> : ""}
         <ViewDiscoteche user={user} />
       </div>
     </div>
