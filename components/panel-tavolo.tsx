@@ -476,8 +476,8 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                 )
             )}
           </div>
-           {discoteca?.sale.filter((sala) => sala.piano.id === selectedPiano.id).length > 1 && 
-            <div className="text-gray-600 text-center">Scorrere a destra per vedere altre sale</div>
+           {!selectedSala ? discoteca?.sale.filter((sala) => sala.piano.id === selectedPiano.id).length > 1 && 
+            <div className="text-gray-600 text-center">Scorrere a destra per vedere altre sale</div> : <div className="text-gray-600 text-center">Scorrere in basso per vedere i tavoli</div>
             }
 
         </div>
