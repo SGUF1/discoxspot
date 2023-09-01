@@ -745,6 +745,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                             </div>
                           ))}
                         </div>
+                              <div className="text-center mt-2 text-gray-600">Scorrere verso destra per vedere altre bibite</div>
                       </div>
                     ))}
                   </div>
