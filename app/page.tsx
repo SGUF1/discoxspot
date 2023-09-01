@@ -28,7 +28,7 @@ const Page = async () => {
     <div className="p-5 text-white lg:p-10 lg:px-20 h-[80vh] ">
       <div className="flex space-x-5">
         <LeftBar />
-        {user.eta <= 16 ? <BoxDomande userId={user.id} /> : ""}
+        {user.eta < 16 && <BoxDomande userId={user.id} />}
         <ViewDiscoteche user={user} />
       </div>
     </div>
