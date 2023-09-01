@@ -2,7 +2,7 @@
 import updateUser from "@/actions/updateUser";
 import React, { useState } from "react";
 interface BoxDomandeProps {
-  userId: string;
+  userId: string 
 }
 const BoxDomande = ({ userId }: BoxDomandeProps) => {
   const [firstDomanda, setFirstDomanda] = useState<any>([]);
