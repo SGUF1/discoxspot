@@ -344,6 +344,7 @@ function scrollToBottom() {
     selectedBibita.flatMap(
       (portataConProdotti) => portataConProdotti.prodottiConQuantita
     );
+    
   const onCheckout = async () => {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/discoteche/${discoteca.id}/impost/checkout`,

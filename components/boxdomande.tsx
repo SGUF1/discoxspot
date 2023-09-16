@@ -2,7 +2,7 @@
 import updateUser from "@/actions/updateUser";
 import React, { useState } from "react";
 interface BoxDomandeProps {
-  userId: string 
+  userId: string;
 }
 const BoxDomande = ({ userId }: BoxDomandeProps) => {
   const [firstDomanda, setFirstDomanda] = useState<any>([]);
@@ -10,7 +10,7 @@ const BoxDomande = ({ userId }: BoxDomandeProps) => {
   const [terzaDomanda, setTerzaDomanda] = useState("");
   const [eta, setEta] = useState(0);
   const [selezionaDomanda, setSelezionaDomanda] = useState(0);
-  const [invisible, setInvisible] = useState(false)
+  const [invisible, setInvisible] = useState(false);
   const generiMusicaliPrincipali = [
     { nome: "Pop" },
     { nome: "Rock" },

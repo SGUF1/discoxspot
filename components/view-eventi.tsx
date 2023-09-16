@@ -52,10 +52,9 @@ const ViewEventi = () => {
     }
     const currentDate = new Date();
 
-    const futureDates = eventi.filter((dateString) => {
-        const dateObject = new Date(dateString.startDate);
-        return dateObject >= new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), currentDate.getHours() + getHourse, 0);
-    });
+  const futureDates = eventi;
+
+    console.log(futureDates)
     const preventDefault = (event: any) => {
         event.preventDefault();
     };
