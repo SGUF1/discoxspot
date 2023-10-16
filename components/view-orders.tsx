@@ -99,7 +99,7 @@ const ViewOrders = () => {
       await navigator.share({
         title: "DiscoXSpot",
         text: `Unisciti anche tu al nostro tavolo e divertiti con me in discoteca\n`,
-        url: `thttps://app.discoxspot.com/prenotati?codice=${codice}`,
+        url: `https://app.discoxspot.com/prenotati?codice=${codice}`,
       });
     } catch (error) {
       console.error("Errore nella condivisione:", error);
