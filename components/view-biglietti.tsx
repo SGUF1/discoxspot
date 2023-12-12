@@ -45,9 +45,10 @@ const ViewBiglietti = () => {
   const shareContent = async (codice: string) => {
     try {
       await navigator.share({
-        title: "DiscoXSpot",
+        title: `discoXspot\n ${orders?.find((order) => order.lista.id === codice)?.lista.discoteca.name}`,
+        
         text: `Compra anche tu il biglietto e divertiti con me!\n`,
-        url: `https://discospot.vercel.app/liste/${codice}`,
+        url: `https://app.discoxspot.com/liste/${codice}`,
       });
     } catch (error) {
       console.error("Errore nella condivisione:", error);
