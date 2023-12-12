@@ -1,5 +1,12 @@
 "use client";
-import { Discoteca, Evento, Lista } from "@/type";
+import {
+  Discoteca,
+  Evento,
+  Lista,
+  OrderBiglietto,
+  UserAccount,
+  UserAccounts,
+} from "@/type";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import getEvento from "@/actions/getEvento";
@@ -19,6 +26,8 @@ import getLista from "@/actions/getLista";
 import { format } from "date-fns";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
+import getUser from "@/actions/getUser";
+import getOrderBiglietti from "@/actions/getBiglietti";
 
 const EventoPage = ({ params }: { params: { listaId: string } }) => {
   const [lista, setLista] = useState<Lista>();
@@ -28,13 +37,14 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
   const open = useAppSelector((state) => state.open.open);
   const { user } = useUser();
   const userId = user?.id;
-
+  const [man, setMan] = useState<OrderBiglietto[]>();
   const router = useRouter();
   useEffect(() => {
     async function fetch() {
       try {
         setLoading(true);
         setLista(await getLista(params.listaId));
+        setMan(await getOrderBiglietti(userId!));
       } catch (error) {
       } finally {
         setLoading(false);
@@ -42,7 +52,8 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
     }
     fetch();
     dispatch(openTavoloPlease(false));
-  }, [setLista, setLoading, params.listaId]);
+  }, [setLista, setLoading, params.listaId, dispatch, userId]);
+
   const formatDate = (data: string) => {
     const dateObject = new Date(data);
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -165,12 +176,15 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
             </div>
           </div>
         </div>
-
         <div
           className="w-[50%] m-2 mx-auto flex items-center justify-center transition cursor-pointer bg-black rounded-full py-3 text-center border border-white group"
-          onClick={onCheckout}
+          onClick={() => man?.find((biglietto) => biglietto.listaId === params.listaId ? router.push('/biglietti') : onCheckout())}
         >
-          <span className="text-xl ransition">Compra Biglietto</span>
+          <span className="text-xl ransition">
+            {man?.find((biglietto) => biglietto.listaId === params.listaId)
+              ? "Visualizza biglietto"
+              : "Compra biglietto"}
+          </span>
         </div>
       </div>
     </>
