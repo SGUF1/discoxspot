@@ -116,6 +116,7 @@ const ViewDiscoteche = ({
               className="h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl"
               onDragStart={preventDefault}
               onContextMenu={preventDefault}
+              onClick={() => router.push(`/${item.id}`)}
               // @ts-ignore
               style={{ userDrag: "none", userSelect: "none" }}
             >
@@ -125,6 +126,7 @@ const ViewDiscoteche = ({
                 width={1000}
                 height={100}
                 className="object-contain lg:hover:scale-125 transition hover:cursor-pointer "
+                
               />
             </div>
             <div className="flex w-[95%] sm:w-[95%]  mt-2 justify-between">
