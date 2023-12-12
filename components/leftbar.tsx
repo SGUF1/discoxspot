@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import {
   Calendar,
+  GraduationCap,
   Heart,
   Home,
   List,
@@ -49,7 +50,7 @@ const LeftBar = () => {
           router.push("/scuole");
         }}
       >
-        <School className="h-7 w-7" />
+        <GraduationCap className="h-7 w-7" />
         <span className="ml-2 hidden sm:block">Scuole</span>
       </div>
       <div

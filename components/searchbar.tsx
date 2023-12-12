@@ -15,7 +15,7 @@ const SearchBar = () => {
 
     return (
         <>
-            <div className={cn('items-center hidden', pathname === "/" && "flex",)}>
+            <div className={cn('items-center hidden', pathname === "/" || pathname === '/scuole' ? "flex" : "flex-none",)}>
                 <input type='text' placeholder='search' className='bg-gray-300 p-2 rounded-full text-black w-52 h-9 text-sm' value={searchTerm} onChange={(e: any) => { setSearchTerm(e.target.value); }} />
                 <SearchIcon className='h-5 w-5 absolute ml-44 text-black ' />
             </div>
