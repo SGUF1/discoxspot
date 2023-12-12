@@ -131,7 +131,9 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
             </div>
           </div>
           <div className="flex flex-col gap-1">
-            <span className="text-xl font-bold">Discoteca:</span>
+            <span className="text-xl font-bold">
+              {lista?.discoteca.scuola ? "Scuola" : "Discoteca"}:
+            </span>
             <div className="flex sm:flex-row flex-col justify-between sm:items-center gap-y-2">
               <span>{lista?.discoteca.name}</span>
               <span className="flex items-center justify-center sm:justify-start">
@@ -158,7 +160,7 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
                   {format(new Date(lista.dataLimite), "MMMM do, yyyy")}
                 </span>
               ) : (
-                <span className="text-center">DataLimite non disponibile</span>
+                <span className="text-center">Data Limite non disponibile</span>
               )}{" "}
             </div>
           </div>

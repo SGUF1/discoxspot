@@ -174,13 +174,13 @@ const ViewOrders = () => {
                   >
                     {item.codice}
                   </span>
-                  <span
+                  {/* <span
                     className="flex justify-end cursor-pointer"
                     onClick={() => shareContent(item.codice)}
                   >
                     {item.numeroPersonePagato}/{item.numeroPersone}{" "}
                     <Share2 className="ml-5 h-5 w-5" />
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </div>

@@ -30,6 +30,7 @@ export interface Discoteca {
   menu: Menu[];
   liste: Lista[]
   userAccounts: UserAccounts[]
+  scuola: boolean;
 }
 
 export interface CalendarioTavolo {
@@ -48,7 +49,7 @@ export interface UserAccounts {
   domanda2: string
 }
 
-export interface Lista{
+export interface Lista {
   id: string,
   nome: string,
   discotecaId: string,
@@ -64,7 +65,7 @@ export interface Lista{
   orderBiglietti: OrderBiglietto[]
 }
 
-export interface OrderBiglietto{
+export interface OrderBiglietto {
   id: string,
   userAccountId: string,
   userAccount: UserAccount,
@@ -75,7 +76,7 @@ export interface OrderBiglietto{
   listaId: string,
   confermato: boolean
   lista: Lista
-} 
+}
 
 
 export interface Provincia {

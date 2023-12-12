@@ -7,6 +7,7 @@ import {
   List,
   Menu,
   PartyPopper,
+  School,
   Ticket,
   TicketIcon,
   Trophy,
@@ -38,6 +39,18 @@ const LeftBar = () => {
       >
         <Home className="h-7 w-7 " />
         <span className="ml-2 hidden sm:block">Home</span>
+      </div>
+      <div
+        className={cn(
+          "flex items-center cursor-pointer ",
+          pathname === "/scuole" && "text-red-600"
+        )}
+        onClick={() => {
+          router.push("/scuole");
+        }}
+      >
+        <School className="h-7 w-7" />
+        <span className="ml-2 hidden sm:block">Scuole</span>
       </div>
       <div
         className={cn(

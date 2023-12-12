@@ -55,7 +55,7 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
   const currentDate = new Date();
 
   const futureDates = discoteca?.eventi.filter((dateString) => {
-    const dateObject = new Date(dateString.startDate);
+    const dateObject = new Date(dateString.endDate);
     return (
       dateObject >=
       new Date(
@@ -67,6 +67,21 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
       )
     );
   });
+
+  const futureListeDates = discoteca?.liste?.filter((dateString) => {
+    const dateObject = new Date(dateString.dataLimite);
+    return (
+      dateObject >=
+      new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        currentDate.getDate(),
+        currentDate.getHours() + getHourse,
+        0
+      )
+    );
+  });
+  console.log(futureDates)
   if (!isMounted) {
     return null;
   }
@@ -124,53 +139,108 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
           <div className="flex flex-col gap-1 ">
             <span className="text-xl">Eventi futuri:</span>
             <div className=" flex flex-row overflow-x-scroll space-x-20 w-[350px] sm:w-[50vh] lg:w-[100vh] ">
-              {futureDates?.length === 0 ? <span>Nessun evento</span> : futureDates?.map((item) => (
-                <div
-                  className="flex flex-col items-center w-[4000px]"
-                  key={item.id}
-                  onClick={() => router.push(`/eventi/${item.id}`)}
-                >
+              {futureDates?.length === 0 ? (
+                <span>Nessun evento</span>
+              ) : (
+                futureDates?.map((item) => (
                   <div
-                    className="h-32 sm:h-48 flex items-center w-[200px] sm:w-[95%] lg:w-[500px] justify-center overflow-hidden rounded-xl"
-                    onDragStart={preventDefault}
-                    onContextMenu={preventDefault}
-                    // @ts-ignore
-                    style={{ userDrag: "none", userSelect: "none" }}
+                    className="flex flex-col items-center w-[4000px]"
+                    key={item.id}
+                    onClick={() => router.push(`/eventi/${item.id}`)}
                   >
-                    <Image
-                      src={item.imageUrl}
-                      alt="image"
-                      width={1000}
-                      height={100}
-                      className="object-contain lg:hover:scale-125 transition cursor-pointer "
-                    />
+                    <div
+                      className="h-32 sm:h-48 flex items-center w-[200px] sm:w-[95%] lg:w-[500px] justify-center overflow-hidden rounded-xl"
+                      onDragStart={preventDefault}
+                      onContextMenu={preventDefault}
+                      // @ts-ignore
+                      style={{ userDrag: "none", userSelect: "none" }}
+                    >
+                      <Image
+                        src={item.imageUrl}
+                        alt="image"
+                        width={1000}
+                        height={100}
+                        className="object-contain lg:hover:scale-125 transition cursor-pointer "
+                      />
+                    </div>
+                    <div className="flex w-[200px] sm:w-[95%] lg:w-[500px] flex-col mt-2 justify-between">
+                      <div className="text-center text-xl font-bold">
+                        {item.nome}
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-blue-400">
+                          {item.tipologiaEvento?.name}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>{item.sala?.nome}</span>
+                        <span>{formatDate(item.endDate)}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex w-[200px] sm:w-[95%] lg:w-[500px] flex-col mt-2 justify-between">
-                    <div className="text-center text-xl font-bold">
-                      {item.nome}
+                ))
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-1 ">
+            <span className="text-xl">Liste:</span>
+            <div className=" flex flex-row overflow-x-scroll space-x-20 w-[350px] sm:w-[50vh] lg:w-[100vh] ">
+              {futureListeDates?.length === 0 ? (
+                <span>Nessuna lista</span>
+              ) : (
+                futureListeDates?.map((item) => (
+                  <div
+                    className="flex flex-col items-center w-[4000px]"
+                    key={item.id}
+                    onClick={() => router.push(`/liste/${item.id}`)}
+                  >
+                    <div
+                      className="h-32 sm:h-48 flex items-center w-[200px] sm:w-[95%] lg:w-[500px] justify-center overflow-hidden rounded-xl"
+                      onDragStart={preventDefault}
+                      onContextMenu={preventDefault}
+                      // @ts-ignore
+                      style={{ userDrag: "none", userSelect: "none" }}
+                    >
+                      <Image
+                        src={item.imageUrl}
+                        alt="image"
+                        width={1000}
+                        height={100}
+                        className="object-contain lg:hover:scale-125 transition cursor-pointer "
+                      />
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-blue-400">
-                        {item.tipologiaEvento?.name}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>{item.sala?.nome}</span>
-                      <span>{formatDate(item.startDate)}</span>
+                    <div className="flex w-[200px] sm:w-[95%] lg:w-[500px] flex-col mt-2 justify-between">
+                      <div className="text-center text-xl font-bold">
+                        {item.nome}
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-blue-400">
+                          Biglietti rimanenti:{" "}
+                          <span className="text-blue-400">
+                            {item.bigliettiRimanenti}
+                          </span>
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>{item.prezzoBiglietto}€</span>
+                        <span>{formatDate(item.dataLimite)}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </div>
 
-        <div
-          className="w-[50%] m-2 mx-auto flex items-center justify-center transition cursor-pointer bg-black rounded-full py-3 text-center border border-white group"
-          onClick={() => dispatch(openTavoloPlease(!open))}
-        >
-          <span className="text-xl ransition">Prenota Tavolo</span>
-        </div>
+        {!discoteca.scuola && (
+          <div
+            className="w-[50%] m-2 mx-auto flex items-center justify-center transition cursor-pointer bg-black rounded-full py-3 text-center border border-white group"
+            onClick={() => dispatch(openTavoloPlease(!open))}
+          >
+            <span className="text-xl ransition">Prenota Tavolo</span>
+          </div>
+        )}
       </div>
       <PanelTavolo discoteca={discoteca!} />
     </>

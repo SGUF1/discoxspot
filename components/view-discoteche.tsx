@@ -14,17 +14,20 @@ import useUserIdSet from "@/hooks/use-userId";
 import getLikeDiscoteche from "@/actions/getLikedDiscoteche";
 import { useUser } from "@clerk/nextjs";
 import getClassificaDiscoteche from "@/actions/getClassificaDiscoteche";
+import getScuole from "@/actions/getScuole";
 
 interface ViewDiscotecheProps {
   preferiti?: boolean | false;
   user: UserAccounts;
   classifica?: boolean | false;
+  scuole?: true | false;
 }
 
 const ViewDiscoteche = ({
   user,
   preferiti,
   classifica,
+  scuole,
 }: ViewDiscotecheProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [discoteche, setDiscoteche] = useState<Discoteca[]>([]);
@@ -34,6 +37,7 @@ const ViewDiscoteche = ({
   const like = useLike();
   const searchTerm = useAppSelector((state) => state.discoteche.ricerca);
   const [first, setFirst] = useState(true);
+
   useEffect(() => {
     async function fetch() {
       try {
@@ -45,6 +49,9 @@ const ViewDiscoteche = ({
           setDiscoteche(allDiscoteche);
         } else if (classifica) {
           const allDiscoteche = await getClassificaDiscoteche(user.id);
+          setDiscoteche(allDiscoteche);
+        } else if (scuole) {
+          const allDiscoteche = await getScuole();
           setDiscoteche(allDiscoteche);
         } else {
           const allDiscoteche = await getDiscoteche();
@@ -100,13 +107,13 @@ const ViewDiscoteche = ({
     <div className="lg:-mt-10 grid grid-cols-1 -mt-4  overflow-y-scroll w-full  overflow-x-auto h-[75vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white">
       {filteredDiscoteche.length === 0 ? (
         <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[84vh]">
-          Nessuna discoteca trovata
+          {scuole ? "Nessuna scuola trovata" : "Nessuna discoteca trovata"}
         </div>
       ) : (
         filteredDiscoteche.map((item) => (
           <div className="flex flex-col items-center" key={item.id}>
             <div
-              className="h-44 sm:h-48 flex cursor-pointer  relative justify-center items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl"
+              className="h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl"
               onDragStart={preventDefault}
               onContextMenu={preventDefault}
               // @ts-ignore
@@ -115,11 +122,9 @@ const ViewDiscoteche = ({
               <Image
                 src={item.imageUrl}
                 alt="image"
-                layout="fill" // Utilizza il layout fill per riempire completamente il contenitore
-                objectFit="content" // Usa object-fit con il valore 'contain' per adattare l'immagine mantenendo l'aspetto
-                className="lg:hover:scale-125 transition "
-                priority
-                onClick={() => router.push(`/${item.id}`)}
+                width={1000}
+                height={100}
+                className="object-contain lg:hover:scale-125 transition hover:cursor-pointer "
               />
             </div>
             <div className="flex w-[95%] sm:w-[95%]  mt-2 justify-between">
