@@ -72,6 +72,12 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
   }, []);
 
   const onCheckout = async () => {
+    if(
+    man?.find((biglietto) => biglietto.listaId === params.listaId)
+    ){
+       router.push('/biglietti')
+    }else{
+    
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/liste/${params.listaId}/checkout`,
       {
@@ -83,6 +89,8 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
     );
 
     window.location = response.data.url;
+
+    }
   };
 
   if (!isMounted) {
@@ -178,7 +186,7 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
         </div>
         <div
           className="w-[50%] m-2 mx-auto flex items-center justify-center transition cursor-pointer bg-black rounded-full py-3 text-center border border-white group"
-          onClick={() => man?.find((biglietto) => biglietto.listaId === params.listaId ? router.push('/biglietti') : onCheckout())}
+          onClick={onCheckout}
         >
           <span className="text-xl ransition">
             {man?.find((biglietto) => biglietto.listaId === params.listaId)
