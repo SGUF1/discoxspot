@@ -197,7 +197,8 @@ export interface Tavolo {
   numeroTavolo: string;
   posizioneId: string
   posizione: Posizione
-  posti: Posto[]
+  numeroMassimo: number,
+  prezzoPerPosto: boolean
   salaId: string;
   sala: Sala
   date: Data[]

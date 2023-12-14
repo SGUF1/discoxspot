@@ -115,7 +115,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     const interval = setInterval(fetch, 1000);
 
     return () => clearInterval(interval);
-  }, [setCalendarioTavoli, getDate, discoteca]);
+  }, [setCalendarioTavoli, discoteca]);
 
   const date = new Date(selectedDate!);
   const formattedSelectedDate = new Date(
@@ -312,14 +312,14 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     // Restituisce true solo se la data è attiva e maggiore o uguale a oggi
     return isDateEnabled && isDateFromToday;
   };
-function scrollToBottom() {
+  function scrollToBottom() {
     setTimeout(() => {
       window.scrollTo({
         top: document.body.scrollHeight,
         behavior: "smooth", // Usa l'animazione di scorrimento fluido
       });
     }, 150);
-}
+  }
   const getDatesBetweenDates = (startDate: any, endDate: any) => {
     const dates = eachDayOfInterval({
       start: new Date(startDate),
@@ -344,7 +344,7 @@ function scrollToBottom() {
     selectedBibita.flatMap(
       (portataConProdotti) => portataConProdotti.prodottiConQuantita
     );
-    
+
   const onCheckout = async () => {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/discoteche/${discoteca.id}/impost/checkout`,
@@ -472,7 +472,7 @@ function scrollToBottom() {
                             setSelectedSala(sala);
                             setNumeroPersone(0);
                             setSelectedTavolo(undefined);
-                            scrollToBottom()
+                            scrollToBottom();
                           }}
                         >
                           {selectedSala?.id === sala.id
@@ -485,10 +485,16 @@ function scrollToBottom() {
                 )
             )}
           </div>
-           {!selectedSala ? discoteca?.sale.filter((sala) => sala.piano.id === selectedPiano.id).length > 1 && 
-            <div className="text-gray-600 text-center">Scorrere a destra per vedere altre sale</div> : <div className="text-gray-600 text-center"></div>
-            }
-
+          {!selectedSala ? (
+            discoteca?.sale.filter((sala) => sala.piano.id === selectedPiano.id)
+              .length > 1 && (
+              <div className="text-gray-600 text-center">
+                Scorrere a destra per vedere altre sale
+              </div>
+            )
+          ) : (
+            <div className="text-gray-600 text-center"></div>
+          )}
         </div>
       )}
       {selectedSala && selectedDate && (
@@ -518,7 +524,6 @@ function scrollToBottom() {
                     </div>
                     <div className="w-[full] flex flex-col space-y-2 border-t-0 border p-4 rounded-b-2xl  ">
                       <div className="text-xl font-bold flex items-center justify-between relative">
-                        <div>{tavolo.prezzo}€</div>
                         <div className=" w-full absolute text-center ">
                           {tavolo.numeroTavolo}
                         </div>
@@ -539,6 +544,10 @@ function scrollToBottom() {
                           }}
                         />
                       </div>
+                      <div className="text-xl text-center">
+                        {tavolo.prezzo}€
+                        {tavolo.prezzoPerPosto ? " a persona" : " totale"}
+                      </div>
                       <div>
                         <div>Descrizione:</div>
                         <div className="h-[100px] overflow-y-scroll">
@@ -552,7 +561,7 @@ function scrollToBottom() {
                         </div>
                         <div>
                           <span>Limite massimo: </span>{" "}
-                          <span>{tavolo.posti.length}</span>
+                          <span>{tavolo.numeroMassimo}</span>
                         </div>
                       </div>
                       <div
@@ -579,7 +588,7 @@ function scrollToBottom() {
                             );
                           }
                           setNumeroPersone(0);
-                          scrollToBottom()
+                          scrollToBottom();
                         }}
                       >
                         {selectedTavolo?.id === tavolo.id
@@ -591,7 +600,9 @@ function scrollToBottom() {
                 </>
               ))}
           </div>
-            <div className="text-gray-600 text-center">{!selectedTavolo ? "Scorrere a destra per vedere altri tavoli" : ""  }</div>
+          <div className="text-gray-600 text-center">
+            {!selectedTavolo ? "Scorrere a destra per vedere altri tavoli" : ""}
+          </div>
         </div>
       )}
       {selectedTavolo && selectedDate && (
@@ -611,17 +622,21 @@ function scrollToBottom() {
               Il numero minimo di persone deve essere maggiore/uguale al minimo{" "}
             </span>
           )}
-          {selectedNumeroPersone > selectedTavolo?.posti.length! && (
+          {selectedNumeroPersone > selectedTavolo?.numeroMassimo! && (
             <span className="text-red-500 text-lg">
               Il numero massimo di persone deve essere minore/uguale al massimo{" "}
             </span>
           )}
         </div>
       )}
-            <div className="text-gray-600 text-center">{selectedNumeroPersone   ?"Scorrere in basso per scegliere le portate" :  ""  }</div>
+      <div className="text-gray-600 text-center">
+        {selectedNumeroPersone
+          ? "Scorrere in basso per scegliere le portate"
+          : ""}
+      </div>
 
       {selectedTavolo?.numeroMinimo! <= selectedNumeroPersone &&
-        selectedNumeroPersone <= selectedTavolo?.posti.length! && (
+        selectedNumeroPersone <= selectedTavolo?.numeroMassimo! && (
           <div>
             <div className="text-xl">Menu</div>
             <div>
@@ -756,35 +771,70 @@ function scrollToBottom() {
                             </div>
                           ))}
                         </div>
-                              <div className="text-center mt-2 text-gray-600">Scorrere verso destra per vedere altre bibite</div>
+                        <div className="text-center mt-2 text-gray-600">
+                          Scorrere verso destra per vedere altre bibite
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
               ))}
-              <div className="mt-5 mx-auto flex flex-col">
-                <div className="text-xl">Costi</div>
-                <div className="text-lg flex lg:w-[300px] justify-between">
-                  <div>Prezzo tavolo</div>
-                  <div>{selectedTavolo?.prezzo}€</div>
-                </div>
-                <div className="text-lg flex lg:w-[300px] justify-between">
-                  <div>Prezzo bibite/alcolici</div>
-                  <div>{calcolaTotaleBibite()}€</div>
-                </div>
-                <div className="mt-3 border-t lg:w-[300px] flex justify-between">
-                  <div className="font-bold">Totale:</div>
-                  <div className="font-bold">
-                    {Number(selectedTavolo?.prezzo!) + calcolaTotaleBibite()}€
+              <div className="mt-5 mx-auto flex flex-col items-center">
+                <h2 className="text-xl font-semibold mb-4">Costi</h2>
+                <div className="w-full max-w-md  rounded-lg shadow-md p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-lg font-medium ">
+                      Prezzo tavolo{" "}
+                      {selectedTavolo?.prezzoPerPosto
+                        ? "(a persona)"
+                        : "(totale)"}
+                    </span>
+                    <span className="text-lg font-bold ">
+                      {selectedTavolo?.prezzo}€
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-lg font-medium ">
+                      Prezzo bibite/alcolici
+                    </span>
+                    <span className="text-lg font-bold ">
+                      {calcolaTotaleBibite()}€
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-lg font-medium ">
+                      Prezzo totale a persona
+                    </span>
+                    <span className="text-lg font-bold ">
+                      {(
+                        (Number(selectedTavolo?.prezzo) +
+                          calcolaTotaleBibite()) /
+                        selectedNumeroPersone
+                      ).toFixed(2)}
+                      €
+                    </span>
+                  </div>
+                  <div className="border-t border-gray-200 my-3"></div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xl font-bold ">Totale:</span>
+                    <span className="text-xl font-bold text-green-600">
+                      {selectedTavolo?.prezzoPerPosto
+                        ? Number(selectedTavolo?.prezzo) *
+                            selectedNumeroPersone +
+                          calcolaTotaleBibite()
+                        : Number(selectedTavolo?.prezzo) +
+                          calcolaTotaleBibite()}
+                      €
+                    </span>
                   </div>
                 </div>
+                <button
+                  className="mt-5 w-full max-w-md bg-green-500 text-white uppercase font-bold py-2 px-4 rounded-full hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50"
+                  onClick={onCheckout}
+                >
+                  Paga ora
+                </button>
               </div>
-            </div>
-            <div
-              className="lg:w-[300px] p-2 text-center border rounded-full mt-5 uppercase font-bold bg-black cursor-pointer"
-              onClick={onCheckout}
-            >
-              Paga ora
             </div>
           </div>
         )}
