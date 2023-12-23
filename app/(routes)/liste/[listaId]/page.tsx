@@ -71,25 +71,22 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
     setIsMounted(true);
   }, []);
 
-  const onCheckout = async () => {
-    if(
-    man?.find((biglietto) => biglietto.listaId === params.listaId)
-    ){
-       router.push('/biglietti')
-    }else{
-    
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/liste/${params.listaId}/checkout`,
-      {
-        userAccountId: userId,
-        listaId: params.listaId,
-        firstName: user?.firstName,
-        lastName: user?.lastName,
-      }
-    );
+  const onCheckout = async (gender?: "m" | "f") => {
+    if (man?.find((biglietto) => biglietto.listaId === params.listaId)) {
+      router.push("/biglietti");
+    } else {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/liste/${params.listaId}/checkout`,
+        {
+          userAccountId: userId,
+          listaId: params.listaId,
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+          gender,
+        }
+      );
 
-    window.location = response.data.url;
-
+      window.location = response.data.url;
     }
   };
 
@@ -117,6 +114,48 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
       </div>
     );
   }
+  const TicketPurchaseSection = () => {
+    const isTicketPurchased = man?.find(
+      (biglietto) => biglietto.listaId === params.listaId
+    );
+
+    const ticketButtonClass =
+      "w-full sm:w-[40%] flex items-center justify-center transition cursor-pointer bg-black rounded-full py-3 text-center border border-white group";
+
+    if (isTicketPurchased) {
+      return (
+        <div
+          className={ticketButtonClass}
+          onClick={() => router.push("/biglietti")}
+        >
+          <span className="text-xl transition">Visualizza biglietto</span>
+        </div>
+      );
+    } else if (lista?.unisex) {
+      return (
+        <div className={ticketButtonClass} onClick={() => onCheckout()}>
+          <span className="text-xl transition">
+            Compra biglietto - {lista?.prezzoBiglietto}€
+          </span>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex flex-col sm:flex-row justify-center gap-4 p-2">
+          <div className={ticketButtonClass} onClick={() => onCheckout("f")}>
+            <span className="text-xl transition">
+              Biglietto Femmina - {lista?.prezzoDonna}€
+            </span>
+          </div>
+          <div className={ticketButtonClass} onClick={() => onCheckout("m")}>
+            <span className="text-xl transition">
+              Biglietto Maschio - {lista?.prezzoBiglietto}€
+            </span>
+          </div>
+        </div>
+      );
+    }
+  };
   return (
     <>
       <div
@@ -184,7 +223,7 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
             </div>
           </div>
         </div>
-        <div
+        {/* <div
           className="w-[50%] m-2 mx-auto flex items-center justify-center transition cursor-pointer bg-black rounded-full py-3 text-center border border-white group"
           onClick={onCheckout}
         >
@@ -193,7 +232,8 @@ const EventoPage = ({ params }: { params: { listaId: string } }) => {
               ? "Visualizza biglietto"
               : "Compra biglietto"}
           </span>
-        </div>
+        </div> */}
+        <TicketPurchaseSection />
       </div>
     </>
   );

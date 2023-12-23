@@ -3,6 +3,8 @@ import { StringMappingType } from "typescript";
 export interface UserAccount {
   id: string;
   name: string;
+  surname: string,
+  gender: string,
   discoteche: Discoteca[],
 
 }
@@ -54,8 +56,10 @@ export interface Lista {
   nome: string,
   discotecaId: string,
   discoteca: Discoteca,
+  prezzoDonna?: number
   prezzoBiglietto: number,
   quantity?: number,
+  unisex: boolean;
   priority: number,
   bigliettiRimanenti: number,
   imageUrl: string,
