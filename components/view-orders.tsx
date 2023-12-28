@@ -13,6 +13,7 @@ import { Loader } from "./loader";
 import useUserIdSet from "@/hooks/use-userId";
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const ViewOrders = () => {
   const [loading, setLoading] = useState(false);
@@ -151,8 +152,8 @@ const ViewOrders = () => {
               </div>
               <div className="flex w-[95%] sm:w-[95%]  mt-2 justify-between">
                 <div className="flex flex-col gap-1" onClick={() => {}}>
-                  <div>{item.tavolo.numeroTavolo}</div>
-                  <div>{item.discoteca.name}</div>
+                  <div className="font-bold">{item.tavolo.numeroTavolo}</div>
+                  <Link href={`/${item.discoteca.id}`}>{item.discoteca.name}</Link>
                   <div className="flex ">
                     <MapPin size={20} className="mt-1" />
                     <span className="ml-1 mt-1">
@@ -166,7 +167,7 @@ const ViewOrders = () => {
                     {format(new Date(item.orderDate), "MMMM do, yyyy")}
                   </span>
                   <span
-                    className="text-right text-xl font-bold cursor-pointer"
+                    className="text-right text-xl font-bold cursor-pointer text-red-500"
                     onClick={() => {
                       if (item.numeroPersonePagato !== 0) {
                         changeOpen();
@@ -176,13 +177,13 @@ const ViewOrders = () => {
                   >
                     {item.codice}
                   </span>
-                  {/* <span
+                  <span
                     className="flex justify-end cursor-pointer"
-                    onClick={() => shareContent(item.codice)}
+                    // onClick={() => shareContent(item.codice)}
                   >
                     {item.numeroPersonePagato}/{item.numeroPersone}{" "}
-                    <Share2 className="ml-5 h-5 w-5" />
-                  </span> */}
+                    {/* <Share2 className="ml-5 h-5 w-5" /> */}
+                  </span>
                 </div>
               </div>
             </div>
@@ -209,7 +210,7 @@ const ViewOrders = () => {
       </div>
       <div
         className={` absolute flex-col left-[50%] transition p-5 bg-black rounded-xl space-y-4 w-4/5 lg:w-[60vh] translate-x-[-50%]  justify-center top-[30%] ${
-          addCodice ? "translate-x-[-50%]" : "translate-x-[-300%]"
+          addCodice ? "translate-x-[-50%]" : "translate-x-[-400%]"
         }`}
       >
         <div className="flex justify-between ">

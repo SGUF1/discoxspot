@@ -806,10 +806,11 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                       Prezzo totale a persona
                     </span>
                     <span className="text-lg font-bold ">
-                      {(
-                        (Number(selectedTavolo?.prezzo) +
-                          calcolaTotaleBibite()) /
-                        selectedNumeroPersone
+                      {(selectedTavolo?.prezzoPerPosto 
+                        ? Number(selectedTavolo.prezzo) + calcolaTotaleBibite() / selectedNumeroPersone
+                        : (Number(selectedTavolo?.prezzo) +
+                            calcolaTotaleBibite()) /
+                          selectedNumeroPersone
                       ).toFixed(2)}
                       €
                     </span>
