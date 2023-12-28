@@ -153,7 +153,9 @@ const ViewOrders = () => {
               <div className="flex w-[95%] sm:w-[95%]  mt-2 justify-between">
                 <div className="flex flex-col gap-1" onClick={() => {}}>
                   <div className="font-bold">{item.tavolo.numeroTavolo}</div>
-                  <Link href={`/${item.discoteca.id}`}>{item.discoteca.name}</Link>
+                  <Link href={`/${item.discoteca.id}`}>
+                    {item.discoteca.name}
+                  </Link>
                   <div className="flex ">
                     <MapPin size={20} className="mt-1" />
                     <span className="ml-1 mt-1">
@@ -209,9 +211,10 @@ const ViewOrders = () => {
         {codice !== "" && <QrCodeGenerator data={codice} />}
       </div>
       <div
-        className={` absolute flex-col left-[50%] transition p-5 bg-black rounded-xl space-y-4 w-4/5 lg:w-[60vh] translate-x-[-50%]  justify-center top-[30%] ${
+        className={cn(
+          "absolute flex-col left-[50%] transition p-5 bg-black rounded-xl space-y-4 w-4/5 lg:w-[60vh] translate-x-[-50%]  justify-center top-[30%] ",
           addCodice ? "translate-x-[-50%]" : "translate-x-[-400%]"
-        }`}
+        )}
       >
         <div className="flex justify-between ">
           <div className="text-xl lg:text-2xl font-bold ">
