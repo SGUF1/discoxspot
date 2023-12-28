@@ -134,10 +134,10 @@ const ViewDiscoteche = ({
                 className="flex flex-col gap-1"
                 onClick={() => router.push(`/${item.id}`)}
               >
-                <div>{item.name}</div>
+                <div className="font-bold">{item.name}</div>
                 <div className="flex ">
-                  <MapPin size={20} />
-                  <span className="ml-1">
+                  <MapPin size={20} className="text-gray-200"/>
+                  <span className="ml-1 text-gray-200">
                     {item.indirizzo} {item.civico}, {item.city},{" "}
                     {item.provincia.name}
                   </span>

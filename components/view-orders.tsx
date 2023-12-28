@@ -12,6 +12,7 @@ import getOrders from "@/actions/getOrders";
 import { Loader } from "./loader";
 import useUserIdSet from "@/hooks/use-userId";
 import { useUser } from "@clerk/nextjs";
+import { cn } from "@/lib/utils";
 
 const ViewOrders = () => {
   const [loading, setLoading] = useState(false);
@@ -75,7 +76,8 @@ const ViewOrders = () => {
     }
     fun();
   });
-
+  
+  const [isFocus, setIsFocus] = useState(false);
   const changeOpen = () => {
     setIsOpen(!isOpen);
   };
@@ -206,24 +208,37 @@ const ViewOrders = () => {
         {codice !== "" && <QrCodeGenerator data={codice} />}
       </div>
       <div
-        className={` absolute flex-col left-[50%] p-5 bg-black rounded-xl space-y-10 w-[30vh] sm:w-[60vh] border translate-x-[-50%]  justify-center top-[40%] ${
-          addCodice ? "flex" : "hidden"
+        className={` absolute flex-col left-[50%] transition p-5 bg-black rounded-xl space-y-4 w-4/5 lg:w-[60vh] translate-x-[-50%]  justify-center top-[30%] ${
+          addCodice ? "translate-x-[-50%]" : "translate-x-[-300%]"
         }`}
       >
-        <div className="flex justify-between text-2xl ">
-          <div>Inserisci il codice:</div>
+        <div className="flex justify-between ">
+          <div className="text-xl lg:text-2xl font-bold ">
+            Inserisci il codice:
+          </div>
           <div onClick={changeAddCodice}>
-            <X className="h-7 w-7 cursor-pointer" />
+            <X className="h-7 w-7 cursor-pointer rounded-full p-1 bg-red-500" />
           </div>
         </div>
-        <div className="">
+        <div className="flex flex-col items-center">
           <input
-            className="w-full p-3 rounded-xl text-lg text-black font-bold text-center"
+            className={cn(
+              "w-full p-3 bg-transparent outline-none border-b border-b-gray-400",
+              isFocus && " delay-300 border-b-transparent"
+            )}
             value={inputCodice}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
             onChange={(e) => setInputCodice(e.target.value)}
           />
+          <span
+            className={cn(
+              "h-1 bg-red-500 w-0 duration-300 relatiive z-20 -mt-1 ",
+              isFocus && "w-full"
+            )}
+          />
         </div>
-        <div className="flex items-center justify-center flex-col gap-3">
+        <div className="flex items-center justify-center flex-col gap-5 pt-5">
           <button
             className="w-full text-white text-lg border p-2 rounded-xl"
             onClick={onCheckout}

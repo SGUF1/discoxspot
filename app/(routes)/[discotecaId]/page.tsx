@@ -121,10 +121,9 @@ const EventoPage = ({ params }: { params: { discotecaId: string } }) => {
         </div>
         <div className="p-5 flex flex-col gap-y-3">
           <div className="flex flex-col gap-1">
-            <span className="text-xl">Descrizione:</span>
             <div className="text-lg flex flex-col gap-1">
               {discoteca?.informazioni.map((item) => (
-                <span key={item.id}>{item.descrizione}</span>
+                <span key={item.id} className={`${item.tipoInformazione.nome === "Titolo" && 'text-xl font-bold'}`}>{item.descrizione}</span>
               ))}
             </div>
           </div>

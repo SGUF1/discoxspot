@@ -17,7 +17,7 @@ const Header = () => {
                 // @ts-ignore
                 style={{ userDrag: 'none', userSelect: 'none' }}>
                 {/* <Image src={"https://res.cloudinary.com/dg2hpjtdh/image/upload/v1688768031/htzdr7jksuvpdn3uy3vc.jpg"} onClick={() => router.push("/")} alt='logo' width={50} height={50} /> */}
-                <Image src={"/dxs_logo.png"} alt='image' width={140} height={90} className='w-[150px] lg:w-[200px] bg-transparent' onClick={() => router.push("/")} />
+                <Image src={"/discoxspot.png"} alt='image' width={140} height={90} className='w-[150px] lg:w-[200px] bg-transparent' onClick={() => router.push("/")} />
             </div>
             <div>
                 <SearchBar />

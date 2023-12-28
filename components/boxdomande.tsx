@@ -1,5 +1,6 @@
 "use client";
 import updateUser from "@/actions/updateUser";
+import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 interface BoxDomandeProps {
   userId: string;
@@ -22,12 +23,25 @@ const BoxDomande = ({ userId }: BoxDomandeProps) => {
     { nome: "R&B" },
     { nome: "Reggae" },
     { nome: "Metal" },
+    { nome: "Blues" },
+    { nome: "Funk" },
+    { nome: "Soul" },
+    { nome: "Punk" },
+    { nome: "Indie" },
+    { nome: "Gospel" },
+    { nome: "Disco" },
+    { nome: "Techno" },
+    { nome: "Folk" },
+    { nome: "Opera" },
   ];
+
   const daDove = [
     { opzione: "Online" },
     { opzione: "Da un amico/a" },
     { opzione: "Da una discoteca" },
   ];
+
+  const [isFocus, setIsFocus] = useState(false);
   const toggleGenre = (genre: any) => {
     if (firstDomanda.includes(genre)) {
       setFirstDomanda(
@@ -84,12 +98,26 @@ const BoxDomande = ({ userId }: BoxDomandeProps) => {
         <div>
           <div className="text-lg font-bold mt-10">Inserisci l&apos;età</div>
           <div>L&apos;età deve essere superiore a 16 anni</div>
-          <input
-            value={eta === 0 ? "" : eta}
-            onChange={(e) => setEta(+e.target.value)}
-            type="number"
-            className="text-black rounded-2xl p-1 text-lg"
-          />
+          <div className="flex flex-col items-center">
+            <input
+              className={cn(
+                "w-full p-3 bg-transparent outline-none border-b border-b-gray-400",
+                isFocus && " delay-300 border-b-transparent"
+              )}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              value={eta === 0 ? "" : eta}
+              onChange={(e) => setEta(+e.target.value)}
+              type="number"
+            />
+            <span
+              className={cn(
+                "h-1 bg-red-500 w-0 duration-300 relatiive z-20 -mt-1 ",
+                isFocus && "w-full"
+              )}
+            />
+          </div>
+
           <div className="flex justify-end items-center mt-4">
             <div
               className={`text-white ${
