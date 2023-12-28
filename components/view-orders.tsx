@@ -61,6 +61,7 @@ const ViewOrders = () => {
     event.preventDefault();
   };
   const searchParams = useSearchParams();
+  
   useEffect(() => {
     async function fun() {
       if (searchParams.get("codice")) {
@@ -181,10 +182,10 @@ const ViewOrders = () => {
                   </span>
                   <span
                     className="flex justify-end cursor-pointer"
-                    // onClick={() => shareContent(item.codice)}
+                    onClick={() => shareContent(item.codice)}
                   >
                     {item.numeroPersonePagato}/{item.numeroPersone}{" "}
-                    {/* <Share2 className="ml-5 h-5 w-5" /> */}
+                    <Share2 className="ml-5 h-5 w-5" />
                   </span>
                 </div>
               </div>
