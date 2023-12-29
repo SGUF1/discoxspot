@@ -14,20 +14,47 @@ const SearchBar = () => {
     dispatch(searchDisco(searchTerm))
 
     return (
-        <>
-            <div className={cn('items-center hidden', pathname === "/" || pathname === '/scuole' ? "flex" : "flex-none",)}>
-                <input type='text' placeholder='search' className='bg-gray-300 p-2 rounded-full text-black w-52 h-9 text-sm' value={searchTerm} onChange={(e: any) => { setSearchTerm(e.target.value); }} />
-                <SearchIcon className='h-5 w-5 absolute ml-44 text-black ' />
-            </div>
-            {}
-            {pathname === "/preferiti" && <div className='text-white text-xl'>Preferiti</div>}
-            {pathname === "/eventi" && <div className='text-white text-xl'>Eventi</div>}
-            {pathname === "/like-rank" && <div className='text-white text-xl'>Classifica Discoteche</div>}
-            {pathname === "/prenotati" && <div className='text-white text-xl'>Tavoli</div>}
-            {pathname === "/liste" && <div className='text-white text-xl'>Liste</div>}
-            {pathname === "/biglietti" && <div className='text-white text-xl'>Biglietti</div>}
-        </>
-    )
+      <>
+        <div
+          className={cn(
+            "items-center  hidden bg-[#3B3B3B] p-2 rounded-full text-white md:w-65 sm:w-44 w-32 h-9 text-sm",
+            pathname === "/" || pathname === "/scuole"
+              ? "flex justify-between"
+              : ""
+          )}
+        >
+          <SearchIcon className="h-5 w-5   " />
+          <input
+            type="text"
+            placeholder="Locali"
+            className="bg-transparent p-2 rounded-full outline-none  w-full h-9 text-sm"
+            value={searchTerm}
+            onChange={(e: any) => {
+              setSearchTerm(e.target.value);
+            }}
+          />
+        </div>
+        {}
+        {pathname === "/preferiti" && (
+          <div className="text-white text-xl">Preferiti</div>
+        )}
+        {pathname === "/eventi" && (
+          <div className="text-white text-xl">Eventi</div>
+        )}
+        {pathname === "/like-rank" && (
+          <div className="text-white text-xl">Classifica Discoteche</div>
+        )}
+        {pathname === "/prenotati" && (
+          <div className="text-white text-xl">Tavoli</div>
+        )}
+        {pathname === "/liste" && (
+          <div className="text-white text-xl">Liste</div>
+        )}
+        {pathname === "/biglietti" && (
+          <div className="text-white text-xl">Biglietti</div>
+        )}
+      </>
+    );
 }
 
 export default SearchBar

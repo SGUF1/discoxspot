@@ -1,10 +1,11 @@
 import React from 'react'
 import { auth } from '@clerk/nextjs'
 import LeftBar from '@/components/leftbar'
-import ViewDiscoteche from '@/components/view-discoteche'
+import View from '@/components/view-discoteche'
 import getUser from '@/actions/getUser'
 import createUser from '@/actions/createUser'
 import ViewEventi from '@/components/view-eventi'
+import Header from '@/components/header'
 const UserPage = async () => {
 
 
@@ -18,13 +19,17 @@ const UserPage = async () => {
   }
   const user = await getUser(userId!)
   return (
-    <div className='p-5 text-white  lg:p-10 lg:px-20 h-[80vh]'>
-      <div className='flex space-x-5'>
-        <LeftBar/>
-        <ViewEventi/>
+    <div className="text-white relative h-[screen]">
+      <div className="flex h-full">
+        <LeftBar />
+        <div className="w-full h-full relative">
+          <Header user={user} />
+          
+          <View user={user} number={4} />
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default UserPage

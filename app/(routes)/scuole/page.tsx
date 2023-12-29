@@ -2,7 +2,7 @@ import React from "react";
 import Header from "@/components/header";
 import LeftBar from "@/components/leftbar";
 import getDiscoteche from "@/actions/getDiscoteche";
-import ViewDiscoteche from "@/components/view-discoteche";
+import View from "@/components/view-discoteche";
 import getProvince from "@/actions/getProvince";
 import Footer from "@/components/footer";
 import { useDispatch } from "react-redux";
@@ -29,7 +29,7 @@ const Page = async () => {
       <div className="flex space-x-5">
         <LeftBar />
         {user.eta < 16 && <BoxDomande userId={user.id} />}
-        <ViewDiscoteche user={user} scuole/>
+        <View user={user} scuole/>
       </div>
     </div>
   );

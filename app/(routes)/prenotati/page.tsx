@@ -1,17 +1,26 @@
-import ViewOrders from '@/components/view-orders'
 import React, { useEffect, useState } from 'react'
 import LeftBar from '@/components/leftbar'
+import { auth } from '@clerk/nextjs'
+import getUser from '@/actions/getUser'
+import Header from '@/components/header'
+import View from '@/components/view-discoteche'
 
 
-const Prenotati = () => {
+const Prenotati =async () => {
+   const userId = auth().userId
+
+  const user = await getUser(userId!)
   return (
-    <div className='p-5 text-white lg:p-10 lg:px-20 h-[80vh] '>
-      <div className='flex space-x-5'>
+    <div className=" text-white relative h-[screen] ">
+      <div className="flex h-full">
         <LeftBar />
-        <ViewOrders   />
+        <div className="w-full h-full relative">
+          <Header user={user} />
+          <View user={user} number={7} />
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Prenotati

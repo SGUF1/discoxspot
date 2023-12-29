@@ -1,11 +1,19 @@
 "use client";
 
-import { Discoteca, UserAccounts } from "@/type";
+import {
+  Discoteca,
+  Evento,
+  Lista,
+  Order,
+  OrderBiglietto,
+  UserAccount,
+  UserAccounts,
+} from "@/type";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Heart, MapPin } from "lucide-react";
 import likeToDiscoteca from "@/actions/likeToDiscoteca";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import getDiscoteche from "@/actions/getDiscoteche";
 import useLike from "@/hooks/use-like";
 import { useAppSelector } from "@/store/store";
@@ -15,83 +23,191 @@ import getLikeDiscoteche from "@/actions/getLikedDiscoteche";
 import { useUser } from "@clerk/nextjs";
 import getClassificaDiscoteche from "@/actions/getClassificaDiscoteche";
 import getScuole from "@/actions/getScuole";
+import HomePageBanner from "./HomePageBanner";
+import { cn } from "@/lib/utils";
+import getEventi from "@/actions/getEventi";
+import getListe from "@/actions/getListe";
+import ModelView from "./ModelView";
+import Loading from "@/app/loading";
+import getUser from "@/actions/getUser";
+import getOrderBiglietti from "@/actions/getBiglietti";
+import getOrder from "@/actions/getOrder";
+import getOrders from "@/actions/getOrders";
 
 interface ViewDiscotecheProps {
-  preferiti?: boolean | false;
   user: UserAccounts;
-  classifica?: boolean | false;
-  scuole?: true | false;
+  number: number;
+  home?: boolean;
 }
 
-const ViewDiscoteche = ({
-  user,
-  preferiti,
-  classifica,
-  scuole,
-}: ViewDiscotecheProps) => {
+const View = ({ user, number, home }: ViewDiscotecheProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [discoteche, setDiscoteche] = useState<Discoteca[]>([]);
+  const [likedDiscoteche, setLikedDiscoteche] = useState<Discoteca[]>([]);
+  const [biglietti, setBiglietti] = useState<OrderBiglietto[]>([]);
+  const [tavoli, setTavoli] = useState<Order[]>([]);
+  const [classificaDiscoteche, setClassificaDiscoteche] = useState<Discoteca[]>(
+    []
+  );
+  const [eventi, setEventi] = useState<Evento[]>([]);
+  const [liste, setListe] = useState<Lista[]>([]);
   const { addItem } = useUserIdSet();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const like = useLike();
   const searchTerm = useAppSelector((state) => state.discoteche.ricerca);
   const [first, setFirst] = useState(true);
+  const pathName = usePathname();
+  const [userProfile, setUserProfile] = useState<UserAccounts>(user);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const options = [
+    { name: "Prefiriti", uid: "preferiti", number: 1 },
+    { name: "Classifica", uid: "classifica", number: 2 },
+    { name: "Discoteche", uid: "discoteche", number: 3 },
+    { name: "Eventi", uid: "eventi", number: 4 },
+    { name: "Liste", uid: "liste", number: 5 },
+  ];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetch = async (number: number) => {
+    try {
+      setIsLoading(true);
+      let data;
+
+      switch (number) {
+        case 1: // preferiti
+          try {
+            setIsLoading(true);
+            setUserProfile(await getUser(userProfile.id));
+            data = await getLikeDiscoteche(userProfile.id);
+            setLikedDiscoteche(data);
+          } catch (err) {
+            console.log(err);
+          } finally {
+            setIsLoading(false);
+          }
+          break;
+        case 2: // classifica
+          try {
+            setIsLoading(true);
+            data = await getClassificaDiscoteche(userProfile.id);
+
+            setClassificaDiscoteche(data);
+          } catch (err) {
+            console.log(err);
+          } finally {
+            setIsLoading(false);
+          }
+
+          break;
+        case 3: // discoteche
+          try {
+            setIsLoading(true);
+            setUserProfile(await getUser(userProfile.id));
+            data = await getDiscoteche();
+            setDiscoteche(data);
+          } catch (err) {
+            console.log(err);
+          } finally {
+            setIsLoading(false);
+          }
+
+          break;
+        case 4: // eventi
+          try {
+            setIsLoading(true);
+            data = await getEventi();
+            setEventi(data);
+          } catch (err) {
+            console.log(err);
+          } finally {
+            setIsLoading(false);
+          }
+
+          break;
+        case 5: // liste
+          try {
+            setIsLoading(true);
+            data = await getListe();
+            setListe(data);
+          } catch (err) {
+            console.log(err);
+          } finally {
+            setIsLoading(false);
+          }
+          break;
+        case 6: // liste
+          try {
+            setIsLoading(true);
+            data = await getOrderBiglietti(user.id);
+            setBiglietti(data);
+          } catch (err) {
+            console.log(err);
+          } finally {
+            setIsLoading(false);
+          }
+          break;
+        case 7: // liste
+          try {
+            setIsLoading(true);
+            data = await getOrders(user.id);
+            setTavoli(data);
+          } catch (err) {
+            console.log(err);
+          } finally {
+            setIsLoading(false);
+          }
+
+          break;
+        default:
+          console.error("Invalid number provided for fetch.");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      // Qui puoi gestire l'errore in modo più dettagliato, come mostrare un messaggio all'utente.
+    } finally {
+      setIsLoading(false);
+      setFirst(false);
+    }
+  };
 
   useEffect(() => {
-    async function fetch() {
+    const fetchData = async () => {
       try {
-        if (first) {
-          setIsLoading(true);
-        }
-        if (preferiti) {
-          const allDiscoteche = await getLikeDiscoteche(user.id);
-          setDiscoteche(allDiscoteche);
-        } else if (classifica) {
-          const allDiscoteche = await getClassificaDiscoteche(user.id);
-          setDiscoteche(allDiscoteche);
-        } else if (scuole) {
-          const allDiscoteche = await getScuole();
-          setDiscoteche(allDiscoteche);
-        } else {
-          const allDiscoteche = await getDiscoteche();
-          setDiscoteche(allDiscoteche);
-        }
+        setIsLoading(true); // Imposta il loading a true prima della chiamata
+        await fetch(number);
       } catch (error) {
-        console.error("Error fetching discoteche:", error);
+        console.error("Error fetching data:", error);
       } finally {
-        setIsLoading(false);
-        setFirst(false);
+        setIsLoading(false); // Imposta il loading a false dopo la chiamata, indipendentemente dal risultato
       }
-    }
-    fetch();
-    if (!classifica) {
-      const interval = setInterval(fetch, 1000);
+    };
 
-      return () => clearInterval(interval);
-    }
-  }, [first, setDiscoteche, classifica, preferiti, user]);
+    // Chiama la funzione fetchData al montaggio e ogni volta che il valore di 'number' cambia
+    fetchData();
+  }, [number]); // 'number' è la dipendenza, quindi il useEffect verrà chiamato ogni volta che 'number' cambia
+
   const filteredDiscoteche = discoteche.filter((item) =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  const handleOnHeart = async (item: Discoteca) => {
-    try {
-      setIsLoading(true);
-      await likeToDiscoteca(user.id, item.id);
-    } catch (error) {
-      console.error("Error while liking discoteca:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const preventDefault = (event: any) => {
     event.preventDefault();
   };
 
+  const [optionSelected, setOptionSelected] = useState(
+    options.find((item) => item.number === number)?.uid
+  );
+
+  const handleSelectOptionClick = async (number: number, uid: string) => {
+    setOptionSelected(uid);
+    await fetch(number);
+  };
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
   if (isLoading && first) {
     return (
       <div className="justify-center items-center flex w-full">
@@ -99,79 +215,169 @@ const ViewDiscoteche = ({
       </div>
     );
   }
+
+  const content = () => {
+    let contentToRender;
+
+    if (isLoading) {
+      return (
+        <div className="flex justify-center items-center">
+          <Loading />
+        </div>
+      );
+    }
+
+    if (optionSelected === "discoteche") {
+      if (filteredDiscoteche.length === 0) {
+        contentToRender = (
+          <div className="flex justify-center items-center">
+            Nessuna discoteca trovata
+          </div>
+        );
+      } else {
+        contentToRender = (
+          <div className="mt-5 mx-5 justify-center items-center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-10">
+            {filteredDiscoteche.map((item) => (
+              <ModelView key={item.id} discoteca={item} user={userProfile} />
+            ))}
+          </div>
+        );
+      }
+    } else if (optionSelected === "preferiti") {
+      if (likedDiscoteche.length === 0) {
+        contentToRender = (
+          <div className="flex justify-center items-center">
+            Nessuna discoteca trovata
+          </div>
+        );
+      } else {
+        contentToRender = (
+          <div className="mt-5 mx-5 justify-center items-center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-10">
+            {likedDiscoteche.map((item) => (
+              <ModelView key={item.id} discoteca={item} user={userProfile} />
+            ))}
+          </div>
+        );
+      }
+    } else if (optionSelected === "classifica") {
+      if (classificaDiscoteche.length === 0) {
+        contentToRender = (
+          <div className="flex justify-center items-center">
+            Nessuna discoteca trovata
+          </div>
+        );
+      } else {
+        contentToRender = (
+          <div className="mt-5 mx-5 justify-center items-center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-10">
+            {classificaDiscoteche.map((item) => (
+              <ModelView key={item.id} discoteca={item} user={userProfile} />
+            ))}
+          </div>
+        );
+      }
+    } else if (optionSelected === "eventi") {
+      if (eventi.length === 0) {
+        contentToRender = (
+          <div className="flex justify-center items-center">
+            Nessun evento trovato
+          </div>
+        );
+      } else {
+        contentToRender = (
+          <div className="mt-5 mx-5 justify-center items-center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-10">
+            {eventi.map((item) => (
+              <ModelView key={item.id} evento={item} user={userProfile} />
+            ))}
+          </div>
+        );
+      }
+    } else if (optionSelected === "liste") {
+      if (liste.length === 0) {
+        contentToRender = (
+          <div className="flex justify-center items-center">
+            Nessuna lista trovata
+          </div>
+        );
+      } else {
+        contentToRender = (
+          <div className="mt-5 mx-5 justify-center items-center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-10">
+            {liste.map((item) => (
+              <ModelView key={item.id} lista={item} user={userProfile} />
+            ))}
+          </div>
+        );
+      }
+    }
+
+    if (number === 6) {
+      if (biglietti.length === 0) {
+        contentToRender = (
+          <div className="flex justify-center items-center">
+            Nessun biglietto trovato
+          </div>
+        );
+      } else {
+        contentToRender = (
+          <div className="mt-5 mx-5 justify-center gap-y-10 sm:gap-y-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5  gap-4 pb-10">
+            {biglietti.map((item) => (
+              <ModelView key={item.id} biglietto={item} user={userProfile} />
+            ))}
+          </div>
+        );
+      }
+    } else if (number === 7) {
+      if (tavoli.length === 0) {
+        contentToRender = (
+          <div className="flex justify-center items-center">
+            Nessun tavolo trovato
+          </div>
+        );
+      } else {
+        contentToRender = (
+          <div className="mt-5 mx-5 justify-center items-center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-10">
+            {tavoli.map((item) => (
+              <ModelView key={item.id} tavolo={item} user={userProfile} />
+            ))}
+          </div>
+        );
+      }
+    }
+    return contentToRender;
+  };
+
   if (!isMounted) {
     return null;
   }
 
   return (
-    <div className="lg:-mt-10 grid grid-cols-1 -mt-4  overflow-y-scroll w-full  overflow-x-auto h-[75vh] sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 text-white">
-      {filteredDiscoteche.length === 0 ? (
-        <div className="flex justify-center absolute items-center w-[75%] lg:w-[77%] h-[84vh]">
-          {scuole ? "Nessuna scuola trovata" : "Nessuna discoteca trovata"}
+    <div className="relative w-full grid grid-cols-1 overflow-y-scroll overflow-x-auto h-[80vh] ">
+      {number <= 5 && (
+        <div className="flex flex-col space-y-10">
+          <HomePageBanner />
+          {pathName === "/" && (
+            <div className="sm:mx-10 md:mx-20 mx-5 w-max md:space-x-5 space-x-2 flex justify-between overflow-x-scroll">
+              {options.map((item) => (
+                <span
+                  key={item.name}
+                  className={cn(
+                    "py-1 px-3 cursor-pointer rounded-full border transition",
+                    optionSelected === item.uid &&
+                      "bg-orange-600 border-transparent"
+                  )}
+                  onClick={() => handleSelectOptionClick(item.number, item.uid)}
+                >
+                  {item.name}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
-      ) : (
-        filteredDiscoteche.map((item) => (
-          <div className="flex flex-col items-center" key={item.id}>
-            <div
-              className="h-36 sm:h-48 flex items-center w-[95%] sm:w-[95%]  overflow-hidden rounded-xl"
-              onDragStart={preventDefault}
-              onContextMenu={preventDefault}
-              onClick={() => router.push(`/${item.id}`)}
-              // @ts-ignore
-              style={{ userDrag: "none", userSelect: "none" }}
-            >
-              <Image
-                src={item.imageUrl}
-                alt="image"
-                width={1000}
-                height={100}
-                className="object-contain lg:hover:scale-125 transition hover:cursor-pointer "
-                
-              />
-            </div>
-            <div className="flex w-[95%] sm:w-[95%]  mt-2 justify-between">
-              <div
-                className="flex flex-col gap-1"
-                onClick={() => router.push(`/${item.id}`)}
-              >
-                <div className="font-bold">{item.name}</div>
-                <div className="flex ">
-                  <MapPin size={20} className="text-gray-200"/>
-                  <span className="ml-1 text-gray-200">
-                    {item.indirizzo} {item.civico}, {item.city},{" "}
-                    {item.provincia.name}
-                  </span>
-                </div>
-              </div>
-              <button
-                className={`flex items-center ${
-                  !classifica ? "cursor-pointer" : "cursor-default"
-                } outline-none`}
-                onClick={() => !classifica && handleOnHeart(item)}
-                disabled={isLoading}
-              >
-                <Heart
-                  size={22}
-                  className={`${!classifica && "hover:scale-110"} transition`}
-                  fill={`${
-                    item.userAccounts.find((userA) => userA.id === user.id)
-                      ? "red"
-                      : "transparent"
-                  }`}
-                  color={`${
-                    item.userAccounts.find((userA) => userA.id === user.id)
-                      ? "red"
-                      : "white"
-                  }`}
-                />
-                {!preferiti && <span className="ml-1">{item.like}</span>}
-              </button>
-            </div>
-          </div>
-        ))
       )}
+
+      {/* Chiamata alla funzione content() che dovrebbe gestire il rendering in base a optionSelected */}
+      {content()}
     </div>
   );
 };
 
-export default ViewDiscoteche;
+export default View;

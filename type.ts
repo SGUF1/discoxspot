@@ -1,12 +1,9 @@
-import { StringMappingType } from "typescript";
-
 export interface UserAccount {
   id: string;
   name: string;
   surname: string,
   gender: string,
   discoteche: Discoteca[],
-
 }
 
 export interface Discoteca {
@@ -47,6 +44,8 @@ export interface UserAccounts {
   orders: Order[]
   liste: Lista[]
   eta: number,
+  name: string,
+  surname: string,
   domanda1: []
   domanda2: string
 }

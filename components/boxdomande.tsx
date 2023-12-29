@@ -62,7 +62,7 @@ const BoxDomande = ({ userId }: BoxDomandeProps) => {
   };
   return (
     <div
-      className={`w-[80%] lg:w-[60%] z-10  bg-black rounded-2xl p-3 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] `}
+      className={`w-[80%] lg:w-[60%] z-10  bg-[#1F1F1F] rounded-2xl p-3 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] `}
     >
       <div className="flex justify-between  items-center">
         <div className="text-xl font-bold ">Domande</div>

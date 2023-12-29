@@ -2,7 +2,7 @@ import React from 'react'
 import Header from '@/components/header';
 import LeftBar from '@/components/leftbar';
 import getDiscoteche from '@/actions/getDiscoteche';
-import ViewDiscoteche from '@/components/view-discoteche';
+import View from '@/components/view-discoteche';
 import getProvince from '@/actions/getProvince';
 import Footer from '@/components/footer';
 import { useDispatch } from 'react-redux'
@@ -16,22 +16,19 @@ const LikeRankPage = async () => {
   
   
   const userId = auth().userId
-  try{
-    if (userId) {
-      await createUser(userId);
-    }
-    
-  }catch(errore){
-  }
+
   const user = await getUser(userId!)
   return (
-    <div className='p-5 text-white lg:p-10 lg:px-20 h-[80vh] '>
-      <div className='flex space-x-5'>
+    <div className=" text-white relative h-[screen] ">
+      <div className="flex h-full">
         <LeftBar />
-        <ViewDiscoteche  user={user} classifica={true}/>
+        <div className="w-full h-full relative">
+          <Header user={user} />
+          <View user={user} number={2} />
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default LikeRankPage

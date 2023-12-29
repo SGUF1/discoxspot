@@ -1,7 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Bell,
   Calendar,
+  Disc3,
   GraduationCap,
   Heart,
   Home,
@@ -9,124 +11,81 @@ import {
   Menu,
   PartyPopper,
   School,
+  Star,
+  Tag,
   Ticket,
   TicketIcon,
   Trophy,
   Users2,
 } from "lucide-react";
+import { MdOutlineTableBar } from "react-icons/md";
 import { UserButton } from "@clerk/nextjs";
 import { useRouter, usePathname } from "next/navigation";
-
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+import { User } from "@clerk/nextjs/server";
+
 const LeftBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  if (!isMounted) {
+    return <></>;
+  }
+  const links = [
+    { href: "/", name: "Home", icon: <Home /> },
+    // { href: "/notifiche", name: "Notifiche", icon: <Bell /> },
+    { href: "/eventi", name: "Eventi", icon: <Disc3 /> },
+    { href: "/like-rank", name: "Classifica", icon: <Star /> },
+    { href: "/liste", name: "Liste", icon: <Tag /> },
+    { href: "/preferiti", name: "Preferiti", icon: <Heart /> },
+    { href: "/biglietti", name: "Biglietti", icon: <Ticket /> },
+    { href: "/prenotati", name: "Tavoli", icon: <MdOutlineTableBar /> },
+  ];
   return (
-    <div
-      className={cn(
-        "lg:-mt-10 lg:-ml-14 -mt-4 border-r relative flex flex-col gap-6 h-full justify-center sm:items-center border-red-600 sm:w-48 lg:w-44",
-        isOpen ? "w-full" : "w-[50px]"
-      )}
-    >
-      <div
-        className={cn(
-          "flex items-center cursor-pointer ",
-          pathname === "/" && "text-red-600"
-        )}
-        onClick={() => {
-          router.push("/");
-        }}
-      >
-        <Home className="h-7 w-7 " />
-        <span className="ml-2 hidden sm:block">Home</span>
-      </div>
-      <div
-        className={cn(
-          "flex items-center cursor-pointer ",
-          pathname === "/scuole" && "text-red-600"
-        )}
-        onClick={() => {
-          router.push("/scuole");
-        }}
-      >
-        <GraduationCap className="h-7 w-7" />
-        <span className="ml-2 hidden sm:block">Scuole</span>
-      </div>
-      <div
-        className={cn(
-          "flex items-center cursor-pointer ",
-          pathname === "/eventi" && "text-red-600"
-        )}
-        onClick={() => {
-          router.push("/eventi");
-        }}
-      >
-        <PartyPopper className="h-7 w-7" />
-        <span className="ml-2 hidden sm:block">Eventi</span>
-      </div>
-      <div
-        className={cn(
-          "flex items-center cursor-pointer ",
-          pathname === "/like-rank" && "text-red-600"
-        )}
-        onClick={() => {
-          router.push("/like-rank");
-        }}
-      >
-        <Trophy className="h-7 w-7" />
-        <span className="ml-2 hidden sm:block">Classifica</span>
-      </div>
-      <div
-        className={cn(
-          "flex items-center cursor-pointer ",
-          pathname === "/liste" && "text-red-600"
-        )}
-        onClick={() => {
-          router.push("/liste");
-        }}
-      >
-        <List className="h-7 w-7" />
-        <span className="ml-2 hidden sm:block">Liste</span>
-      </div>
-      <div
-        className={cn(
-          "flex items-center cursor-pointer ",
-          pathname === "/biglietti" && "text-red-600"
-        )}
-        onClick={() => {
-          router.push("/biglietti");
-        }}
-      >
-        <Ticket className="h-7 w-7" />
-        <span className="ml-2 hidden sm:block">Biglietti</span>
-      </div>
-      <div
-        className={cn(
-          "flex items-center cursor-pointer ",
-          pathname === "/prenotati" && "text-red-600"
-        )}
-        onClick={() => {
-          router.push("/prenotati");
-        }}
-      >
-        <Calendar className="h-7 w-7" />
-        <span className="ml-2 hidden sm:block">Tavoli</span>
-      </div>
-      <div
-        className={cn(
-          "flex items-center cursor-pointer ",
-          pathname === "/preferiti" && "text-red-600"
-        )}
-        onClick={() => {
-          router.push("/preferiti");
-        }}
-      >
-        <Heart className="h-7 w-7" />
-        <span className="ml-2 hidden sm:block">Preferiti</span>
-      </div>
-      <div className="mt-[28vh]   lg:mt-[170%]">
-        <UserButton signInUrl="/" />
+    <div className="bg-[#3B3B3B] w-[75px]  relative  xl:w-[250px] h-screen ">
+      <div className="fixed top-0 left-0 h-screen xl:px-[30px]  xl:py-[30px]">
+        <div className="relative hidden mb-[130px] h-10 xl:block">
+          <Image src={"/discoxspot.png"} alt="logo" fill />
+        </div>
+        <div className="relative block mb-[130px] h-10 xl:hidden">
+          <Image src={"/background.png"} alt="logo" fill />
+        </div>
+        <div className="items-center space-x-10 justify-center xl:justify-normal hidden xl:flex">
+          <span>Menu</span>
+          <span className="bg-white w-[75px] h-[2px] hidden xl:block"></span>
+        </div>
+        <div className="relative w-full">
+          {links.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex px-0 py-[10px]  "
+            >
+              <div
+                className={cn(
+                  "text-white  rounded-xl w-[65px] hover:bg-white  justify-center xl:justify-normal hover:text-red-500 duration-300 flex  xl:w-full py-[10px] items-center px-[14px]",
+                  pathname === item.href && "bg-orange-500 text-white font-bold"
+                )}
+              >
+                <span className="text-2xl xl:mr-[20px]  ">{item.icon}</span>
+                <span className="hidden xl:block">{item.name}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <div className="absolute bottom-20 md:bottom-10 items-center flex flex-col space-y-10  justify-center left-0 w-full ">
+          <div className="items-center space-x-10 justify-center xl:justify-center  hidden xl:flex">
+            <span>Profile</span>
+            <span className="bg-white w-[75px] h-[2px] hidden xl:block"></span>
+          </div>
+          <UserButton signInUrl="/" />
+        </div>
       </div>
     </div>
   );

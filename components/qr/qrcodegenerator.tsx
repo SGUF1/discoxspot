@@ -1,29 +1,29 @@
 "use client"
 
 import React, { useEffect, useRef } from 'react'
-import QRCode  from 'qrcode'
-
+import { useQRCode } from 'next-qrcode';
 interface QRCodeGeneratorProps{
     data: string
 }
 
 const QrCodeGenerator = ({data}: QRCodeGeneratorProps) => {
+ const { Canvas } = useQRCode();
 
-    const canvasRef = useRef(null)
-
-    useEffect(() => {
-        const canvas = canvasRef.current;
-
-        QRCode.toCanvas(canvas, data, {width: 300}, (error) => {
-            if(error) {
-                console.error("Errore nella generazione del QR code", error)
-            }
-        })
-    }, [data])
-
-    return (
-        <canvas ref={canvasRef}/>
-    )
+  return (
+    <Canvas
+      text={data}
+      options={{
+        errorCorrectionLevel: "M",
+        margin: 3,
+        scale: 4,
+        width: 200,
+        color: {
+          dark: "#000000",
+          light: "#3B3B3B",
+        },
+      }}
+    />
+  );
 }
 
 export default QrCodeGenerator

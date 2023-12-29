@@ -1,29 +1,27 @@
 import React from 'react'
 import { auth } from '@clerk/nextjs'
 import LeftBar from '@/components/leftbar'
-import ViewDiscoteche from '@/components/view-discoteche'
+import View from '@/components/view-discoteche'
 import getUser from '@/actions/getUser'
 import createUser from '@/actions/createUser'
+import Header from '@/components/header'
 const UserPage = async () => {
 
 
-  const userId = auth().userId
-  try {
-    if (userId) {
-      await createUser(userId);
-    }
+    const userId = auth().userId;
+    const user = await getUser(userId!);
 
-  } catch (errore) {
-  }
-  const user = await getUser(userId!)
-  return (
-    <div className='p-5 text-white lg:p-10 lg:px-20 h-[80vh]'>
-      <div className='flex space-x-5'>
-        <LeftBar/>
-        <ViewDiscoteche user={user!} preferiti={true}/>
+    return (
+      <div className=" text-white relative h-[screen] ">
+        <div className="flex h-full">
+          <LeftBar />
+          <div className="w-full h-full relative">
+            <Header user={user} />
+            <View user={user} number={1} />
+          </div>
+        </div>
       </div>
-    </div>
-  )
+    );
 }
 
 export default UserPage

@@ -2,7 +2,7 @@ import React from "react";
 import Header from "@/components/header";
 import LeftBar from "@/components/leftbar";
 import getDiscoteche from "@/actions/getDiscoteche";
-import ViewDiscoteche from "@/components/view-discoteche";
+import View from "@/components/view-discoteche";
 import getProvince from "@/actions/getProvince";
 import Footer from "@/components/footer";
 import { useDispatch } from "react-redux";
@@ -19,17 +19,20 @@ const Page = async () => {
 
   try {
     if (userId) {
-      await createUser(userId);
+      await createUser(userId); 
     }
   } catch (errore) {}
 
   const user = await getUser(userId!);
   return (
-    <div className="p-5 text-white lg:p-10 lg:px-20 h-[80vh] ">
-      <div className="flex space-x-5">
+    <div className=" text-white relative h-[screen] ">
+      <div className="flex h-full">
         <LeftBar />
-        {user.eta < 16 && <BoxDomande userId={user.id} />}
-        <ViewDiscoteche user={user} />
+        <div className="w-full h-full relative">
+          <Header user={user}/>
+          {user.eta < 16 && <BoxDomande userId={user.id} />}
+          <View user={user} number={3} />
+        </div>
       </div>
     </div>
   );

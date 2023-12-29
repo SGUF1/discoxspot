@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
 body {
-  background-image: url("/background.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  min-height: 100vh;
+  /* background-image: url("/background.png"); */
+  /* background-position: center; */
+  /* background-repeat: no-repeat; */
+  /* background-size: cover; */
+  background: #1F1F1F;
+  height: 100vh;
   margin: 0;
   padding: 0;
 }
@@ -22,4 +24,7 @@ body {
 ::-webkit-scrollbar {
   height: 0px;
   width: 0px;
+}
+.customShadow {
+  box-shadow: 0 0px 100px 0 rgb(227, 29, 36);
 }
