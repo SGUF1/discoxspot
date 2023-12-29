@@ -305,30 +305,12 @@ const ModelView: React.FC<ModelViewProps> = ({
             <div className="px-5 py-2 bg-orange-500 rounded-t-xl text-center font-bold">
               CODICE
             </div>
-            {biglietto.confermato ? (
-              <div className="relative ">
-                <div className="text-center flex flex-col text-2xl  font-bold tracking-widest">
-                  {biglietto.codice}
-                </div>
-                <div className="flex justify-center items-center ">
-                  <QrCodeGenerator data={biglietto.codice!} />
-                </div>
-                <div className="absolute flex flex-col justify-center items-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl -rotate-45 font-bold text-red-500 space-y-5">
-                  <span className="text-white py-3 px-5 border-red-600 border-[10px]">
-                    DISCO<span className="text-red-600">X</span>SPOT
-                  </span>
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className="text-center flex flex-col text-2xl  font-bold tracking-widest">
-                  {biglietto.codice}
-                </div>
-                <div className="flex justify-center items-center ">
-                  <QrCodeGenerator data={biglietto.codice!} />
-                </div>
-              </>
-            )}
+            <div className="text-center flex flex-col text-2xl  font-bold tracking-widest">
+              {biglietto.codice}
+            </div>
+            <div className="flex justify-center items-center ">
+              <QrCodeGenerator data={biglietto.codice!} />
+            </div>
           </div>
         </div>
       )}
