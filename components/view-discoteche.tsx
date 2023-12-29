@@ -136,7 +136,7 @@ const View = ({ user, number, home }: ViewDiscotecheProps) => {
             setIsLoading(false);
           }
           break;
-        case 6: // liste
+        case 6: // biglietti
           try {
             setIsLoading(true);
             data = await getOrderBiglietti(user.id);
@@ -147,11 +147,23 @@ const View = ({ user, number, home }: ViewDiscotecheProps) => {
             setIsLoading(false);
           }
           break;
-        case 7: // liste
+        case 7: // tavoli
           try {
             setIsLoading(true);
             data = await getOrders(user.id);
-            setTavoli(data);
+            setTavoli(
+              data.filter(
+                (item) =>
+                  new Date(item.orderDate) >
+                  new Date(
+                    new Date().getFullYear(),
+                    new Date().getMonth(),
+                    new Date().getDate(),
+                    new Date().getHours() - 30,
+                    0
+                  )
+              )
+            );
           } catch (err) {
             console.log(err);
           } finally {
@@ -350,12 +362,12 @@ const View = ({ user, number, home }: ViewDiscotecheProps) => {
   }
 
   return (
-    <div className="relative w-full grid grid-cols-1 overflow-y-scroll overflow-x-auto h-[80vh] ">
+    <div className="relative w-full  grid grid-cols-1 overflow-y-scroll overflow-x-auto h-[80vh] ">
       {number <= 5 && (
         <div className="flex flex-col space-y-10">
           <HomePageBanner />
           {pathName === "/" && (
-            <div className="sm:mx-10 md:mx-20 mx-5 w-max md:space-x-5 space-x-2 flex justify-between overflow-x-scroll">
+            <div className=" mx-0 px-5 w-full  sm:w-max md:space-x-5 md:justify-between space-x-2 flex justify-between overflow-x-scroll">
               {options.map((item) => (
                 <span
                   key={item.name}

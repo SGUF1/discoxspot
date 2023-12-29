@@ -50,10 +50,10 @@ const LeftBar = () => {
   return (
     <div className="bg-[#3B3B3B] w-[75px]  relative  xl:w-[250px] h-screen ">
       <div className="fixed top-0 left-0 h-screen xl:px-[30px]  xl:py-[30px]">
-        <div className="relative hidden mb-[130px] h-10 xl:block">
+        <div className="relative hidden 2xl:mb-[130px] mb-[20px] h-10 xl:block">
           <Image src={"/discoxspot.png"} alt="logo" fill />
         </div>
-        <div className="relative block mb-[130px] h-10 xl:hidden">
+        <div className="relative block  h-10 xl:hidden">
           <Image src={"/background.png"} alt="logo" fill />
         </div>
         <div className="items-center space-x-10 justify-center xl:justify-normal hidden xl:flex">
@@ -69,7 +69,7 @@ const LeftBar = () => {
             >
               <div
                 className={cn(
-                  "text-white  rounded-xl w-[65px] hover:bg-white  justify-center xl:justify-normal hover:text-red-500 duration-300 flex  xl:w-full py-[10px] items-center px-[14px]",
+                  "text-white  rounded-xl w-[65px] hover:bg-white  justify-center xl:justify-normal hover:text-orange-500 duration-300 flex  xl:w-full py-[10px] items-center px-[14px]",
                   pathname === item.href && "bg-orange-500 text-white font-bold"
                 )}
               >
