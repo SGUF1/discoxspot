@@ -45,7 +45,7 @@ const ViewBiglietti = () => {
   const shareContent = async (codice: string) => {
     try {
       await navigator.share({
-        title: `discoXspot\n ${orders?.find((order) => order.lista.id === codice)?.lista.discoteca.name}`,
+        title: `discoXspot\n${orders?.find((order) => order.lista.id === codice)?.lista.discoteca.name}`,
         
         text: `Compra anche tu il biglietto e divertiti con me!\n`,
         url: `https://app.discoxspot.com/liste/${codice}`,

@@ -67,6 +67,30 @@ const ModelView: React.FC<ModelViewProps> = ({
       console.log(err);
     }
   };
+  const shareBiglietto = async (codice: string) => {
+    try {
+      await navigator.share({
+        title: `discoXspot\n${biglietto?.codice === codice && biglietto.lista.discoteca.name}`,
+
+        text: `Compra anche tu il biglietto e divertiti con me!\n`,
+        url: `https://app.discoxspot.com/liste/${codice}`,
+      });
+    } catch (error) {
+      console.error("Errore nella condivisione:", error);
+    }
+  };
+
+   const shareTavolo = async (codice: string) => {
+    try {
+      await navigator.share({
+        title: "DiscoXSpot",
+        text: `Unisciti anche tu al mio tavolo e divertiti con me\n`,
+        url: `https://app.discoxspot.com/prenotati?codice=${codice}`,
+      });
+    } catch (error) {
+      console.error("Errore nella condivisione:", error);
+    }
+  };
   const formatDate = (data: string) => {
     const dateObject = new Date(data);
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -231,7 +255,7 @@ const ModelView: React.FC<ModelViewProps> = ({
         </div>
       )}
       {biglietto && (
-        <div className="flex flex-col  ">
+        <div className="flex flex-col overflow-hidden ">
           <div className="flex flex-col space-y-5 bg-[#3B3B3B]  rounded-t-xl">
             {/* titolo */}
             <div className="px-5 py-2 bg-orange-500 rounded-t-xl text-center font-bold">
@@ -256,10 +280,18 @@ const ModelView: React.FC<ModelViewProps> = ({
                   {user?.name} {user?.surname}
                 </span>
               </div>
-              <div className="flex flex-col justify-center items-center pb-5 sm:items-start sm:justify-normal">
+              <div className="flex flex-col justify-center items-center sm:items-start sm:justify-normal">
                 <span className="uppercase text-sm">Data</span>
                 <span className="font-bold">
                   {formatDate(biglietto.lista.dataLimite)}
+                </span>
+              </div>
+              <div className="flex flex-col justify-center items-center pb-5 sm:items-start sm:justify-normal">
+                <span
+                  className=" underline"
+                  onClick={() => shareBiglietto(biglietto?.codice!)}
+                >
+                  INVITA AMICO/A
                 </span>
               </div>
             </div>
@@ -273,12 +305,30 @@ const ModelView: React.FC<ModelViewProps> = ({
             <div className="px-5 py-2 bg-orange-500 rounded-t-xl text-center font-bold">
               CODICE
             </div>
-            <div className="text-center flex flex-col text-2xl  font-bold tracking-widest">
-              {biglietto.codice}
-            </div>
-            <div className="flex justify-center items-center ">
-              <QrCodeGenerator data={biglietto.codice!} />
-            </div>
+            {!biglietto.confermato ? (
+              <div className="relative ">
+                <div className="text-center flex flex-col text-2xl  font-bold tracking-widest">
+                  {biglietto.codice}
+                </div>
+                <div className="flex justify-center items-center ">
+                  <QrCodeGenerator data={biglietto.codice!} />
+                </div>
+                <div className="absolute flex flex-col justify-center items-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl -rotate-45 font-bold text-red-500 space-y-5">
+                  <span className="text-white py-3 px-5 border-red-600 border-[10px]">
+                    DISCO<span className="text-red-600">X</span>SPOT
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="text-center flex flex-col text-2xl  font-bold tracking-widest">
+                  {biglietto.codice}
+                </div>
+                <div className="flex justify-center items-center ">
+                  <QrCodeGenerator data={biglietto.codice!} />
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -317,10 +367,18 @@ const ModelView: React.FC<ModelViewProps> = ({
                 </span>
               </div>
               <div className="flex flex-col pb-5 sm:items-start sm:justify-normal">
-                <span className="uppercase text-sm">numero persone</span>
-                <span className="font-bold">
-                  {tavolo.numeroPersonePagato}/{tavolo.numeroPersone}
-                </span>
+                <div className="flex-col flex sm:items-start sm:justify-normal">
+                  <span className="uppercase text-sm">numero persone</span>
+                  <span className="font-bold">
+                    {tavolo.numeroPersonePagato}/{tavolo.numeroPersone}
+                  </span>
+                  <span
+                    className="mt-2 underline"
+                    onClick={() => shareTavolo(tavolo.codice)}
+                  >
+                    INVITA UN&apos;AMICO/A
+                  </span>
+                </div>
               </div>
             </div>
           </div>
