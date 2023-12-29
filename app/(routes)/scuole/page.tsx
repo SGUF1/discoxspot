@@ -29,7 +29,7 @@ const Page = async () => {
       <div className="flex space-x-5">
         <LeftBar />
         {user.eta < 16 && <BoxDomande userId={user.id} />}
-        <View user={user} scuole/>
+        {/* <View user={user} scuole/> */}
       </div>
     </div>
   );
