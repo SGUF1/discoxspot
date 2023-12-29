@@ -51,7 +51,7 @@ const LeftBar = () => {
     <div className="bg-[#3B3B3B] w-[75px]  relative  xl:w-[250px] h-screen ">
       <div className="fixed top-0 left-0 h-screen xl:px-[30px]  xl:py-[30px]">
         {/* ds */}
-        <div className="relative hidden 2xl:mb-[130px] mb-[20px] h-10 xl:block">
+        <div className="relative hidden 2xl:mb-[30px] mb-[20px] h-10 xl:block">
           <Image src={"/discoxspot.png"} alt="logo" fill />
         </div>
         <div className="relative block  h-10 xl:hidden">
