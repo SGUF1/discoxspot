@@ -305,7 +305,7 @@ const ModelView: React.FC<ModelViewProps> = ({
             <div className="px-5 py-2 bg-orange-500 rounded-t-xl text-center font-bold">
               CODICE
             </div>
-            {!biglietto.confermato ? (
+            {biglietto.confermato ? (
               <div className="relative ">
                 <div className="text-center flex flex-col text-2xl  font-bold tracking-widest">
                   {biglietto.codice}
