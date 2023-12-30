@@ -10,6 +10,10 @@ import View from "./view-discoteche";
 import ModelView from "./ModelView";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import PanelTavolo from "./panel-tavolo";
+import { AppDispatch, useAppSelector } from "@/store/store";
+import { useDispatch } from "react-redux";
+import { openTavoloPlease } from "@/store/features/panel-tavolo-open";
 
 interface ViewDiscotecaPageProps {
   discotecaId: string;
@@ -18,6 +22,9 @@ const ViewDiscotecaPage = ({ discotecaId }: ViewDiscotecaPageProps) => {
   const [disco, setDisco] = useState<Discoteca>();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const open = useAppSelector((state) => state.open.open);
+  const dispatch = useDispatch<AppDispatch>();
+  const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -27,14 +34,13 @@ const ViewDiscotecaPage = ({ discotecaId }: ViewDiscotecaPageProps) => {
         console.log(err);
       } finally {
         setIsLoading(false);
+    setIsMounted(true);
+
       }
     };
     fetch();
   }, [discotecaId]);
 
-  if (isLoading) {
-    return <Loading />;
-  }
   const currentDate = new Date();
   const futureEventi = disco?.eventi.filter((dateString) => {
     const dateObject = new Date(dateString.endDate);
@@ -64,80 +70,82 @@ const ViewDiscotecaPage = ({ discotecaId }: ViewDiscotecaPageProps) => {
     );
   });
 
-   const preventDefault = (event: any) => {
-     event.preventDefault();
-   };
+  const preventDefault = (event: any) => {
+    event.preventDefault();
+  };
+  
 
-const formatDate = (data: string) => {
-  const dateObject = new Date(data);
-  const options = { year: "numeric", month: "long", day: "numeric" };
+  
+  
+  const formatDate = (data: string) => {
+    const dateObject = new Date(data);
+    const options = { year: "numeric", month: "long", day: "numeric" };
 
-  // @ts-ignore
-  const dataFormattata = dateObject.toLocaleDateString(undefined, options);
+    // @ts-ignore
+    const dataFormattata = dateObject.toLocaleDateString(undefined, options);
 
-  return dataFormattata;
-};
+    return dataFormattata;
+  };
+
   const eventiContent = () => {
     let contentToRender;
 
-     if (futureEventi?.length === 0) {
-       contentToRender = (
-         <div className="flex justify-center items-center">
-           Nessun evento trovato
-         </div>
-       );
-     } else {
-       contentToRender = (
-         <div className="mt-5 flex  space-x-4 pb-10  w-max ">
-           {futureEventi?.map((item) => (
-             <>
-               <div
-                 key={item.id}
-                 onClick={() => router.push(`/eventi/${item.id}`)}
-                 className="p-4 group rounded w-full items-center shadow-xl cursor-pointer transition hover:scale-105  hover:shadow-red-600 shadow-black flex flex-col justify-center space-y-2 "
-               >
-                 <div className="flex flex-col h-full w-full justify-center space-y-4">
-                   <div
-                     className="relative  w-full aspect-video "
-                     onDragStart={preventDefault}
-                     onContextMenu={preventDefault}
-                     // @ts-ignore
-                     style={{ userDrag: "none", userSelect: "none" }}
-                   >
-                     <Image
-                       src={item.imageUrl}
-                       alt="img"
-                       fill
-                       className="rounded-xl hover:scale-105 transition"
-                     />
-                   </div>
-                   <div className="flex flex-col w-[200px] md:w-[300px]">
-                     <div className="flex flex-col -space-y-2">
-                       <h2 className="text-md font-semibold mb-2">
-                         {item.nome}
-                       </h2>
-                       <div className="flex flex-col group-[1] "></div>
-                     </div>
-                     <div className="text-xs">{formatDate(item.endDate)}</div>
-                   </div>
-                 </div>
-                 <span className="h-[2px] w-0 group-hover:w-full bg-red-500 duration-300" />
-               </div>
-             </>
-           ))}
-         </div>
-       );
-     }
-     return contentToRender
-  }
+    if (futureEventi?.length === 0) {
+      contentToRender = (
+        <div className="flex h-32 justify-center items-center">
+          Nessun evento trovato
+        </div>
+      );
+    } else {
+      contentToRender = (
+        <div className="mt-5 flex  space-x-4 pb-10  w-max ">
+          {futureEventi?.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => router.push(`/eventi/${item.id}`)}
+                className="p-4 group rounded w-full items-center shadow-xl cursor-pointer transition hover:scale-105  hover:shadow-red-600 shadow-black flex flex-col justify-center space-y-2 "
+              >
+                <div className="flex flex-col h-full w-full justify-center space-y-4">
+                  <div
+                    className="relative  w-full aspect-video "
+                    onDragStart={preventDefault}
+                    onContextMenu={preventDefault}
+                    // @ts-ignore
+                    style={{ userDrag: "none", userSelect: "none" }}
+                  >
+                    <Image
+                      src={item.imageUrl}
+                      alt="img"
+                      fill
+                      className="rounded-xl hover:scale-105 transition"
+                    />
+                  </div>
+                  <div className="flex flex-col w-[200px] md:w-[300px]">
+                    <div className="flex flex-col -space-y-2">
+                      <h2 className="text-md font-semibold mb-2">
+                        {item.nome}
+                      </h2>
+                      <div className="flex flex-col group-[1] "></div>
+                    </div>
+                    <div className="text-xs">{formatDate(item.endDate)}</div>
+                  </div>
+                </div>
+                <span className="h-[2px] w-0 group-hover:w-full bg-red-600 duration-300" />
+              </div>
+          ))}
+        </div>
+      );
+    }
+    return contentToRender;
+  };
 
   const listeContent = () => {
     let contentToRender;
 
     if (futureListe?.length === 0) {
       contentToRender = (
-        <div className="flex justify-center items-center">
-          Nessun evento trovato
+        <div className="flex h-32 justify-center items-center">
+          Nessuna lista trovata
         </div>
       );
     } else {
@@ -170,12 +178,12 @@ const formatDate = (data: string) => {
                         {lista.nome}
                       </h2>
                     </div>
-                    <div className="text-xs">
+                    <div className="text-xs -mt-2">
                       {formatDate(lista.dataLimite)}
                     </div>
                   </div>
                 </div>
-                <span className="h-[2px] w-0 group-hover:w-full bg-red-500 duration-300" />
+                <span className="h-[2px] w-0 group-hover:w-full bg-red-600 duration-300" />
               </div>
             </>
           ))}
@@ -184,98 +192,113 @@ const formatDate = (data: string) => {
     }
     return contentToRender;
   };
+
+  if(!isMounted){
+    return <Loading/>
+  }
   return (
-    <div className=" ">
-      <div className="hidden md:flex justify-between mx-10 ">
-        <div className="relative z-10 w-1/3 xl:mt-40">
-          <div className="flex flex-col gap-y-2 ">
-            <div className="text-2xl">Scopri</div>
-            <div className="text-5xl flex flex-col font-bold  w-max">
-              <span>{disco?.name}</span>
-              <span className="h-1 bg-gradient-to-r from-transparent to-red-500 w-full"></span>
-            </div>
-            <div className="text-xl text-red-500">Discoteca</div>
-          </div>
-          <div>
-            {disco?.informazioni.map((item) => (
-              <div
-                key={item.id}
-                className={cn(
-                  "text-md",
-                  (item.tipoInformazione.nome.toLowerCase() === "titolo" &&
-                    "mt-2 text-md font-bold") ||
-                    (item.tipoInformazione.nome.toLowerCase() === "orario" &&
-                      "mx-10 list-item")
-                )}
-              >
-                {item.descrizione}
+    <>
+      <div className={cn("", open ? " hidden" : "h-max overflow-auto")}>
+        <div className="hidden md:flex justify-between mx-10 ">
+          <div className="relative z-10 w-1/3 xl:mt-40">
+            <div className="flex flex-col gap-y-2 ">
+              <div className="text-2xl">Scopri</div>
+              <div className="text-5xl flex flex-col font-bold  w-max">
+                <span>{disco?.name}</span>
+                <span className="h-1 bg-gradient-to-r from-transparent to-red-600 w-full"></span>
               </div>
-            ))}
-          </div>
-          <div className="px-3 py-2 mt-7 bg-red-500 w-max rounded-md cursor-pointer shadow-xl hover:scale-110 hover:shadow-red-500 transition">
-            PRENOTA TAVOLO
-          </div>
-        </div>
-        <div className="w-3/5 aspect-video absolute left-96">
-          <Image
-            src={disco?.imageUrl!}
-            alt="image"
-            fill
-            className="rounded-xl"
-          />
-        </div>
-      </div>
-
-      {/* TELEFONO */}
-      <div className="block md:hidden">
-        <div className="relative w-full aspect-video">
-          <Image src={disco?.imageUrl!} alt="image" fill />
-        </div>
-        {/* TESTO */}
-        <div className="mx-2">
-          <div className="flex flex-col gap-y-2 ">
-            <div className="text-xl">Scopri</div>
-            <div className="text-3xl flex flex-col font-bold  w-max">
-              <span>{disco?.name}</span>
-              <span className="h-1 bg-gradient-to-r from-transparent to-red-500 w-full"></span>
+              <div className="text-xl text-red-600">Discoteca</div>
             </div>
-            <div className="text-md text-red-500">Discoteca</div>
-          </div>
-
-          <div>
-            {disco?.informazioni.map((item) => (
-              <div
-                key={item.id}
-                className={cn(
-                  "text-sm",
-                  (item.tipoInformazione.nome.toLowerCase() === "titolo" &&
-                    "mt-2 text-md font-bold") ||
-                    (item.tipoInformazione.nome.toLowerCase() === "orario" &&
-                      "mx-10 list-item")
-                )}
-              >
-                {item.descrizione}
+            {disco?.informazioni.length === 0 ? (
+              <div className="h-72"></div>
+            ) : (
+              <div>
+                {disco?.informazioni.map((item) => (
+                  <div
+                    key={item.id}
+                    className={cn(
+                      "text-md",
+                      (item.tipoInformazione.nome.toLowerCase() === "titolo" &&
+                        "mt-2 text-md font-bold") ||
+                        (item.tipoInformazione.nome.toLowerCase() ===
+                          "orario" &&
+                          "mx-10 list-item")
+                    )}
+                  >
+                    {item.descrizione}
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
+            <div
+              className="px-3 py-2 mt-7 bg-red-600 w-max rounded-md cursor-pointer shadow-xl hover:scale-110 hover:shadow-red-600 transition"
+              onClick={() => dispatch(openTavoloPlease(!open))}
+            >
+              PRENOTA TAVOLO
+            </div>
+          </div>
+          <div className="w-3/5 aspect-video absolute left-96">
+            <Image
+              src={disco?.imageUrl!}
+              alt="image"
+              fill
+              className="rounded-xl"
+            />
           </div>
         </div>
-      <div className="flex mt-7 justify-center">
-        <div className="px-3 py-2  bg-red-500 w-max rounded-md cursor-pointer shadow-xl hover:scale-110 hover:shadow-red-500 transition">
-          PRENOTA TAVOLO
+
+        {/* TELEFONO */}
+        <div className="block md:hidden">
+          <div className="relative w-full aspect-video">
+            <Image src={disco?.imageUrl!} alt="image" fill />
+          </div>
+          {/* TESTO */}
+          <div className="mx-2">
+            <div className="flex flex-col gap-y-2 ">
+              <div className="text-xl">Scopri</div>
+              <div className="text-3xl flex flex-col font-bold  w-max">
+                <span>{disco?.name}</span>
+                <span className="h-1 bg-gradient-to-r from-transparent to-red-600 w-full"></span>
+              </div>
+              <div className="text-md text-red-600">Discoteca</div>
+            </div>
+
+            <div>
+              {disco?.informazioni.map((item) => (
+                <div
+                  key={item.id}
+                  className={cn(
+                    "text-sm",
+                    (item.tipoInformazione.nome.toLowerCase() === "titolo" &&
+                      "mt-2 text-md font-bold") ||
+                      (item.tipoInformazione.nome.toLowerCase() === "orario" &&
+                        "mx-10 list-item")
+                  )}
+                >
+                  {item.descrizione}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex mt-3 justify-center">
+            <div className="px-3 py-2  bg-red-600 w-max rounded-md cursor-pointer shadow-xl hover:scale-110 hover:shadow-red-600 transition">
+              PRENOTA TAVOLO
+            </div>
+          </div>
+        </div>
+        <div className="mt-10 mx-2 flex flex-col gap-2">
+          <div className="flex flex-col">
+            <span className="text-xl">Eventi</span>
+            <div className="overflow-x-scroll w-full">{eventiContent()}</div>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xl">Liste</span>
+            <div className="overflow-x-scroll w-full">{listeContent()}</div>
+          </div>
         </div>
       </div>
-      </div>
-      <div className="mt-10 mx-2 flex flex-col gap-2">
-        <div className="flex flex-col">
-          <span className="text-xl">Eventi</span>
-          <div className="overflow-x-scroll w-full">{eventiContent()}</div>
-        </div>
-        <div className="flex flex-col">
-          <span className="text-xl">Liste</span>
-          <div className="overflow-x-scroll w-full">{listeContent()}</div>
-        </div>
-      </div>
-    </div>
+        <PanelTavolo discoteca={disco!} />
+    </>
   );
 };
 

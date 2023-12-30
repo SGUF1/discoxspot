@@ -177,7 +177,7 @@ const ModelView: React.FC<ModelViewProps> = ({
               </button>
             </div>
           </div>
-          <span className="h-[2px] w-0 group-hover:w-full bg-red-500 duration-300" />
+          <span className="h-[2px] w-0 group-hover:w-full bg-red-600 duration-300" />
         </div>
       )}
       {evento && (
@@ -215,7 +215,7 @@ const ModelView: React.FC<ModelViewProps> = ({
               <div className="text-sm">{formatDate(evento.endDate)}</div>
             </div>
           </div>
-          <span className="h-[2px] w-0 group-hover:w-full bg-red-500 duration-300" />
+          <span className="h-[2px] w-0 group-hover:w-full bg-red-600 duration-300" />
         </div>
       )}
       {lista && (
@@ -253,14 +253,14 @@ const ModelView: React.FC<ModelViewProps> = ({
               <div className="text-sm">{formatDate(lista.dataLimite)}</div>
             </div>
           </div>
-          <span className="h-[2px] w-0 group-hover:w-full bg-red-500 duration-300" />
+          <span className="h-[2px] w-0 group-hover:w-full bg-red-600 duration-300" />
         </div>
       )}
       {biglietto && (
         <div className="flex flex-col overflow-hidden ">
           <div className="flex flex-col space-y-5 bg-[#3B3B3B]  rounded-t-xl">
             {/* titolo */}
-            <div className="px-5 py-2 bg-red-500 rounded-t-xl text-center font-bold">
+            <div className="px-5 py-2 bg-red-600 rounded-t-xl text-center font-bold">
               {biglietto.lista.discoteca.name}
             </div>
             <div className="flex flex-col px-5 space-y-4   ">
@@ -304,7 +304,7 @@ const ModelView: React.FC<ModelViewProps> = ({
             <span className="absolute bg-[#1F1F1F] -top-3 -right-3 h-6 w-6  rounded-full" />
           </div>
           <div className="flex flex-col -mt-1 space-y-10 bg-[#3B3B3B] pb-14 rounded-b-xl">
-            <div className="px-5 py-2 bg-red-500 rounded-t-xl text-center font-bold">
+            <div className="px-5 py-2 bg-red-600 rounded-t-xl text-center font-bold">
               CODICE
             </div>
             {biglietto.confermato ? (
@@ -315,7 +315,7 @@ const ModelView: React.FC<ModelViewProps> = ({
                 <div className="flex justify-center items-center ">
                   <QrCodeGenerator data={biglietto.codice!} />
                 </div>
-                <div className="absolute flex flex-col justify-center items-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl -rotate-45 font-bold text-red-500 space-y-5">
+                <div className="absolute flex flex-col justify-center items-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl -rotate-45 font-bold text-red-600 space-y-5">
                   <span className="text-white py-3 px-5 border-red-600 border-[10px]">
                     DISCO<span className="text-red-600">X</span>SPOT
                   </span>
@@ -338,7 +338,7 @@ const ModelView: React.FC<ModelViewProps> = ({
         <div className="flex flex-col  ">
           <div className="flex flex-col space-y-5 bg-[#3B3B3B]  rounded-t-xl">
             {/* titolo */}
-            <div className="px-5 py-2 bg-red-500 rounded-t-xl text-center font-bold">
+            <div className="px-5 py-2 bg-red-600 rounded-t-xl text-center font-bold">
               {tavolo.discoteca.name}
             </div>
             <div className="flex flex-col px-5 space-y-4   ">
@@ -390,7 +390,7 @@ const ModelView: React.FC<ModelViewProps> = ({
             <span className="absolute bg-[#1F1F1F] -top-3 -right-3 h-6 w-6  rounded-full" />
           </div>
           <div className="flex flex-col -mt-1 space-y-10 bg-[#3B3B3B] pb-14 rounded-b-xl">
-            <div className="px-5 py-2 bg-red-500 rounded-t-xl text-center font-bold">
+            <div className="px-5 py-2 bg-red-600 rounded-t-xl text-center font-bold">
               CODICE
             </div>
             <div className="text-center flex flex-col text-2xl  font-bold tracking-widest">

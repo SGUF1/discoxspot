@@ -112,7 +112,7 @@ const BoxDomande = ({ userId }: BoxDomandeProps) => {
             />
             <span
               className={cn(
-                "h-1 bg-red-500 w-0 duration-300 relatiive z-20 -mt-1 ",
+                "h-1 bg-red-600 w-0 duration-300 relatiive z-20 -mt-1 ",
                 isFocus && "w-full"
               )}
             />

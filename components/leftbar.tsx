@@ -70,8 +70,8 @@ const LeftBar = () => {
             >
               <div
                 className={cn(
-                  "text-white  rounded-xl w-[65px] hover:bg-white  justify-center xl:justify-normal hover:text-red-500 duration-300 flex  xl:w-full py-[10px] items-center px-[14px]",
-                  pathname === item.href && "bg-red-500 text-white font-bold"
+                  "text-white  rounded-xl w-[65px] hover:bg-white  justify-center xl:justify-normal hover:text-red-600 duration-300 flex  xl:w-full py-[10px] items-center px-[14px]",
+                  pathname === item.href && "bg-red-600 text-white font-bold"
                 )}
               >
                 <span className="text-2xl xl:mr-[20px]  ">{item.icon}</span>

@@ -13,7 +13,7 @@ import {
   Tavolo,
 } from "@/type";
 import { Minus, Plus, Salad, X } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -30,6 +30,12 @@ import getDiscotecaOrder from "@/actions/getDiscotecaOrders";
 interface PanelTavoloProps {
   discoteca: Discoteca;
 }
+
+interface DateInputProps {
+  value: any; // Puoi modificare il tipo in base al tipo effettivo di 'value'
+  onClick?: () => void; // onClick è opzionale
+}
+
 const items = [
   {
     id: "domenica",
@@ -362,10 +368,22 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
     window.location = response.data.url;
   };
 
+  const DateInput = forwardRef<HTMLButtonElement, DateInputProps>(
+    ({ value, onClick }, ref) => (
+      <button
+        className="px-4 py-1 bg-red-600 rounded-full"
+        onClick={onClick}
+        ref={ref}
+      >
+        {value}
+      </button>
+    )
+  );
+  DateInput.displayName = "DateInput";
   return (
     <div
       className={cn(
-        "absolute w-full h-max p-5 space-y-5 text-white transition bg-black",
+        "absolute w-full h-screen p-5 space-y-5 text-white bg-[#1F1F1F]  z-20 duration-300",
         open ? "top-0" : "top-[-500%]"
       )}
     >
@@ -382,15 +400,16 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
         <div className="text-xl">Seleziona la data:</div>
         <div>
           <DatePicker
-            selected={selectedDate} // value prop (current value of the date)
+            closeOnScroll
+            selected={selectedDate}
             // @ts-ignore
             onChange={(date) => {setSelectedDate(date);
               setSelectedTavolo(undefined);
             }} // onChange handler (function to update the date)
             filterDate={setAbilitate}
+            customInput={<DateInput value={selectedDate} />}
             minDate={new Date("2023-07-01")}
             dateFormat="dd-MM-yyyy"
-            className="text-black rounded-2xl px-2 text-lg text-center w-[150px] p-1"
           />
         </div>
       </div>
@@ -466,7 +485,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                             "mx-1 text-xl text-center p-2 rounded-2xl mt-3 cursor-pointer transition-colors outline-none ",
                             sala.id === selectedSala?.id
                               ? "bg-green-500 transition"
-                              : "bg-red-500 transition"
+                              : "bg-red-600 transition"
                           )}
                           onClick={() => {
                             setSelectedSala(sala);
@@ -569,7 +588,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                           "mx-1 text-xl text-center p-2 rounded-2xl mt-3 cursor-pointer transition-colors outline-none ",
                           tavolo.id === selectedTavolo?.id
                             ? "bg-green-500 transition"
-                            : "bg-red-500 transition"
+                            : "bg-red-600 transition"
                         )}
                         onClick={() => {
                           if (
@@ -618,12 +637,12 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
             />
           </div>
           {selectedNumeroPersone < selectedTavolo?.numeroMinimo! && (
-            <span className="text-red-500 text-lg">
+            <span className="text-red-600 text-lg">
               Il numero minimo di persone deve essere maggiore/uguale al minimo{" "}
             </span>
           )}
           {selectedNumeroPersone > selectedTavolo?.numeroMassimo! && (
-            <span className="text-red-500 text-lg">
+            <span className="text-red-600 text-lg">
               Il numero massimo di persone deve essere minore/uguale al massimo{" "}
             </span>
           )}
@@ -692,7 +711,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                                         prod?.prodotto.id === prodotto.id
                                     ) && (
                                     <div
-                                      className=" flex items-center justify-center p-2 rounded-full bg-red-500 cursor-pointer"
+                                      className=" flex items-center justify-center p-2 rounded-full bg-red-600 cursor-pointer"
                                       onClick={() =>
                                         diminuisciQuantitaProdotto(
                                           portata,
@@ -717,7 +736,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                                             prod?.prodotto.id === prodotto.id
                                         )
                                         ? "bg-green-500 transition"
-                                        : "bg-red-500 transition"
+                                        : "bg-red-600 transition"
                                     )}
                                     onClick={() => {
                                       aggiungiProdotto(
@@ -806,8 +825,9 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                       Prezzo totale a persona
                     </span>
                     <span className="text-lg font-bold ">
-                      {(selectedTavolo?.prezzoPerPosto 
-                        ? Number(selectedTavolo.prezzo) + calcolaTotaleBibite() / selectedNumeroPersone
+                      {(selectedTavolo?.prezzoPerPosto
+                        ? Number(selectedTavolo.prezzo) +
+                          calcolaTotaleBibite() / selectedNumeroPersone
                         : (Number(selectedTavolo?.prezzo) +
                             calcolaTotaleBibite()) /
                           selectedNumeroPersone

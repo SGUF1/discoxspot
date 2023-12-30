@@ -6,6 +6,7 @@ import SearchBar from "./searchbar";
 import { useRouter } from "next/navigation";
 import { UserAccounts } from "@/type";
 import { X } from "lucide-react";
+import Link from "next/link";
 
 interface HeaderProps {
   user: UserAccounts;
@@ -42,10 +43,17 @@ const Header = ({ user, singolo }: HeaderProps) => {
           </div>
         </div>
       ) : (
-        <div className="p-5 sm:p-10 px-3 flex text-xl tracking-tighter justify-center w-full items-center z-10">
-          disco
-          <span className="text-4xl font-bold text-red-500 text-center">X</span>
-          spot
+        <div className="">
+          <Link
+            href={"/"}
+            className="p-5 sm:p-10 px-3 flex text-xl tracking-tighter justify-center w-full items-center z-10"
+          >
+            <span className="-mr-1">disco</span>
+            <span className="text-4xl font-bold text-red-600 text-center">
+              X
+            </span>
+            <span className="-ml-[3px]">spot</span>
+          </Link>
         </div>
       )}
     </div>
