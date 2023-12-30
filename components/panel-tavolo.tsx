@@ -371,7 +371,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
   const DateInput = forwardRef<HTMLButtonElement, DateInputProps>(
     ({ value, onClick }, ref) => (
       <button
-        className="px-4 py-1 bg-red-600 rounded-full"
+        className="px-4 py-1 bg-white rounded-full h-7 w-32 text-center text-black"
         onClick={onClick}
         ref={ref}
       >
@@ -407,6 +407,7 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
               setSelectedTavolo(undefined);
             }} // onChange handler (function to update the date)
             filterDate={setAbilitate}
+
             customInput={<DateInput value={selectedDate} />}
             minDate={new Date("2023-07-01")}
             dateFormat="dd-MM-yyyy"
