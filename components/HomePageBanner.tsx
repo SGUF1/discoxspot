@@ -9,7 +9,7 @@ const HomePageBanner = () => {
   };
 
   return (
-    <div className="xl:mx-40 md:mx-20 sm:mx-10 mx-4 px-5 py-5 rounded-lg bg-gradient-to-l flex-col md:flex-row from-red-500 to-orange-500 flex xl:py-20 md:px-10 md:py-10 md:justify-between xl:px-20 items-center">
+    <div className="xl:mx-40 md:mx-20 sm:mx-10 mx-4 px-5 py-5 rounded-lg bg-gradient-to-l flex-col md:flex-row from-red-500 flex xl:py-10 md:px-10 md:py-10 md:justify-between xl:px-20 items-center">
       <div className="xl:space-y-10 xl:w-2/4 md:w-2/3 md:space-y-5  space-y-2 w-full ">
         <div className="flex xl:space-x-10 md:space-x-5 space-x-5 justify-center md:justify-normal ">
           <span>

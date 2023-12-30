@@ -10,13 +10,7 @@ const UserPage = async () => {
 
 
   const userId = auth().userId
-  try {
-    if (userId) {
-      await createUser(userId);
-    }
-
-  } catch (errore) {
-  }
+ 
   const user = await getUser(userId!)
   return (
     <div className="text-white relative h-[screen]">

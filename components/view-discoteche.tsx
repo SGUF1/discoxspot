@@ -117,6 +117,7 @@ const View = ({ user, number, home }: ViewDiscotecheProps) => {
           try {
             setIsLoading(true);
             data = await getEventi();
+            data = data.slice(0, 5);
             setEventi(data);
           } catch (err) {
             console.log(err);
@@ -129,6 +130,7 @@ const View = ({ user, number, home }: ViewDiscotecheProps) => {
           try {
             setIsLoading(true);
             data = await getListe();
+            data = data.slice(0, 5);
             setListe(data);
           } catch (err) {
             console.log(err);
@@ -374,7 +376,7 @@ const View = ({ user, number, home }: ViewDiscotecheProps) => {
                   className={cn(
                     "py-1 px-3 cursor-pointer rounded-full border transition",
                     optionSelected === item.uid &&
-                      "bg-orange-600 border-transparent"
+                      "bg-red-600 border-transparent"
                   )}
                   onClick={() => handleSelectOptionClick(item.number, item.uid)}
                 >

@@ -125,7 +125,7 @@ const ModelView: React.FC<ModelViewProps> = ({
       {discoteca && (
         <div
           onClick={() => router.push(`/${discoteca.id}`)}
-          className="p-4 group rounded items-center shadow-xl cursor-pointer transition hover:scale-105  hover:shadow-orange-600 shadow-black flex flex-col justify-center space-y-2"
+          className="p-4 group rounded items-center shadow-xl cursor-pointer transition hover:scale-105  hover:shadow-red-600 shadow-black flex flex-col justify-center space-y-2"
         >
           <div className=" flex flex-col h-full w-full justify-center space-y-4">
             <div
@@ -177,13 +177,13 @@ const ModelView: React.FC<ModelViewProps> = ({
               </button>
             </div>
           </div>
-          <span className="h-[2px] w-0 group-hover:w-full bg-orange-500 duration-300" />
+          <span className="h-[2px] w-0 group-hover:w-full bg-red-500 duration-300" />
         </div>
       )}
       {evento && (
         <div
           onClick={() => router.push(`/eventi/${evento.id}`)}
-          className="p-4 group rounded items-center shadow-xl cursor-pointer transition hover:scale-105  hover:shadow-orange-600 shadow-black flex flex-col justify-center space-y-2 "
+          className="p-4 group rounded items-center shadow-xl cursor-pointer transition hover:scale-105  hover:shadow-red-600 shadow-black flex flex-col justify-center space-y-2 "
         >
           <div className="flex flex-col h-full w-full justify-center space-y-4">
             <div
@@ -215,13 +215,13 @@ const ModelView: React.FC<ModelViewProps> = ({
               <div className="text-sm">{formatDate(evento.endDate)}</div>
             </div>
           </div>
-          <span className="h-[2px] w-0 group-hover:w-full bg-orange-500 duration-300" />
+          <span className="h-[2px] w-0 group-hover:w-full bg-red-500 duration-300" />
         </div>
       )}
       {lista && (
         <div
           onClick={() => router.push(`/liste/${lista.id}`)}
-          className="p-4 group rounded items-center shadow-xl cursor-pointer transition hover:scale-105  hover:shadow-orange-600 shadow-black flex flex-col justify-center space-y-2 "
+          className="p-4 group rounded items-center shadow-xl cursor-pointer transition hover:scale-105  hover:shadow-red-600 shadow-black flex flex-col justify-center space-y-2 "
         >
           <div className="flex flex-col h-full w-full justify-center space-y-4">
             <div
@@ -253,14 +253,14 @@ const ModelView: React.FC<ModelViewProps> = ({
               <div className="text-sm">{formatDate(lista.dataLimite)}</div>
             </div>
           </div>
-          <span className="h-[2px] w-0 group-hover:w-full bg-orange-500 duration-300" />
+          <span className="h-[2px] w-0 group-hover:w-full bg-red-500 duration-300" />
         </div>
       )}
       {biglietto && (
         <div className="flex flex-col overflow-hidden ">
           <div className="flex flex-col space-y-5 bg-[#3B3B3B]  rounded-t-xl">
             {/* titolo */}
-            <div className="px-5 py-2 bg-orange-500 rounded-t-xl text-center font-bold">
+            <div className="px-5 py-2 bg-red-500 rounded-t-xl text-center font-bold">
               {biglietto.lista.discoteca.name}
             </div>
             <div className="flex flex-col px-5 space-y-4   ">
@@ -304,7 +304,7 @@ const ModelView: React.FC<ModelViewProps> = ({
             <span className="absolute bg-[#1F1F1F] -top-3 -right-3 h-6 w-6  rounded-full" />
           </div>
           <div className="flex flex-col -mt-1 space-y-10 bg-[#3B3B3B] pb-14 rounded-b-xl">
-            <div className="px-5 py-2 bg-orange-500 rounded-t-xl text-center font-bold">
+            <div className="px-5 py-2 bg-red-500 rounded-t-xl text-center font-bold">
               CODICE
             </div>
             {biglietto.confermato ? (
@@ -338,7 +338,7 @@ const ModelView: React.FC<ModelViewProps> = ({
         <div className="flex flex-col  ">
           <div className="flex flex-col space-y-5 bg-[#3B3B3B]  rounded-t-xl">
             {/* titolo */}
-            <div className="px-5 py-2 bg-orange-500 rounded-t-xl text-center font-bold">
+            <div className="px-5 py-2 bg-red-500 rounded-t-xl text-center font-bold">
               {tavolo.discoteca.name}
             </div>
             <div className="flex flex-col px-5 space-y-4   ">
@@ -390,7 +390,7 @@ const ModelView: React.FC<ModelViewProps> = ({
             <span className="absolute bg-[#1F1F1F] -top-3 -right-3 h-6 w-6  rounded-full" />
           </div>
           <div className="flex flex-col -mt-1 space-y-10 bg-[#3B3B3B] pb-14 rounded-b-xl">
-            <div className="px-5 py-2 bg-orange-500 rounded-t-xl text-center font-bold">
+            <div className="px-5 py-2 bg-red-500 rounded-t-xl text-center font-bold">
               CODICE
             </div>
             <div className="text-center flex flex-col text-2xl  font-bold tracking-widest">
