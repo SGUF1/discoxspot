@@ -281,7 +281,10 @@ const ViewDiscotecaPage = ({ discotecaId }: ViewDiscotecaPageProps) => {
             </div>
           </div>
           <div className="flex mt-3 justify-center">
-            <div className="px-3 py-2  bg-red-600 w-max rounded-md cursor-pointer shadow-xl hover:scale-110 hover:shadow-red-600 transition">
+            <div
+              className="px-3 py-2  bg-red-600 w-max rounded-md cursor-pointer shadow-xl hover:scale-110 hover:shadow-red-600 transition"
+              onClick={() => dispatch(openTavoloPlease(!open))}
+            >
               PRENOTA TAVOLO
             </div>
           </div>
@@ -297,7 +300,7 @@ const ViewDiscotecaPage = ({ discotecaId }: ViewDiscotecaPageProps) => {
           </div>
         </div>
       </div>
-        <PanelTavolo discoteca={disco!} />
+      <PanelTavolo discoteca={disco!} />
     </>
   );
 };
