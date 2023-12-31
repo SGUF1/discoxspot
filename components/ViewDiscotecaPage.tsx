@@ -51,7 +51,7 @@ const ViewDiscotecaPage = ({ discotecaId }: ViewDiscotecaPageProps) => {
         currentDate.getFullYear(),
         currentDate.getMonth(),
         currentDate.getDate(),
-        currentDate.getHours() - 15,
+        currentDate.getHours() - 24,
         0
       )
     );
@@ -65,7 +65,7 @@ const ViewDiscotecaPage = ({ discotecaId }: ViewDiscotecaPageProps) => {
         currentDate.getFullYear(),
         currentDate.getMonth(),
         currentDate.getDate(),
-        currentDate.getHours() - 15,
+        currentDate.getHours() - 24,
         0
       )
     );
