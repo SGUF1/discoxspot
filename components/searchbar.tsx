@@ -17,7 +17,7 @@ const SearchBar = () => {
       <>
         <div
           className={cn(
-            "items-center  hidden bg-[#3B3B3B] p-2 rounded-full text-white md:w-65 sm:w-44 w-32 h-9 text-sm",
+            "items-center  hidden bg-[#3B3B3B] p-2 rounded-full text-white md:w-65 sm:w-44 w-40 h-9 text-sm",
             pathname === "/" || pathname === "/scuole"
               ? "flex justify-between"
               : ""

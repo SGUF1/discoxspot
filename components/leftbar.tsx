@@ -54,8 +54,8 @@ const LeftBar = () => {
         <div className="relative hidden 2xl:mb-[30px] mb-[20px] h-10 xl:block">
           <Image src={"/discoxspot.png"} alt="logo" fill />
         </div>
-        <div className="relative block  h-10 xl:hidden">
-          <Image src={"/background.png"} alt="logo" fill />
+        <div className="relative block  h-5 mt-2 xl:hidden">
+          <Image src={"/discoxspot.png"} alt="logo" fill />
         </div>
         <div className="items-center space-x-10 justify-center xl:justify-normal hidden xl:flex">
           <span>Menu</span>
