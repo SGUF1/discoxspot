@@ -25,11 +25,11 @@ const HomePageBanner = () => {
           acquista i biglietti senza problemi con pochi tocchi. Niente più
           attese in fila.
         </div>
-        <div className="flex xl:flex-row xl:w-[250px] md:w-[200px] sm:w-[200px] w-[170px] md:text-sm justify-between text-xs ">
+        <div className="flex xl:flex-row xl:w-[250px] md:w-[200px] sm:w-[200px] w-[190px] md:text-sm justify-between text-xs ">
           <div className="border-2 cursor-pointer border-white text-white bg-transparent rounded-full py-1 px-3">
             Prenota
           </div>
-          <Link className="border-2 cursor-pointer border-gray-100 text-gray-100 bg-transparent rounded-full py-1 px-3" href={"https://www.discoxspot.com"}>
+          <Link className="border-2 cursor-pointer border-gray-300 text-gray-100 bg-transparent rounded-full py-1 px-3" href={"https://www.discoxspot.com"}>
             Visita il sito
           </Link>
         </div>

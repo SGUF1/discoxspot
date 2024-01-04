@@ -35,7 +35,7 @@ const ViewListaPage = ({ listaId }: ViewListaPageProps) => {
       }
     }
     fetch();
-  }, [listaId, setLista]);
+  }, [listaId, setLista, user?.id]);
 
   const formatDate = (data: string) => {
     const dateObject = new Date(data);

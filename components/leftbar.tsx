@@ -17,6 +17,7 @@ import {
   TicketIcon,
   Trophy,
   Users2,
+  X,
 } from "lucide-react";
 import { MdOutlineTableBar } from "react-icons/md";
 import { UserButton } from "@clerk/nextjs";
@@ -25,15 +26,30 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { User } from "@clerk/nextjs/server";
+import { AppDispatch, useAppSelector } from "@/store/store";
+import { useDispatch } from "react-redux";
+import { openLeftPlease } from "@/store/features/left-bar-open";
 
 const LeftBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
+
+  const openLeft = useAppSelector((state) => state.leftBar.openLeft);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleLeftBar = () => {
+    if (openLeft) {
+      dispatch(openLeftPlease(false));
+    } else {
+      dispatch(openLeftPlease(true));
+    }
+  };
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
   if (!isMounted) {
     return <></>;
   }
@@ -47,21 +63,36 @@ const LeftBar = () => {
     { href: "/biglietti", name: "Biglietti", icon: <Ticket /> },
     { href: "/prenotati", name: "Tavoli", icon: <MdOutlineTableBar /> },
   ];
+
+
+
   return (
-    <div className="bg-[#3B3B3B] w-[75px]  relative  xl:w-[250px] h-screen ">
-      <div className="fixed top-0 left-0 h-screen xl:px-[30px]  xl:py-[30px]">
+    <div
+      className={cn(
+        "bg-[#3B3B3B] w-[250px] z-10 xl:w-[250px] h-screen duration-300 ",
+        !openLeft
+          ? "absolute -translate-x-full md:relative md:-translate-x-0"
+          : "absolute translate-x-0 md:relative"
+      )}
+    >
+      <div className="fixed top-0 left-0 h-screen md:px-[30px]  md:py-[30px]">
         {/* ds */}
         <div className="relative hidden 2xl:mb-[30px] mb-[20px] h-10 xl:block">
           <Image src={"/discoxspot.png"} alt="logo" fill />
         </div>
-        <div className="relative block  h-5 mt-2 xl:hidden">
-          <Image src={"/discoxspot.png"} alt="logo" fill />
+        <div className="relative flex justify-between  items-center text-2xl text-center  xl:hidden">
+          <div className="relative mt-5 w-36 h-10  ">
+            <Image src={"/discoxspot.png"} alt="logo" fill />
+          </div>
+          <div className="mt-5 pr-5 md:hidden">
+            <X onClick={handleLeftBar} />
+          </div>
         </div>
         <div className="items-center space-x-10 justify-center xl:justify-normal hidden xl:flex">
           <span>Menu</span>
           <span className="bg-white w-[75px] h-[2px] hidden xl:block"></span>
         </div>
-        <div className="relative w-full">
+        <div className="relative w-full mt-5 md:mt-5 duration-300">
           {links.map((item) => (
             <Link
               key={item.href}
@@ -70,12 +101,12 @@ const LeftBar = () => {
             >
               <div
                 className={cn(
-                  "text-white  rounded-xl w-[65px] hover:bg-white  justify-center xl:justify-normal hover:text-red-600 duration-300 flex  xl:w-full py-[10px] items-center px-[14px]",
+                  "text-white  rounded-xl hover:bg-white justify-center xl:justify-normal w-[250px] hover:text-red-600 duration-300 flex  md:w-full py-[10px] items-center px-[14px]",
                   pathname === item.href && "bg-red-600 text-white font-bold"
                 )}
               >
-                <span className="text-2xl xl:mr-[20px]  ">{item.icon}</span>
-                <span className="hidden xl:block">{item.name}</span>
+                <span className="text-2xl mr-[20px]  ">{item.icon}</span>
+                <span className="">{item.name}</span>
               </div>
             </Link>
           ))}

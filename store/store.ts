@@ -3,13 +3,14 @@ import discotecheSlice from "./features/search-discoteca";
 import openTavolo from "./features/panel-tavolo-open";
 import userIdSet from "./features/user-id";
 import { useSelector, TypedUseSelectorHook } from "react-redux";
-
+import  openLeftBar  from "./features/left-bar-open";
 
 export const store = configureStore({
   reducer: {
     discoteche: discotecheSlice,
     open: openTavolo,
     userId: userIdSet,
+    leftBar: openLeftBar,
   },
 });
 

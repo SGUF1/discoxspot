@@ -99,7 +99,7 @@ const ViewDiscotecaPage = ({ discotecaId }: ViewDiscotecaPageProps) => {
       );
     } else {
       contentToRender = (
-        <div className="mt-5 flex  space-x-4 pb-10 md:flex-col flex-row md:space-y-4 md:space-x-0 w-max relative z-10 md:overflow-y-scroll md:h-[70vh]">
+        <div className="mt-5 flex  space-x-4 pb-10 flex-row  w-max relative z-10 ">
           {futureEventi?.map((item) => (
             <>
               <div
@@ -153,7 +153,7 @@ const ViewDiscotecaPage = ({ discotecaId }: ViewDiscotecaPageProps) => {
       );
     } else {
       contentToRender = (
-        <div className="mt-5 flex  space-x-4 pb-10 md:flex-col flex-row md:space-y-4 md:space-x-0 w-max relative z-10 md:overflow-y-scroll md:h-[70vh]">
+        <div className="mt-5 flex  space-x-4 pb-10  flex-row  w-max relative z-10">
           {futureListe?.map((lista) => (
             <>
               <div
@@ -206,7 +206,7 @@ const tavoliContent = () => {
     );
   } else {
     contentToRender = (
-      <div className="mt-5 flex  space-x-4 pb-10 lg:flex-col flex-row lg:space-y-4 lg:space-x-0 w-max relative z-10 lg:overflow-y-scroll lg:h-[70vh]">
+      <div className="mt-5 flex  space-x-4 pb-10 flex-row  w-max relative z-10">
         {tavoli?.map((tavolo) => (
           <>
             <div className="p-4 group rounded bg-[#1F1F1F] w-full items-center shadow-xl cursor-pointer transition hover:scale-105  hover:shadow-red-600 shadow-black flex flex-col justify-center space-y-2 ">
@@ -355,32 +355,27 @@ const tavoliContent = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-10 mx-2 flex flex-col md:flex-row gap-2 md:gap-x-5">
+            <div className="mt-20 mx-2 flex flex-col  gap-2 md:gap-x-5">
               <div className="flex flex-col relative z-10 ">
                 <span className="text-xl ">Eventi</span>
-                <div className="overflow-x-scroll w-full md:overflow-y-scroll h-full ">
+                <div className="overflow-x-scroll w-full ">
                   {eventiContent()}
                 </div>
               </div>
               <div className="flex flex-col relative z-10  ">
                 <span className="text-xl">Liste</span>
-                <div className="overflow-x-scroll w-full md:overflow-y-scroll h-full">
+                <div className="overflow-x-scroll w-full">
                   {listeContent()}
                 </div>
               </div>
               <div className="flex-col relative z-10 sm:hidden lg:flex  ">
                 <span className="text-xl">Tavoli</span>
-                <div className="overflow-x-scroll w-full md:overflow-y-scroll h-full">
+                <div className="overflow-x-scroll w-full">
                   {tavoliContent()}
                 </div>
               </div>
             </div>
-            <div className="flex-col relative z-10 hidden sm:flex lg:hidden  ">
-              <span className="text-xl">Tavoli</span>
-              <div className="overflow-x-scroll w-full md:overflow-y-scroll h-full">
-                {tavoliContent()}
-              </div>
-            </div>
+           
           </div>
           <PanelTavolo discoteca={disco!} />
         </>
