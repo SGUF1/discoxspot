@@ -98,6 +98,8 @@ const ViewBiglietti = () => {
                   width={1000}
                   height={100}
                   className="object-contain lg:hover:scale-125 transition hover:cursor-pointer "
+                  objectFit="cover"
+                  objectPosition="center"
                   onClick={() => {}}
                 />
               </div>

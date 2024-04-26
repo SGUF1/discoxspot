@@ -140,6 +140,8 @@ const ModelView: React.FC<ModelViewProps> = ({
                 alt="img"
                 fill
                 className="rounded-xl hover:scale-105 transition"
+                objectFit="cover"
+                objectPosition="center"
               />
             </div>
             <div className="flex justify-between items-center">
@@ -198,6 +200,8 @@ const ModelView: React.FC<ModelViewProps> = ({
                 alt="img"
                 fill
                 className="rounded-xl hover:scale-105 transition"
+                objectFit="cover"
+                objectPosition="center"
               />
             </div>
             <div className="flex justify-between items-center">
@@ -235,6 +239,8 @@ const ModelView: React.FC<ModelViewProps> = ({
                 src={lista.imageUrl}
                 alt="img"
                 fill
+                objectFit="cover"
+                objectPosition="center"
                 className="rounded-xl hover:scale-105 transition"
               />
             </div>

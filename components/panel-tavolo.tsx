@@ -463,7 +463,8 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                         width={350}
                         height={250}
                         className=" lg:hover:scale-125 transition object-contain"
-                        priority
+                        priority      objectFit="cover"
+                  objectPosition="center"
                       />
                     </div>
                     <div className="w-[full] flex flex-col space-y-2 border-t-0 border p-4 rounded-b-2xl ">
@@ -540,6 +541,8 @@ const PanelTavolo = ({ discoteca }: PanelTavoloProps) => {
                         height={250}
                         className=" lg:hover:scale-125 transition object-cover"
                         priority
+                              objectFit="cover"
+                  objectPosition="center"
                       />
                     </div>
                     <div className="w-[full] flex flex-col space-y-2 border-t-0 border p-4 rounded-b-2xl  ">

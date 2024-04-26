@@ -46,6 +46,8 @@ const HomePageBanner = () => {
           alt="img"
           fill
           className="rounded-full customShadow"
+          objectFit="cover"
+                  objectPosition="center"
         />
       </div>
     </div>

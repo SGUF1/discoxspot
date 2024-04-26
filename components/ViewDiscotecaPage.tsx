@@ -119,7 +119,9 @@ const ViewDiscotecaPage = ({ discotecaId }: ViewDiscotecaPageProps) => {
                       src={item.imageUrl}
                       alt="img"
                       fill
-                      className="rounded-xl hover:scale-105 transition"
+                      className="rounded-xl hover:scale-105 transition fill"
+                      objectFit="cover"
+                  objectPosition="center"
                     />
                   </div>
                   <div className="flex flex-col w-[200px] md:w-[300px]">
@@ -172,7 +174,9 @@ const ViewDiscotecaPage = ({ discotecaId }: ViewDiscotecaPageProps) => {
                       src={lista.imageUrl}
                       alt="img"
                       fill
-                      className="rounded-xl hover:scale-105 transition"
+                      className="rounded-xl hover:scale-105 transition object-cover"
+                      objectFit="cover"
+                  objectPosition="center"
                     />
                   </div>
                   <div className="flex flex-col ">
@@ -223,6 +227,7 @@ const tavoliContent = () => {
                     alt="img"
                     fill
                     className="rounded-xl hover:scale-105 transition"
+                    objectFit="cover"
                   />
                 </div>
                 <div className="flex flex-col ">
@@ -307,6 +312,8 @@ const tavoliContent = () => {
                   alt="image"
                   fill
                   className="rounded-xl"
+                  objectFit="cover"
+                  objectPosition="center"
                 />
               </div>
             </div>
@@ -314,7 +321,8 @@ const tavoliContent = () => {
             {/* TELEFONO */}
             <div className="block md:hidden">
               <div className="relative w-full aspect-video">
-                <Image src={disco?.imageUrl!} alt="image" fill />
+                <Image src={disco?.imageUrl!} alt="image" fill objectFit="cover"
+                  objectPosition="center"/>
               </div>
               {/* TESTO */}
               <div className="mx-2">

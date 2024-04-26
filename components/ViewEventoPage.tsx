@@ -107,6 +107,8 @@ const ViewEventoPage = ({eventoId}: ViewEventoPageProps) => {
             alt="image"
             fill
             className="rounded-xl"
+            objectFit="cover"
+            objectPosition="center"
           />
         </div>
       </div>
@@ -114,7 +116,13 @@ const ViewEventoPage = ({eventoId}: ViewEventoPageProps) => {
       {/* TELEFONO */}
       <div className="block md:hidden">
         <div className="relative w-full aspect-video">
-          <Image src={evento?.imageUrl!} alt="image" fill />
+          <Image
+            src={evento?.imageUrl!}
+            alt="image"
+            fill
+            objectFit="cover"
+            objectPosition="center"
+          />
         </div>
         {/* TESTO */}
         <div className="mx-2 ">
@@ -127,9 +135,9 @@ const ViewEventoPage = ({eventoId}: ViewEventoPageProps) => {
               </div>
               <div className="text-md text-red-600">Evento</div>
             </div>
-          <div className="flex flex-col gap-y-2">
-            {formatDate(evento.endDate)}
-          </div>
+            <div className="flex flex-col gap-y-2">
+              {formatDate(evento.endDate)}
+            </div>
           </div>
           <div
             className="px-3 py-2 mt-3 bg-red-600 w-max rounded-md cursor-pointer shadow-xl hover:scale-110 hover:shadow-red-600 transition"

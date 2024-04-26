@@ -64,8 +64,6 @@ const LeftBar = () => {
     { href: "/prenotati", name: "Tavoli", icon: <MdOutlineTableBar /> },
   ];
 
-
-
   return (
     <div
       className={cn(
@@ -78,11 +76,23 @@ const LeftBar = () => {
       <div className="fixed top-0 left-0 h-screen md:px-[30px]  md:py-[30px]">
         {/* ds */}
         <div className="relative hidden 2xl:mb-[30px] mb-[20px] h-10 xl:block">
-          <Image src={"/discoxspot.png"} alt="logo" fill />
+          <Image
+            src={"/discoxspot.png"}
+            alt="logo"
+            fill
+            objectFit="cover"
+            objectPosition="center"
+          />
         </div>
         <div className="relative flex justify-between  items-center text-2xl text-center  xl:hidden">
           <div className="relative mt-5 w-36 h-10  ">
-            <Image src={"/discoxspot.png"} alt="logo" fill />
+            <Image
+              src={"/discoxspot.png"}
+              alt="logo"
+              fill
+              objectFit="cover"
+              objectPosition="center"
+            />
           </div>
           <div className="mt-5 pr-5 md:hidden">
             <X onClick={handleLeftBar} />

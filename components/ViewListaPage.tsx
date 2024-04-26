@@ -162,6 +162,8 @@ const ViewListaPage = ({ listaId }: ViewListaPageProps) => {
             alt="image"
             fill
             className="rounded-xl"
+            objectFit="cover"
+            objectPosition="center"
           />
         </div>
       </div>
@@ -169,7 +171,13 @@ const ViewListaPage = ({ listaId }: ViewListaPageProps) => {
       {/* TELEFONO */}
       <div className="block md:hidden">
         <div className="relative w-full aspect-video">
-          <Image src={lista?.imageUrl!} alt="image" fill />
+          <Image
+            src={lista?.imageUrl!}
+            alt="image"
+            fill
+            objectFit="cover"
+            objectPosition="center"
+          />
         </div>
         {/* TESTO */}
         <div className="mx-2 ">

@@ -97,6 +97,8 @@ const ViewEventi = () => {
                   width={1000}
                   height={100}
                   className="object-contain lg:hover:scale-125 transition hover:cursor-pointer "
+                  objectFit="cover"
+                  objectPosition="center"
                 />
               </div>
               <div className="flex w-[95%] sm:w-[95%] flex-col mt-2 justify-between">
